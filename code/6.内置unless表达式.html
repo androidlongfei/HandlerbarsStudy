@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <script type="text/javascript" src="../bower_components/jQuery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/handlebars/handlebars.js"></script>
+    <title>6.内置unless表达式</title>
+    <style>
+        span {
+            color: red;
+            font-size: large;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>6.#unless</h1>
+
+    <pre>
+        {{#unless}}这个语法是反向的if语法也就是当判断的值为false时他会渲染DOM
+    </pre>
+
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>年龄</td>
+            </tr>
+            </thead>
+            <tbody id="tableList">
+            </tbody>
+        </table>
+    </div>
+
+    <script id="tpl" type="text/x-handlebars-template">
+        {{#each student}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{sex}}</td>
+            {{#unless age}}
+            <td>{{error}}</td>
+            {{/unless}}
+            <td>{{age}}</td>
+        </tr>
+        {{/each}}
+    </script>
+</div>
+</body>
+<script>
+    $(function () {
+        var temp = Handlebars.compile($('#tpl').html());
+        var data = {
+            student: [
+                {name: 'zhangsan', sex: 'male', age: 20, error: '有年龄'},
+                {name: 'lisi', sex:'female',error: '没有年龄'},
+                {name: 'wangwu', sex: 'male', age: 24, error: '有年龄'}
+            ]
+        }
+        var html = temp(data);
+        $('#tableList').html(html);
+    });
+
+</script>
+</html>

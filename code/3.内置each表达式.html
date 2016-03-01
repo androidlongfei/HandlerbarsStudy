@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <script type="text/javascript" src="../bower_components/jQuery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/handlebars/handlebars.js"></script>
+    <title>3.表达式each的使用</title>
+    <style>
+        span {
+            color: red;
+            font-size: large;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>2.#each的使用</h1>
+
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>姓名</td>
+                    <td>性别</td>
+                    <td>年龄</td>
+                </tr>
+            </thead>
+            <tbody id="tableList">
+            </tbody>
+        </table>
+    </div>
+
+    <script id="tpl" type="text/x-handlebars-template">
+        {{#each student}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{sex}}</td>
+            <td>{{age}}</td>
+        </tr>
+        {{/each}}
+    </script>
+</div>
+</body>
+<script>
+    $(function () {
+        var temp = Handlebars.compile($('#tpl').html());
+        var data = {
+            student: [
+                {name: 'zhangsan', sex: 'male', age: 20},
+                {name: 'lisi', sex: 'female', age: 22},
+                {name: 'wangwu', sex: 'male', age: 24}
+            ]
+        }
+        var html = temp(data);
+        $('#tableList').html(html);
+    });
+
+</script>
+</html>

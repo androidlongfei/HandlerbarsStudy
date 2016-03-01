@@ -1,0 +1,134 @@
+{
+    "inputFiles": {
+        "sequenceFile": [
+            "WGC040438U_combined",
+            "WGC043510U_combined"
+        ],
+        "targetRegionFile": "SeqCap_EZ_Exome_v3_capture.bed"
+    },
+    "serverUrl":"192.168.5.11",
+    "taskId":"12345",
+    "dateYear": "2015",
+    "dateMonth": "11",
+    "dateDay": "9",
+    "WGC040438U_combined": {
+        "sampleNum": "AZ-20151343",
+        "username": "张某某",
+        "gender": "男",
+        "birthday": "1969-03-29/46",
+        "sampleType": "血液",
+        "hospital": "北京安贞医院",
+        "doctor": "王某某",
+        "sampleDate": "2015年6月22日",
+        "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+        "familyHistory": "无",
+        "productNum": "IL420013",
+        "checkType": "Next Generation Sequence",
+        "error": false,
+        "disease": "",
+        "result": [
+            {
+                "gene": "NOTCH2",
+                "rs_id": "NULL",
+                "position": "chr1_120458147",
+                "nucleotide": "7198C>T",
+                "amino": "Arg2400Term",
+                "heterozygous": "纯合",
+                "type": "unknown",
+                "pathogenicity": ""
+            },
+            {
+                "gene": "AHR",
+                "rs_id": "rs2066853",
+                "position": "chr7_17379110",
+                "nucleotide": "1661G>A",
+                "amino": "Arg554Lys",
+                "heterozygous": "纯合",
+                "type": "unknown",
+                "pathogenicity": ""
+            },
+            {
+                "gene": "BRCA2",
+                "rs_id": "rs144848",
+                "position": "chr13_32906729",
+                "nucleotide": "1114A>C",
+                "amino": "Asn372His",
+                "heterozygous": "纯合",
+                "type": "unknown",
+                "pathogenicity": ""
+            },
+            {
+                "gene": "AKT1",
+                "rs_id": "rs1130233",
+                "position": "chr14_105239894",
+                "nucleotide": "726G>A",
+                "amino": "Glu242Glu",
+                "heterozygous": "纯合",
+                "type": "unknown",
+                "pathogenicity": ""
+            }
+        ],
+        "introduction": "",
+        "pubmed": "<br/>1. "
+    },
+    "WGC043510U_combined": {
+        "sampleNum": "AZ-20151344",
+        "username": "刘某某",
+        "gender": "女",
+        "birthday": "1961-03-29/38",
+        "sampleType": "血液",
+        "hospital": "北京安贞医院",
+        "doctor": "王某某",
+        "sampleDate": "2015年7月22日",
+        "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+        "familyHistory": "无",
+        "productNum": "IL420013",
+        "checkType": "Next Generation Sequence",
+        "error": true,
+        "disease": "",
+        "result": [
+            {
+                "gene": "FAS",
+                "rs_id": "rs2229521",
+                "position": "chr10_90767482",
+                "nucleotide": "222A>G",
+                "amino": "Thr74Thr",
+                "heterozygous": "杂合",
+                "type": "frameshift deletion",
+                "pathogenicity": ""
+            },
+            {
+                "gene": "BRCA2",
+                "rs_id": "rs144848",
+                "position": "chr13_32906729",
+                "nucleotide": "1114A>C",
+                "amino": "Asn372His",
+                "heterozygous": "杂合",
+                "type": "frameshift deletion",
+                "pathogenicity": ""
+            },
+            {
+                "gene": "AKT1",
+                "rs_id": "rs1130233",
+                "position": "chr14_105239894",
+                "nucleotide": "726G>A",
+                "amino": "Glu242Glu",
+                "heterozygous": "杂合",
+                "type": "frameshift deletion",
+                "pathogenicity": ""
+            },
+            {
+                "gene": "BCR",
+                "rs_id": "rs140504",
+                "position": "chr22_23627369",
+                "nucleotide": "2387A>G",
+                "amino": "Asn796Ser",
+                "heterozygous": "杂合",
+                "type": "frameshift deletion",
+                "pathogenicity": ""
+            }
+        ],
+        "introduction": "",
+        "pubmed": "<br/>1. "
+    }
+}

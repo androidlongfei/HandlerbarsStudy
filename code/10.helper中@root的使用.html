@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <script type="text/javascript" src="../bower_components/jQuery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/handlebars/handlebars.js"></script>
+    <title>9.helper的使用</title>
+    <style>
+        span {
+            color: red;
+            font-size: large;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>8.helper的使用</h1>
+
+    <pre>
+        根据对象指定的属性来获取一个数组
+    </pre>
+    <h1>1.简单helper使用:格式化数据</h1>
+
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>年龄</td>
+            </tr>
+            </thead>
+            <tbody id="tableList">
+            </tbody>
+        </table>
+    </div>
+
+    <script id="tpl" type="text/x-handlebars-template">
+        {{#each student}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{sex}}</td>
+            <td>{{age}}</td>
+            <td>{{format age 20}}</td>
+            <!-- 自定义helper,其中format前面没有#,因为没有包裹内容,所以调用时,返回的是字符串-->
+        </tr>
+        <tr>
+            <td>特长</td>
+            <td>喜好</td>
+        </tr>
+        {{#list @root}}
+        <!--  @root：json对应的根对象 -->
+        <!-- 自定义helper,其中list前面有#,因为有包裹内容,所以调用时,会渲染模板-->
+        <tr>
+            <td>{{#each specialty}}
+                <p>{{this}}</p>
+                {{/each}}
+            </td>
+            <td>{{like}}</td>
+        </tr>
+        {{/list}}
+
+        {{/each}}
+    </script>
+</div>
+</body>
+<script>
+    $(function () {
+        var temp = Handlebars.compile($('#tpl').html());
+        var data = {
+            student: [
+                {name: 'zhangsan', sex: 'male', age: 20,count:10000},
+                {name: 'lisi', sex: 'female', age: 22,count:20000},
+                {name: 'wangwu', sex: 'male', age: 24,count:30000}
+            ],
+            "zhangsan":{
+                specialty:["打架0","唱歌0"],
+                like:"阅读0"
+            },
+            "lisi":{
+                specialty:["打架1","唱歌1"],
+                like:"阅读1"
+            },
+            "wangwu":{
+                specialty:["打架2","唱歌2"],
+                like:"阅读2"
+            }
+        }
+        //注册一个比较大小的Helper,判断v1是否大于v2
+        Handlebars.registerHelper("format",function(num,match,options){
+            if(num>match){
+                //满足添加继续执行
+                return num+"大于20";
+            }else{
+                //不满足条件执行{{else}}部分
+                return num+"小于等于于20";
+            }
+        });
+
+        //注册一个比较大小的Helper,用来根据属性值获取对应的数组
+        //options是个预编译函数
+        //opntions.fn(param)是调用一次模板，其中param是上下文环境对象
+        Handlebars.registerHelper("list",function(obj,options){
+            console.log(this);
+            console.log(obj);
+            return options.fn(obj[this.name]);
+        });
+
+
+        var html = temp(data);
+        $('#tableList').html(html);
+
+    });
+
+</script>
+</html>

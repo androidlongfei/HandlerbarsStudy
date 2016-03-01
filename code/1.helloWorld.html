@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../bower_components/jQuery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/handlebars/handlebars.js"></script>
+    <title>1.hello,world</title>
+</head>
+<body>
+<div>
+    <h1>1.基本语法</h1>
+    <pre>
+        Handlebars expressions 是handlebars模板中最基本的单元，使用方法是加两个花括号{{value}}, handlebars模板会自动匹配相应的数值，对象甚至是函数。
+        handlebars会根据上下文来自动对表达式进行匹配，如果匹配项是个变量，则会输出变量的值，如果匹配项是个函数，则函数会被调用。
+        如果没找到匹配项，则没有输出。表达式也支持点操作符，因此你可以使用{{content.title}}这样的形式来调用嵌套的值或者方法，
+        handlebars会根据当前上下文输出content变量的title属性的值。
+    </pre>
+    <script id="tpl" type="text/x-handlebars-template">
+        <div class="demo">
+            <p>{{title}}</p>
+
+            <p>{{content}}</p>
+        </div>
+    </script>
+    <div id="template"></div>
+</div>
+</body>
+<script>
+    $(function () {
+        one();
+    });
+
+    function one() {
+        //用jquery获取模板
+        var tpl = $("#tpl").html();
+        //预编译模板
+        var template = Handlebars.compile(tpl);
+        //模拟json数据
+        var context = {
+            title: "第一个handlebars application",
+            content: "hello,world"
+        };
+        //匹配json内容
+        var html = template(context);
+        //输入模板
+        $('#template').html(html);
+    }
+
+</script>
+</html>

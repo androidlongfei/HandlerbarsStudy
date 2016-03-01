@@ -1,0 +1,182 @@
+<!--base 临床报告 模板-->
+<div id="reportContainer">
+	<div class="paper" id="">
+		{{#with list}}
+		{{#each this}}
+		{{#if error}}
+		<div class="whiteBack section-to-print">
+			样本（{{sequenceFile}}）基因分析过程出错，请检查日志。<br>
+			<a href="{{../../serverUrl}}/public/cardio/{{../../taskId}}/output/{{sequenceFile}}.log">下载日志</a>
+		</div>
+		{{else}}
+		<div class="whiteBack section-to-print">
+			<table class="tabelBaseSet" id="logoInfoTable" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<div id="logoDiv">
+							<div id="logoImg">
+								<img src="../img/report-title.png" alt="" />
+							</div>
+							<div id="checkName">
+								<span>受检者姓名:&nbsp;{{username}}</span>
+								<br />
+								<span>送检单位及科室:&nbsp;{{hospital}}</span>
+							</div>
+							<div class="clearFix"></div>
+						</div>
+						<div id="geneTitle">单基因遗传病基因检测报告</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="sampleInfoTabel">
+				<tr class="table-title-tr">
+					<td colspan="18">样品信息</td>
+				</tr>
+				<tr>
+					<td colspan="2">样品编号</td>
+					<td colspan="2">姓名</td>
+					<td>性别</td>
+					<td colspan="3">出生日期/年龄</td>
+					<td colspan="2">样品类型</td>
+					<td colspan="4">送检医院</td>
+					<td colspan="2">送检医生</td>
+					<td colspan="2">收样日期</td>
+				</tr>
+				<tr>
+					<td colspan="2">{{sampleNum}}</td>
+					<td colspan="2">{{username}}</td>
+					<td>{{gender}}</td>
+					<td colspan="3">{{birthday}}</td>
+					<td colspan="2">{{sampleType}}</td>
+					<td colspan="4">{{hospital}}</td>
+					<td colspan="2">{{doctor}}</td>
+					<td colspan="2">{{sampleDate}}</td>
+				</tr>
+				<tr>
+					<td colspan="2">临床表现</td>
+					<td colspan="16">{{diseaseCharacter}}</td>
+				</tr>
+				<tr>
+					<td colspan="2">家族史</td>
+					<td colspan="16">{{familyHistory}}</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="checkInfoTable">
+				<tr class="table-title-tr">
+					<td colspan="18">检测信息</td>
+				</tr>
+				<tr>
+					<td colspan="2">检测样品编号</td>
+					<td colspan="16" width="645">{{productNum}}</td>
+				</tr>
+				<tr>
+					<td colspan="2">疾病名称</td>
+					<td colspan="16">{{disease}}</td>
+				</tr>
+				<tr>
+					<td colspan="2">检测方法</td>
+					<td colspan="16">Next Generation Sequencing</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="checkResultTable">
+				<tr class="table-title-tr">
+					<td colspan="7">检测结果</td>
+				</tr>
+				<tr>
+					<td>基因</td>
+					<td>染色体位置</td>
+					<td>核苷酸变化 / 突变名称</td>
+					<td>氨基酸变化</td>
+					<td>杂合性</td>
+					<td>变异类型</td>
+					<td>致病性</td>
+				</tr>
+				{{#with result}}
+				{{#each this}}
+				<tr height="32">
+					<td width="83">{{gene}}</td>
+					<td width="126">{{position}}</td>
+					<td width="196">{{nucleotide}}</td>
+					<td width="128">{{amino}}</td>
+					<td width="86">{{heterozygous}}</td>
+					<td width="102">{{type}}</td>
+					<td>{{pathogenicity}}</td>
+				</tr>
+				{{/each}}
+				{{/with}}
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="resultInstructionsTable">
+				<tr class="table-title-tr">
+					<td>结果说明</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="wordSet">
+							{{introduction}}
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table border="0" cellpadding="0" cellspacing="0" class="tabelBaseSet" id="adviceTable">
+				<tr class="table-title-tr">
+					<td>建议</td>
+				</tr>
+				<tr id="tabel-advice-tr">
+					<td>
+						<div class="wordSet">&nbsp;</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="referenceTable">
+				<tr class="table-title-tr">
+					<td>参考文献</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="wordSet">
+							<p align="left">{{{pubmed}}}</p>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="statementTable">
+				<tr>
+					<td colspan="4">
+						<div class="wordSet">
+                            <span>
+                            **本报告结果只对送检样品负责。本中心对以上结果保留最终解释权，如有释义，请再收到结果后的7个工作日内与我们联系。
+                        </span>
+							<br />
+                            <span>
+                            **以上结论均为实验室检测数据，仅用于突变检测之目的，不代表最终诊断结果，仅供临床参考。
+                        </span>
+							<br />
+                            <span>
+                            **数据解读规则参考美国医学遗传学和基因组学学会（American College of Medical Genetics and Genomics，ACMG）相关指南。
+                        </span>
+							<br />
+                            <span>
+                            **变异命名参照HGVS建议的规则给出（http://www.hgvs.org/mutnomen）。
+                        </span>
+						</div>
+					</td>
+				</tr>
+				<tr id="footerMsg">
+					<td class="footerTdBorder">实际操作人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td class="footerTdBorder">报告撰写人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td class="footerTdBorder">审核人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td>
+						报告日期:
+						<span>{{../../this.dateYear}}</span>年
+						<span>{{../../this.dateMonth}}</span>月
+						<span>{{../../this.dateDay}}</span>日
+					</td>
+				</tr>
+			</table>
+		</div>
+		{{/if}}
+		{{/each}}
+		{{/with}}
+	</div>
+</div>
+

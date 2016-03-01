@@ -1,0 +1,125 @@
+{
+  "serverUrl":"192.168.5.11",
+  "taskId":"12345",
+  "dateYear": "2015",
+  "dateMonth": "11",
+  "dateDay": "9",
+  "list": [
+    {
+      "sequenceFile": "WGC040438U_combined",
+      "sampleNum": "AZ-20151343",
+      "username": "张某某",
+      "gender": "男",
+      "birthday": "1969-03-29/46",
+      "sampleType": "血液",
+      "hospital": "北京安贞医院",
+      "doctor": "王某某",
+      "sampleDate": "2015年6月22日",
+      "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+      "familyHistory": "无",
+      "productNum": "IL420013",
+      "checkType": "Next Generation Sequence",
+      "error": false,
+      "disease": "",
+      "result": [
+        {
+          "gene": "EGFR",
+          "position": "1t",
+          "abnormal": "是",
+          "change": "上升",
+          "log2FC": "1.5",
+          "consequences": "对靶向药物敏感"
+        }
+      ],
+      "introduction": "",
+      "pubmed": "<br/>1. "
+    },
+    {
+      "sequenceFile": "WGC043510U_combined",
+      "sampleNum": "AZ-20151344",
+      "username": "刘某某",
+      "gender": "女",
+      "birthday": "1961-03-29/38",
+      "sampleType": "血液",
+      "hospital": "北京安贞医院",
+      "doctor": "王某某",
+      "sampleDate": "2015年7月22日",
+      "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+      "familyHistory": "无",
+      "productNum": "IL420013",
+      "checkType": "Next Generation Sequence",
+      "error": false,
+      "disease": "",
+      "result": [
+        {
+          "gene": "EGFR",
+          "position": "1t",
+          "abnormal": "是",
+          "change": "上升",
+          "log2FC": "1.5",
+          "consequences": "对靶向药物敏感"
+        }
+      ],
+      "introduction": "",
+      "pubmed": "<br/>1. "
+    },
+    {
+      "sequenceFile": "WGC043520U_combined",
+      "sampleNum": "AZ-20151345",
+      "username": "吴某某",
+      "gender": "女",
+      "birthday": "1961-03-29/38",
+      "sampleType": "血液",
+      "hospital": "北京安贞医院",
+      "doctor": "王某某",
+      "sampleDate": "2015年7月22日",
+      "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+      "familyHistory": "无",
+      "productNum": "IL420013",
+      "checkType": "Next Generation Sequence",
+      "error": false,
+      "disease": "",
+      "result": [
+        {
+          "gene": "EGFR",
+          "position": "1t",
+          "abnormal": "是",
+          "change": "上升",
+          "log2FC": "1.5",
+          "consequences": "对靶向药物敏感"
+        }
+      ],
+      "introduction": "",
+      "pubmed": "<br/>1. "
+    },
+    {
+      "sequenceFile": "WGC043521UC_combined",
+      "sampleNum": "AZ-20151345",
+      "username": "杨某某",
+      "gender": "女",
+      "birthday": "1961-03-29/38",
+      "sampleType": "血液",
+      "hospital": "北京安贞医院",
+      "doctor": "王某某",
+      "sampleDate": "2015年7月22日",
+      "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+      "familyHistory": "无",
+      "productNum": "IL420013",
+      "checkType": "Next Generation Sequence",
+      "error": true,
+      "disease": "",
+      "result": [
+        {
+          "gene": "EGFR",
+          "position": "1t",
+          "abnormal": "是",
+          "change": "上升",
+          "log2FC": "1.5",
+          "consequences": "对靶向药物敏感"
+        }
+      ],
+      "introduction": "",
+      "pubmed": "<br/>1. "
+    }
+  ]
+}

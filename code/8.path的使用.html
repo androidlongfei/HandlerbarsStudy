@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <script type="text/javascript" src="../bower_components/jQuery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/handlebars/handlebars.js"></script>
+    <title>6.内置with表达式的使用</title>
+    <style>
+        span {
+            color: red;
+            font-size: large;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>8.path的使用</h1>
+
+    <pre>
+       Handlebar还支持嵌套的路径，可以通过<span>.</span>来访问属性也可以使用<span>../</span>来访问父级属性。
+    </pre>
+
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>年龄</td>
+                <td>爱好</td>
+            </tr>
+            </thead>
+            <tbody id="tableList">
+            </tbody>
+        </table>
+    </div>
+
+    <script id="tpl" type="text/x-handlebars-template">
+        <tr>
+            <td colspan="3">
+                {{#with person}}
+                <h2>{{this.name}}</h2>
+                <div>{{../company.name}}</div>
+                {{/with}}
+            </td>
+        </tr>
+    </script>
+</div>
+</body>
+<script>
+    $(function () {
+        var temp = Handlebars.compile($('#tpl').html());
+        var data = {
+            "person": {"name": "Alan"},
+            company: {"name": "Rad, Inc."}
+        };
+        var html = temp(data);
+        $('#tableList').html(html);
+    });
+
+</script>
+</html>

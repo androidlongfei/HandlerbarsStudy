@@ -1,0 +1,86 @@
+{
+    "inputFiles": {
+        "sequenceFile": [
+            "CADP1_1_DHE01611_HF5WGCCXX_L5",
+            "CADP1_2_DHE01612_HF5V5CCXX_L4"
+        ],
+        "targetRegionFile": "SeqCap_EZ_Exome_v3_capture.bed"
+    },
+    "serverUrl":"192.168.5.11",
+    "taskId":"12345",
+    "dateYear": "2015",
+    "dateMonth": "11",
+    "dateDay": "22",
+    "CADP1_1_DHE01611_HF5WGCCXX_L5": {
+        "sampleNum": "AZ-20151343",
+        "username": "张某某",
+        "gender": "男",
+        "birthday": "1969-03-29/46",
+        "sampleType": "血液",
+        "hospital": "北京安贞医院",
+        "doctor": "王某某",
+        "sampleDate": "2015年6月22日",
+        "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+        "familyHistory": "无",
+        "productNum": "IL420013",
+        "checkType": "Next Generation Sequence",
+        "error": false,
+        "disease": "",
+        "result": [
+            {
+                "gene": "EGFR",
+                "position": "1t",
+                "abnormal": "是",
+                "change": "上升",
+                "log2FC": "1.5",
+                "consequences": "对靶向药物敏感"
+            },
+            {
+                "gene": "EGFR",
+                "position": "1t",
+                "abnormal": "是",
+                "change": "上升",
+                "log2FC": "1.5",
+                "consequences": "对靶向药物敏感"
+            }
+        ],
+        "introduction": "",
+        "pubmed": "<br/>1. Xu, T., et al., Compound and digenic heterozygosity contributes to arrhythmogenic right ventricular cardiomyopathy. J Am Coll Cardiol, 2010. 55(6): p. 587-97. PMID: 20152563<br/>2. <br/>3. Komamura, K., et al., The role of a common TNNT2 polymorphism in cardiac hypertrophy. J Hum Genet, 2004. 49(3): p. 129-33. PMID: 14986170<br/>4. Wooten, E.C., et al., Formin homology 2 domain containing 3 variants associated with hypertrophic cardiomyopathy. Circ Cardiovasc Genet, 2013. 6(1): p. 10-8. PMID: 23255317<br/>5. Splawski, I., et al., Spectrum of mutations in long-QT syndrome genes. KVLQT1, HERG, SCN5A, KCNE1, and KCNE2. Circulation, 2000. 102(10): p. 1178-85. PMID: 10973849<br/>6. van der Werf, C., et al., Familial evaluation in catecholaminergic polymorphic ventricular tachycardia: disease penetrance and expression in cardiac ryanodine receptor mutation-carrying relatives. Circ Arrhythm Electrophysiol, 2012. 5(4): p. 748-56. PMID: 22787013"
+    },
+    "CADP1_2_DHE01612_HF5V5CCXX_L4": {
+        "sampleNum": "AZ-20151344",
+        "username": "刘某某",
+        "gender": "女",
+        "birthday": "1961-03-29/38",
+        "sampleType": "血液",
+        "hospital": "北京安贞医院",
+        "doctor": "王某某",
+        "sampleDate": "2015年7月22日",
+        "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+        "familyHistory": "无",
+        "productNum": "IL420014",
+        "checkType": "Next Generation Sequence",
+        "error": true,
+        "disease": "",
+        "result": [
+            {
+                "gene": "EGFR",
+                "position": "1t",
+                "abnormal": "是",
+                "change": "上升",
+                "log2FC": "1.5",
+                "consequences": "对靶向药物敏感"
+            },
+            {
+                "gene": "EGFR",
+                "position": "1t",
+                "abnormal": "是",
+                "change": "上升",
+                "log2FC": "1.5",
+                "consequences": "对靶向药物敏感"
+            }
+        ],
+        "introduction": "",
+        "pubmed": "<br/>1. <br/>2. Arvanitis, D.A., et al., The Ser96Ala variant in histidine-rich calcium-binding protein is associated with life-threatening ventricular arrhythmias in idiopathic dilated cardiomyopathy. Eur Heart J, 2008. 29(20): p. 2514-25. PMID: 18617481<br/>3. Komamura, K., et al., The role of a common TNNT2 polymorphism in cardiac hypertrophy. J Hum Genet, 2004. 49(3): p. 129-33. PMID: 14986170<br/>4. Wooten, E.C., et al., Formin homology 2 domain containing 3 variants associated with hypertrophic cardiomyopathy. Circ Cardiovasc Genet, 2013. 6(1): p. 10-8. PMID: 23255317<br/>5. Splawski, I., et al., Spectrum of mutations in long-QT syndrome genes. KVLQT1, HERG, SCN5A, KCNE1, and KCNE2. Circulation, 2000. 102(10): p. 1178-85. PMID: 10973849<br/>6. van der Werf, C., et al., Familial evaluation in catecholaminergic polymorphic ventricular tachycardia: disease penetrance and expression in cardiac ryanodine receptor mutation-carrying relatives. Circ Arrhythm Electrophysiol, 2012. 5(4): p. 748-56. PMID: 22787013"
+    }
+}

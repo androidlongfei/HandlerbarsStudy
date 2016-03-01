@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <script type="text/javascript" src="../bower_components/jQuery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/handlebars/handlebars.js"></script>
+    <title>3.表达式each的使用</title>
+    <style>
+        span {
+            color: red;
+            font-size: large;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>2.#each的使用</h1>
+
+    <pre>
+        {{#if}}就你使用JavaScript一样，你可以指定条件渲染DOM，如果它的参数返回false，undefined, null, "" 或者 [] (a "falsy" value),
+Handlebar将不会渲染DOM
+    </pre>
+
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>年龄</td>
+            </tr>
+            </thead>
+            <tbody id="tableList">
+            </tbody>
+        </table>
+    </div>
+
+    <script id="tpl" type="text/x-handlebars-template">
+        {{#each student}}
+        <tr>
+            <td>{{name}}</td>
+            {{#if sex}}
+            <td>{{sex}}</td>
+            {{/if}}
+            <td>{{age}}</td>
+        </tr>
+        {{/each}}
+    </script>
+</div>
+</body>
+<script>
+    $(function () {
+        var temp = Handlebars.compile($('#tpl').html());
+        var data = {
+            student: [
+                {name: 'zhangsan', sex: 'male', age: 20, error: ''},
+                {name: 'lisi', sex: 'female', error: '没有年龄'},
+                {name: 'wangwu', sex: 'male', age: 24}
+            ]
+        }
+        var html = temp(data);
+        $('#tableList').html(html);
+    });
+
+</script>
+</html>

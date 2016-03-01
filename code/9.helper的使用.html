@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <script type="text/javascript" src="../bower_components/jQuery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/handlebars/handlebars.js"></script>
+    <title>9.helper的使用</title>
+    <style>
+        span {
+            color: red;
+            font-size: large;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>9.helper的使用</h1>
+
+    <pre>
+       helper大概可以分为两类，一类是用于格式化输出数据，使用起来像这样：{{formatDate date}}，官方没有给起名字，我姑且叫做简单helper好了。
+        另一类叫块级helper，块级helper有自己的作用域，可以拿到上下文数据，并可以定义渲染的内容，可以发挥的作用就比较大了。
+        通过这两类helper，handlebars由一个弱逻辑的模板可以扩展出很强大的功能。
+    </pre>
+
+    <h1>1.简单helper使用:格式化数据</h1>
+
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>年龄</td>
+            </tr>
+            </thead>
+            <tbody id="tableList">
+            </tbody>
+        </table>
+    </div>
+
+    <script id="tpl" type="text/x-handlebars-template">
+        {{#each student}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{sex}}</td>
+            <td>{{age}}</td>
+            <td>{{format age 20}}</td>
+        </tr>
+        {{/each}}
+    </script>
+</div>
+</body>
+<script>
+    $(function () {
+        var temp = Handlebars.compile($('#tpl').html());
+        var data = {
+            student: [
+                {name: 'zhangsan', sex: 'male', age: 20,count:10000},
+                {name: 'lisi', sex: 'female', age: 22,count:20000},
+                {name: 'wangwu', sex: 'male', age: 24,count:30000}
+            ]
+        }
+        //注册一个比较大小的Helper,判断v1是否大于v2
+        Handlebars.registerHelper("format",function(match,num,options){
+            if(v1>20){
+                //满足添加继续执行
+                return v1+"大于20";
+            }else{
+                //不满足条件执行{{else}}部分
+                return v1+"小于等于于20";
+            }
+        });
+
+        var html = temp(data);
+        $('#tableList').html(html);
+
+    });
+
+</script>
+</html>

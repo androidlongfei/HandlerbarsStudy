@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../css/index.css"/>
+	<link rel="stylesheet" href="../css/report.css"/>
+	<title>1.临床报告</title>
+</head>
+<body>
+<!--base 临床报告 模板-->
+<div id="reportContainer">
+	<div class="paper" id="">
+		<div class="whiteBack section-to-print">
+			<table class="tabelBaseSet" id="logoInfoTable" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<div id="logoDiv">
+							<div id="logoImg">
+								<img src="../img/report-title.png" alt="" />
+							</div>
+							<div id="checkName">
+								<span>受检者姓名:&nbsp;张某某</span>
+								<br />
+								<span>送检单位及科室:&nbsp;北京安贞医院</span>
+							</div>
+							<div class="clearFix"></div>
+						</div>
+						<div id="geneTitle">单基因遗传病基因检测报告</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="sampleInfoTabel">
+				<tr class="table-title-tr">
+					<td colspan="18">样品信息</td>
+				</tr>
+				<tr>
+					<td colspan="2">样品编号</td>
+					<td colspan="2">姓名</td>
+					<td>性别</td>
+					<td colspan="3">出生日期/年龄</td>
+					<td colspan="2">样品类型</td>
+					<td colspan="4">送检医院</td>
+					<td colspan="2">送检医生</td>
+					<td colspan="2">收样日期</td>
+				</tr>
+				<tr>
+					<td colspan="2">AZ-20151343</td>
+					<td colspan="2">张某某</td>
+					<td>男</td>
+					<td colspan="3">1969-03-29/46</td>
+					<td colspan="2">血液</td>
+					<td colspan="4">北京安贞医院</td>
+					<td colspan="2">王某某</td>
+					<td colspan="2">2015年6月22日</td>
+				</tr>
+				<tr>
+					<td colspan="2">临床表现</td>
+					<td colspan="16">呼吸困难,心绞痛,眩晕</td>
+				</tr>
+				<tr>
+					<td colspan="2">家族史</td>
+					<td colspan="16">无</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="checkInfoTable">
+				<tr class="table-title-tr">
+					<td colspan="18">检测信息</td>
+				</tr>
+				<tr>
+					<td colspan="2">检测样品编号</td>
+					<td colspan="16" width="645">IL420013</td>
+				</tr>
+				<tr>
+					<td colspan="2">疾病名称</td>
+					<td colspan="16"></td>
+				</tr>
+				<tr>
+					<td colspan="2">检测方法</td>
+					<td colspan="16">Next Generation Sequencing</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="checkResultTable">
+				<tr class="table-title-tr">
+					<td colspan="7">检测结果</td>
+				</tr>
+				<tr>
+					<td>基因</td>
+					<td>染色体位置</td>
+					<td>核苷酸变化 / 突变名称</td>
+					<td>氨基酸变化</td>
+					<td>杂合性</td>
+					<td>变异类型</td>
+					<td>致病性</td>
+				</tr>
+				<tr height="32">
+					<td width="83">NOTCH2</td>
+					<td width="126">chr1_120458147</td>
+					<td width="196">7198C&gt;T</td>
+					<td width="128">Arg2400Term</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">AHR</td>
+					<td width="126">chr7_17379110</td>
+					<td width="196">1661G&gt;A</td>
+					<td width="128">Arg554Lys</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">BRCA2</td>
+					<td width="126">chr13_32906729</td>
+					<td width="196">1114A&gt;C</td>
+					<td width="128">Asn372His</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">AKT1</td>
+					<td width="126">chr14_105239894</td>
+					<td width="196">726G&gt;A</td>
+					<td width="128">Glu242Glu</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="resultInstructionsTable">
+				<tr class="table-title-tr">
+					<td>结果说明</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="wordSet">
+							
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table border="0" cellpadding="0" cellspacing="0" class="tabelBaseSet" id="adviceTable">
+				<tr class="table-title-tr">
+					<td>建议</td>
+				</tr>
+				<tr id="tabel-advice-tr">
+					<td>
+						<div class="wordSet">&nbsp;</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="referenceTable">
+				<tr class="table-title-tr">
+					<td>参考文献</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="wordSet">
+							<p align="left"><br/>1. </p>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="statementTable">
+				<tr>
+					<td colspan="4">
+						<div class="wordSet">
+                            <span>
+                            **本报告结果只对送检样品负责。本中心对以上结果保留最终解释权，如有释义，请再收到结果后的7个工作日内与我们联系。
+                        </span>
+							<br />
+                            <span>
+                            **以上结论均为实验室检测数据，仅用于突变检测之目的，不代表最终诊断结果，仅供临床参考。
+                        </span>
+							<br />
+                            <span>
+                            **数据解读规则参考美国医学遗传学和基因组学学会（American College of Medical Genetics and Genomics，ACMG）相关指南。
+                        </span>
+							<br />
+                            <span>
+                            **变异命名参照HGVS建议的规则给出（http://www.hgvs.org/mutnomen）。
+                        </span>
+						</div>
+					</td>
+				</tr>
+				<tr id="footerMsg">
+					<td class="footerTdBorder">实际操作人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td class="footerTdBorder">报告撰写人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td class="footerTdBorder">审核人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td>
+						报告日期:
+						<span>2015</span>年
+						<span>11</span>月
+						<span>9</span>日
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="whiteBack section-to-print">
+			<table class="tabelBaseSet" id="logoInfoTable" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<div id="logoDiv">
+							<div id="logoImg">
+								<img src="../img/report-title.png" alt="" />
+							</div>
+							<div id="checkName">
+								<span>受检者姓名:&nbsp;刘某某</span>
+								<br />
+								<span>送检单位及科室:&nbsp;北京安贞医院</span>
+							</div>
+							<div class="clearFix"></div>
+						</div>
+						<div id="geneTitle">单基因遗传病基因检测报告</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="sampleInfoTabel">
+				<tr class="table-title-tr">
+					<td colspan="18">样品信息</td>
+				</tr>
+				<tr>
+					<td colspan="2">样品编号</td>
+					<td colspan="2">姓名</td>
+					<td>性别</td>
+					<td colspan="3">出生日期/年龄</td>
+					<td colspan="2">样品类型</td>
+					<td colspan="4">送检医院</td>
+					<td colspan="2">送检医生</td>
+					<td colspan="2">收样日期</td>
+				</tr>
+				<tr>
+					<td colspan="2">AZ-20151344</td>
+					<td colspan="2">刘某某</td>
+					<td>女</td>
+					<td colspan="3">1961-03-29/38</td>
+					<td colspan="2">血液</td>
+					<td colspan="4">北京安贞医院</td>
+					<td colspan="2">王某某</td>
+					<td colspan="2">2015年7月22日</td>
+				</tr>
+				<tr>
+					<td colspan="2">临床表现</td>
+					<td colspan="16">呼吸困难,心绞痛,眩晕</td>
+				</tr>
+				<tr>
+					<td colspan="2">家族史</td>
+					<td colspan="16">无</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="checkInfoTable">
+				<tr class="table-title-tr">
+					<td colspan="18">检测信息</td>
+				</tr>
+				<tr>
+					<td colspan="2">检测样品编号</td>
+					<td colspan="16" width="645">IL420013</td>
+				</tr>
+				<tr>
+					<td colspan="2">疾病名称</td>
+					<td colspan="16"></td>
+				</tr>
+				<tr>
+					<td colspan="2">检测方法</td>
+					<td colspan="16">Next Generation Sequencing</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="checkResultTable">
+				<tr class="table-title-tr">
+					<td colspan="7">检测结果</td>
+				</tr>
+				<tr>
+					<td>基因</td>
+					<td>染色体位置</td>
+					<td>核苷酸变化 / 突变名称</td>
+					<td>氨基酸变化</td>
+					<td>杂合性</td>
+					<td>变异类型</td>
+					<td>致病性</td>
+				</tr>
+				<tr height="32">
+					<td width="83">FAS</td>
+					<td width="126">chr10_90767482</td>
+					<td width="196">222A&gt;G</td>
+					<td width="128">Thr74Thr</td>
+					<td width="86">杂合</td>
+					<td width="102">frameshift deletion</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">BRCA2</td>
+					<td width="126">chr13_32906729</td>
+					<td width="196">1114A&gt;C</td>
+					<td width="128">Asn372His</td>
+					<td width="86">杂合</td>
+					<td width="102">frameshift deletion</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">AKT1</td>
+					<td width="126">chr14_105239894</td>
+					<td width="196">726G&gt;A</td>
+					<td width="128">Glu242Glu</td>
+					<td width="86">杂合</td>
+					<td width="102">frameshift deletion</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">BCR</td>
+					<td width="126">chr22_23627369</td>
+					<td width="196">2387A&gt;G</td>
+					<td width="128">Asn796Ser</td>
+					<td width="86">杂合</td>
+					<td width="102">frameshift deletion</td>
+					<td></td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="resultInstructionsTable">
+				<tr class="table-title-tr">
+					<td>结果说明</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="wordSet">
+							
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table border="0" cellpadding="0" cellspacing="0" class="tabelBaseSet" id="adviceTable">
+				<tr class="table-title-tr">
+					<td>建议</td>
+				</tr>
+				<tr id="tabel-advice-tr">
+					<td>
+						<div class="wordSet">&nbsp;</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="referenceTable">
+				<tr class="table-title-tr">
+					<td>参考文献</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="wordSet">
+							<p align="left"><br/>1. </p>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="statementTable">
+				<tr>
+					<td colspan="4">
+						<div class="wordSet">
+                            <span>
+                            **本报告结果只对送检样品负责。本中心对以上结果保留最终解释权，如有释义，请再收到结果后的7个工作日内与我们联系。
+                        </span>
+							<br />
+                            <span>
+                            **以上结论均为实验室检测数据，仅用于突变检测之目的，不代表最终诊断结果，仅供临床参考。
+                        </span>
+							<br />
+                            <span>
+                            **数据解读规则参考美国医学遗传学和基因组学学会（American College of Medical Genetics and Genomics，ACMG）相关指南。
+                        </span>
+							<br />
+                            <span>
+                            **变异命名参照HGVS建议的规则给出（http://www.hgvs.org/mutnomen）。
+                        </span>
+						</div>
+					</td>
+				</tr>
+				<tr id="footerMsg">
+					<td class="footerTdBorder">实际操作人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td class="footerTdBorder">报告撰写人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td class="footerTdBorder">审核人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td>
+						报告日期:
+						<span>2015</span>年
+						<span>11</span>月
+						<span>9</span>日
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="whiteBack section-to-print">
+			<table class="tabelBaseSet" id="logoInfoTable" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<div id="logoDiv">
+							<div id="logoImg">
+								<img src="../img/report-title.png" alt="" />
+							</div>
+							<div id="checkName">
+								<span>受检者姓名:&nbsp;吴某某</span>
+								<br />
+								<span>送检单位及科室:&nbsp;北京安贞医院</span>
+							</div>
+							<div class="clearFix"></div>
+						</div>
+						<div id="geneTitle">单基因遗传病基因检测报告</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="sampleInfoTabel">
+				<tr class="table-title-tr">
+					<td colspan="18">样品信息</td>
+				</tr>
+				<tr>
+					<td colspan="2">样品编号</td>
+					<td colspan="2">姓名</td>
+					<td>性别</td>
+					<td colspan="3">出生日期/年龄</td>
+					<td colspan="2">样品类型</td>
+					<td colspan="4">送检医院</td>
+					<td colspan="2">送检医生</td>
+					<td colspan="2">收样日期</td>
+				</tr>
+				<tr>
+					<td colspan="2">AZ-20151345</td>
+					<td colspan="2">吴某某</td>
+					<td>女</td>
+					<td colspan="3">1961-03-29/38</td>
+					<td colspan="2">血液</td>
+					<td colspan="4">北京安贞医院</td>
+					<td colspan="2">王某某</td>
+					<td colspan="2">2015年7月22日</td>
+				</tr>
+				<tr>
+					<td colspan="2">临床表现</td>
+					<td colspan="16">呼吸困难,心绞痛,眩晕</td>
+				</tr>
+				<tr>
+					<td colspan="2">家族史</td>
+					<td colspan="16">无</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="checkInfoTable">
+				<tr class="table-title-tr">
+					<td colspan="18">检测信息</td>
+				</tr>
+				<tr>
+					<td colspan="2">检测样品编号</td>
+					<td colspan="16" width="645">IL420013</td>
+				</tr>
+				<tr>
+					<td colspan="2">疾病名称</td>
+					<td colspan="16"></td>
+				</tr>
+				<tr>
+					<td colspan="2">检测方法</td>
+					<td colspan="16">Next Generation Sequencing</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="checkResultTable">
+				<tr class="table-title-tr">
+					<td colspan="7">检测结果</td>
+				</tr>
+				<tr>
+					<td>基因</td>
+					<td>染色体位置</td>
+					<td>核苷酸变化 / 突变名称</td>
+					<td>氨基酸变化</td>
+					<td>杂合性</td>
+					<td>变异类型</td>
+					<td>致病性</td>
+				</tr>
+				<tr height="32">
+					<td width="83">BRCA2</td>
+					<td width="126">chr13_32906729</td>
+					<td width="196">1114A&gt;C</td>
+					<td width="128">Asn372His</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">AKT1</td>
+					<td width="126">chr14_105239894</td>
+					<td width="196">726G&gt;A</td>
+					<td width="128">Glu242Glu</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="resultInstructionsTable">
+				<tr class="table-title-tr">
+					<td>结果说明</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="wordSet">
+							
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table border="0" cellpadding="0" cellspacing="0" class="tabelBaseSet" id="adviceTable">
+				<tr class="table-title-tr">
+					<td>建议</td>
+				</tr>
+				<tr id="tabel-advice-tr">
+					<td>
+						<div class="wordSet">&nbsp;</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="referenceTable">
+				<tr class="table-title-tr">
+					<td>参考文献</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="wordSet">
+							<p align="left"><br/>1. </p>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="statementTable">
+				<tr>
+					<td colspan="4">
+						<div class="wordSet">
+                            <span>
+                            **本报告结果只对送检样品负责。本中心对以上结果保留最终解释权，如有释义，请再收到结果后的7个工作日内与我们联系。
+                        </span>
+							<br />
+                            <span>
+                            **以上结论均为实验室检测数据，仅用于突变检测之目的，不代表最终诊断结果，仅供临床参考。
+                        </span>
+							<br />
+                            <span>
+                            **数据解读规则参考美国医学遗传学和基因组学学会（American College of Medical Genetics and Genomics，ACMG）相关指南。
+                        </span>
+							<br />
+                            <span>
+                            **变异命名参照HGVS建议的规则给出（http://www.hgvs.org/mutnomen）。
+                        </span>
+						</div>
+					</td>
+				</tr>
+				<tr id="footerMsg">
+					<td class="footerTdBorder">实际操作人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td class="footerTdBorder">报告撰写人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td class="footerTdBorder">审核人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td>
+						报告日期:
+						<span>2015</span>年
+						<span>11</span>月
+						<span>9</span>日
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="whiteBack section-to-print">
+			<table class="tabelBaseSet" id="logoInfoTable" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<div id="logoDiv">
+							<div id="logoImg">
+								<img src="../img/report-title.png" alt="" />
+							</div>
+							<div id="checkName">
+								<span>受检者姓名:&nbsp;杨某某</span>
+								<br />
+								<span>送检单位及科室:&nbsp;北京安贞医院</span>
+							</div>
+							<div class="clearFix"></div>
+						</div>
+						<div id="geneTitle">单基因遗传病基因检测报告</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="sampleInfoTabel">
+				<tr class="table-title-tr">
+					<td colspan="18">样品信息</td>
+				</tr>
+				<tr>
+					<td colspan="2">样品编号</td>
+					<td colspan="2">姓名</td>
+					<td>性别</td>
+					<td colspan="3">出生日期/年龄</td>
+					<td colspan="2">样品类型</td>
+					<td colspan="4">送检医院</td>
+					<td colspan="2">送检医生</td>
+					<td colspan="2">收样日期</td>
+				</tr>
+				<tr>
+					<td colspan="2">AZ-20151345</td>
+					<td colspan="2">杨某某</td>
+					<td>女</td>
+					<td colspan="3">1961-03-29/38</td>
+					<td colspan="2">血液</td>
+					<td colspan="4">北京安贞医院</td>
+					<td colspan="2">王某某</td>
+					<td colspan="2">2015年7月22日</td>
+				</tr>
+				<tr>
+					<td colspan="2">临床表现</td>
+					<td colspan="16">呼吸困难,心绞痛,眩晕</td>
+				</tr>
+				<tr>
+					<td colspan="2">家族史</td>
+					<td colspan="16">无</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="checkInfoTable">
+				<tr class="table-title-tr">
+					<td colspan="18">检测信息</td>
+				</tr>
+				<tr>
+					<td colspan="2">检测样品编号</td>
+					<td colspan="16" width="645">IL420013</td>
+				</tr>
+				<tr>
+					<td colspan="2">疾病名称</td>
+					<td colspan="16"></td>
+				</tr>
+				<tr>
+					<td colspan="2">检测方法</td>
+					<td colspan="16">Next Generation Sequencing</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="checkResultTable">
+				<tr class="table-title-tr">
+					<td colspan="7">检测结果</td>
+				</tr>
+				<tr>
+					<td>基因</td>
+					<td>染色体位置</td>
+					<td>核苷酸变化 / 突变名称</td>
+					<td>氨基酸变化</td>
+					<td>杂合性</td>
+					<td>变异类型</td>
+					<td>致病性</td>
+				</tr>
+				<tr height="32">
+					<td width="83">BCL10</td>
+					<td width="126">chr1_85742023</td>
+					<td width="196">13G&gt;T</td>
+					<td width="128">Ala5Ser</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">PIK3R1</td>
+					<td width="126">chr5_67588148</td>
+					<td width="196">978G&gt;A</td>
+					<td width="128">Met326Ile</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">TNFAIP3</td>
+					<td width="126">chr6_138196066</td>
+					<td width="196">380T&gt;G</td>
+					<td width="128">Phe127Cys</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">FAS</td>
+					<td width="126">chr10_90762858</td>
+					<td width="196">103T&gt;C</td>
+					<td width="128">Leu35Leu</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">FAS</td>
+					<td width="126">chr10_90767482</td>
+					<td width="196">222A&gt;G</td>
+					<td width="128">Thr74Thr</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">BRCA2</td>
+					<td width="126">chr13_32906480</td>
+					<td width="196">865A&gt;C</td>
+					<td width="128">Asn289His</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">BRCA2</td>
+					<td width="126">chr13_32906729</td>
+					<td width="196">1114A&gt;C</td>
+					<td width="128">Asn372His</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">BRCA2</td>
+					<td width="126">chr13_32911463</td>
+					<td width="196">2971A&gt;G</td>
+					<td width="128">Asn991Asp</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">AKT1</td>
+					<td width="126">chr14_105239894</td>
+					<td width="196">726G&gt;A</td>
+					<td width="128">Glu242Glu</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+				<tr height="32">
+					<td width="83">BCR</td>
+					<td width="126">chr22_23627369</td>
+					<td width="196">2387A&gt;G</td>
+					<td width="128">Asn796Ser</td>
+					<td width="86">纯合</td>
+					<td width="102">unknown</td>
+					<td></td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="resultInstructionsTable">
+				<tr class="table-title-tr">
+					<td>结果说明</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="wordSet">
+							
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table border="0" cellpadding="0" cellspacing="0" class="tabelBaseSet" id="adviceTable">
+				<tr class="table-title-tr">
+					<td>建议</td>
+				</tr>
+				<tr id="tabel-advice-tr">
+					<td>
+						<div class="wordSet">&nbsp;</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="referenceTable">
+				<tr class="table-title-tr">
+					<td>参考文献</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="wordSet">
+							<p align="left"><br/>1. </p>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="tabelBaseSet" id="statementTable">
+				<tr>
+					<td colspan="4">
+						<div class="wordSet">
+                            <span>
+                            **本报告结果只对送检样品负责。本中心对以上结果保留最终解释权，如有释义，请再收到结果后的7个工作日内与我们联系。
+                        </span>
+							<br />
+                            <span>
+                            **以上结论均为实验室检测数据，仅用于突变检测之目的，不代表最终诊断结果，仅供临床参考。
+                        </span>
+							<br />
+                            <span>
+                            **数据解读规则参考美国医学遗传学和基因组学学会（American College of Medical Genetics and Genomics，ACMG）相关指南。
+                        </span>
+							<br />
+                            <span>
+                            **变异命名参照HGVS建议的规则给出（http://www.hgvs.org/mutnomen）。
+                        </span>
+						</div>
+					</td>
+				</tr>
+				<tr id="footerMsg">
+					<td class="footerTdBorder">实际操作人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td class="footerTdBorder">报告撰写人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td class="footerTdBorder">审核人:<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+					<td>
+						报告日期:
+						<span>2015</span>年
+						<span>11</span>月
+						<span>9</span>日
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+

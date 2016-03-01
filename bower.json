@@ -1,0 +1,23 @@
+{
+  "name": "HandlebarsStudy",
+  "authors": [
+    "Longfei <helongfei@micro-helix.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "handlebars": "~4.0.5",
+    "jQuery": "~2.2.0",
+    "bootstrap": "~3.3.6"
+  }
+}

@@ -1,0 +1,293 @@
+{
+    "serverUrl":"192.168.5.11",
+    "taskId":"12345",
+    "dateYear": "2015",
+    "dateMonth": "11",
+    "dateDay": "9",
+    "list": [
+        {
+            "sequenceFile": "WGC040438U_combined",
+            "sampleNum": "AZ-20151343",
+            "username": "张某某",
+            "gender": "男",
+            "birthday": "1969-03-29/46",
+            "sampleType": "血液",
+            "hospital": "北京安贞医院",
+            "doctor": "王某某",
+            "sampleDate": "2015年6月22日",
+            "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+            "familyHistory": "无",
+            "productNum": "IL420013",
+            "checkType": "Next Generation Sequence",
+            "error": false,
+            "disease": "",
+            "result": [
+                {
+                    "gene": "NOTCH2",
+                    "rs_id": "NULL",
+                    "position": "chr1_120458147",
+                    "nucleotide": "7198C>T",
+                    "amino": "Arg2400Term",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "AHR",
+                    "rs_id": "rs2066853",
+                    "position": "chr7_17379110",
+                    "nucleotide": "1661G>A",
+                    "amino": "Arg554Lys",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "BRCA2",
+                    "rs_id": "rs144848",
+                    "position": "chr13_32906729",
+                    "nucleotide": "1114A>C",
+                    "amino": "Asn372His",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "AKT1",
+                    "rs_id": "rs1130233",
+                    "position": "chr14_105239894",
+                    "nucleotide": "726G>A",
+                    "amino": "Glu242Glu",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                }
+            ],
+            "introduction": "",
+            "pubmed": "<br/>1. "
+        },
+        {
+            "sequenceFile": "WGC043510U_combined",
+            "sampleNum": "AZ-20151344",
+            "username": "刘某某",
+            "gender": "女",
+            "birthday": "1961-03-29/38",
+            "sampleType": "血液",
+            "hospital": "北京安贞医院",
+            "doctor": "王某某",
+            "sampleDate": "2015年7月22日",
+            "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+            "familyHistory": "无",
+            "productNum": "IL420013",
+            "checkType": "Next Generation Sequence",
+            "error": false,
+            "disease": "",
+            "result": [
+                {
+                    "gene": "FAS",
+                    "rs_id": "rs2229521",
+                    "position": "chr10_90767482",
+                    "nucleotide": "222A>G",
+                    "amino": "Thr74Thr",
+                    "heterozygous": "杂合",
+                    "type": "frameshift deletion",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "BRCA2",
+                    "rs_id": "rs144848",
+                    "position": "chr13_32906729",
+                    "nucleotide": "1114A>C",
+                    "amino": "Asn372His",
+                    "heterozygous": "杂合",
+                    "type": "frameshift deletion",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "AKT1",
+                    "rs_id": "rs1130233",
+                    "position": "chr14_105239894",
+                    "nucleotide": "726G>A",
+                    "amino": "Glu242Glu",
+                    "heterozygous": "杂合",
+                    "type": "frameshift deletion",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "BCR",
+                    "rs_id": "rs140504",
+                    "position": "chr22_23627369",
+                    "nucleotide": "2387A>G",
+                    "amino": "Asn796Ser",
+                    "heterozygous": "杂合",
+                    "type": "frameshift deletion",
+                    "pathogenicity": ""
+                }
+            ],
+            "introduction": "",
+            "pubmed": "<br/>1. "
+        },
+        {
+            "sequenceFile": "WGC043520U_combined",
+            "sampleNum": "AZ-20151345",
+            "username": "吴某某",
+            "gender": "女",
+            "birthday": "1961-03-29/38",
+            "sampleType": "血液",
+            "hospital": "北京安贞医院",
+            "doctor": "王某某",
+            "sampleDate": "2015年7月22日",
+            "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+            "familyHistory": "无",
+            "productNum": "IL420013",
+            "checkType": "Next Generation Sequence",
+            "error": false,
+            "disease": "",
+            "result": [
+                {
+                    "gene": "BRCA2",
+                    "rs_id": "rs144848",
+                    "position": "chr13_32906729",
+                    "nucleotide": "1114A>C",
+                    "amino": "Asn372His",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "AKT1",
+                    "rs_id": "rs1130233",
+                    "position": "chr14_105239894",
+                    "nucleotide": "726G>A",
+                    "amino": "Glu242Glu",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                }
+            ],
+            "introduction": "",
+            "pubmed": "<br/>1. "
+        },
+        {
+            "sequenceFile": "WGC043521UC_combined",
+            "sampleNum": "AZ-20151345",
+            "username": "杨某某",
+            "gender": "女",
+            "birthday": "1961-03-29/38",
+            "sampleType": "血液",
+            "hospital": "北京安贞医院",
+            "doctor": "王某某",
+            "sampleDate": "2015年7月22日",
+            "diseaseCharacter": "呼吸困难,心绞痛,眩晕",
+            "familyHistory": "无",
+            "productNum": "IL420013",
+            "checkType": "Next Generation Sequence",
+            "error": false,
+            "disease": "",
+            "result": [
+                {
+                    "gene": "BCL10",
+                    "rs_id": "rs12037217",
+                    "position": "chr1_85742023",
+                    "nucleotide": "13G>T",
+                    "amino": "Ala5Ser",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "PIK3R1",
+                    "rs_id": "rs3730089",
+                    "position": "chr5_67588148",
+                    "nucleotide": "978G>A",
+                    "amino": "Met326Ile",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "TNFAIP3",
+                    "rs_id": "rs2230926",
+                    "position": "chr6_138196066",
+                    "nucleotide": "380T>G",
+                    "amino": "Phe127Cys",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "FAS",
+                    "rs_id": "rs9333296",
+                    "position": "chr10_90762858",
+                    "nucleotide": "103T>C",
+                    "amino": "Leu35Leu",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "FAS",
+                    "rs_id": "rs2229521",
+                    "position": "chr10_90767482",
+                    "nucleotide": "222A>G",
+                    "amino": "Thr74Thr",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "BRCA2",
+                    "rs_id": "rs766173",
+                    "position": "chr13_32906480",
+                    "nucleotide": "865A>C",
+                    "amino": "Asn289His",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "BRCA2",
+                    "rs_id": "rs144848",
+                    "position": "chr13_32906729",
+                    "nucleotide": "1114A>C",
+                    "amino": "Asn372His",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "BRCA2",
+                    "rs_id": "rs1799944",
+                    "position": "chr13_32911463",
+                    "nucleotide": "2971A>G",
+                    "amino": "Asn991Asp",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "AKT1",
+                    "rs_id": "rs1130233",
+                    "position": "chr14_105239894",
+                    "nucleotide": "726G>A",
+                    "amino": "Glu242Glu",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                },
+                {
+                    "gene": "BCR",
+                    "rs_id": "rs140504",
+                    "position": "chr22_23627369",
+                    "nucleotide": "2387A>G",
+                    "amino": "Asn796Ser",
+                    "heterozygous": "纯合",
+                    "type": "unknown",
+                    "pathogenicity": ""
+                }
+            ],
+            "introduction": "",
+            "pubmed": "<br/>1. "
+        }
+    ]
+}

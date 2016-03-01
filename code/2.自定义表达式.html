@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../bower_components/jQuery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/handlebars/handlebars.js"></script>
+    <title>2.handlebars表达式</title>
+    <style>
+        span {
+            color: red;
+            font-size: large;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>2.block表达式</h1>
+
+    <p>有时候当你需要对某条表达式进行更深入的操作时，Blocks就派上用场了，</br>
+        在Handlebars中，你可以在表达式后面跟随一个<span>#号来表示Blocks，然后通过{{/表达式}}来结束Blocks。</span>
+        </br>如果当前的表达式是一个数组，则Handlebars会“自动展开数组”，并将Blocks的上下文设为数组中的元素。</p>
+    <script id="tpl" type="text/x-handlebars-template">
+        <div class="demo">
+            {{#programme}}
+            <p>{{language}}</p>
+            {{/programme}}
+        </div>
+    </script>
+    <div id="template"></div>
+</div>
+</body>
+<script>
+    $(function () {
+        var tpl = $('#tpl').html();
+        var temp = Handlebars.compile(tpl);
+        var data = {
+            programme: [
+                {language: 'javaScript'},
+                {language: 'java'},
+                {language: 'html'}
+            ]
+        }
+        var html = temp(data);
+        $('#template').html(html);
+    });
+
+</script>
+</html>
