@@ -1,0 +1,2300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<link rel="stylesheet" href="css/index.css"/>-->
+    <link href="src/css/detailReport.css" rel="stylesheet" type="text/css">
+    <link href="src/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="srccss/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+    <link href="src/css/bootstrap-table.min.css" rel="stylesheet">
+
+    <script type="text/javascript" src="src/js/angular.min.js"></script>
+    <script type="text/javascript" src="src/js/jquery.min.js"></script>
+    <script type="text/javascript" src="src/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="src/js/angular-scroll.min.js"></script>
+    <script type="text/javascript" src="src/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="src/js/bootstrap-table-zh-CN.min.js"></script>
+
+    <script type="text/javascript" src="src/js/handlebars.js"></script>
+    <script type="text/javascript" src="src/js/report.js"></script>
+    <title>微旋基因cardio生物信息分析报告</title>
+</head>
+<body>
+<div id="show">
+</div>
+
+<!--base 临床报告 模板-->
+<script id="tpl" type="text/x-handlebars-template">
+    <div id="reportContainer">
+        <div class="container-fluid report-header">
+            <img src="src/img/fold.png"/>
+            <img alt="微旋基因图标" src="src/img/logo_detailReport.png" class="logo"/>
+        </div>
+        <!--标题图片-->
+        <div id="topImg" class="container ng-scope">
+            <img src="src/img/report-banner.gif"/>
+        </div>
+        <!--内容-->
+        <div id="content">
+            <div id="analysis-process-title">
+                <h1><span>生物信息分析流程</span></h1>
+
+                <div class="divContentCenter"><img src="src/img/analysis_process.png" width="258" height="486"></div>
+            </div>
+            <div id="analysis-result">
+                <div id="analysis-result-title">
+                    <h1><span>分析结果</span></h1>
+
+                    <div ng-show="bamSuffix">
+                        <h2><span id="originalData">1 原始序列数据</span></h2>
+
+                        <p> 高通量测序（如Illumina测序平台）测序得到的原始图像数据文件经碱基识别(Base Calling)分析转化为原始测序序列，我们称之为Raw Data或Raw
+                            Reads，结果以FASTQ(简称为fq)文件格式存储，其中包含测序序列(reads)的序列信息及其对应的测序质量信息。
+                        </p>
+
+                        <div class="table-area">
+                            <div class="tabel-title"><span>FASTQ格式文件中每条read由四行描述，如下：</span></div>
+                            <div class="tabel-content">
+                                <div class="table-responsive">
+                                    <table class="table tabelBaseSet" style="text-align: left;">
+                                        <tbody>
+                                        <tr>
+                                            <td class="td_right_border">@ST-E00144:80:H3T2VCCXX:2:1101:17656:1836
+                                                1:N:0:1
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td_right_border">
+                                                GGCCTCCACCCTACAAGGTGTGGGGGGACCCGAAGGCAGCTCTCCCAGGCTGCATGTGGCTGTGGCCCCCAACACACTGCGTCTGGAGATCCACGGGG
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td_right_border">+</td>
+                                        </tr>
+                                        <tr class="tr_bottom_border">
+                                            <td class="td_right_border">
+                                                AAFFFKKFF,FKKKKKKFFKKKKKFKKKKKKKKKKKKKKKKKKKKKKKKKKKFKKKKKKKKKKFF,,&lt;,AFFAAAFFKAFKKKKKFKKKKAAKKK
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <p> 其中第一行以“@”开头，随后为Illumina 测序标识符(Sequence
+                            Identifiers)和描述文字（选择性部分）；第二行是碱基序列；第三行以“+”开头，随后为Illumina
+                            测序标识符（选择性部分）；第四行是对应序列的测序质量。
+                        </p>
+
+                        <p> 第四行中每个字符对应的ASCII值减去33，即为对应第二行碱基的测序质量值。如果测序错误率用e表示，Illumina测序平台的碱基质量值用Qphred表示，则有下列关系：
+                        </p>
+
+                        <div class="table-area">
+                            <div class="tabel-title"><span>Illumina Casava 1.8版本测序错误率与测序质量值简明对应关系如下：</span></div>
+                            <div class="tabel-content">
+                                <div class="table-responsive">
+                                    <table class="table tabelBaseSet">
+                                        <thead>
+                                        <tr class="tr_first">
+                                            <td>测序错误率</td>
+                                            <td>测序质量值</td>
+                                            <td class="td_right_border">对应符号</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>5%</td>
+                                            <td>13</td>
+                                            <td class="td_right_border">.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1%</td>
+                                            <td>20</td>
+                                            <td class="td_right_border">5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>0.1%</td>
+                                            <td>30</td>
+                                            <td class="td_right_border">?</td>
+                                        </tr>
+                                        <tr class="tr_bottom_border">
+                                            <td>0.01%</td>
+                                            <td>40</td>
+                                            <td class="td_right_border">1</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <h2><span id="quality-assessment">2 测序数据质量评估</span></h2>
+
+                        <h2>2.1 测序错误率分布检查</h2>
+
+                        <p>每个碱基的测序Phred值(Phred score, Qphred)是由测序错误率通过公式一转化得到的，而测序错误率是在碱基识别(Base
+                            Calling)过程中通过一种判别发生错误概率的模型计算得到的。质量值和错误率对应关系如下表所显示：
+                        </p>
+
+                        <div class="table-area">
+                            <div class="tabel-title"><span>Illumina Casava 1.8版本测序错误率与测序质量值简明对应关系如下：</span></div>
+                            <div class="tabel-content">
+                                <div class="table-responsive">
+                                    <table class="table tabelBaseSet">
+                                        <thead>
+                                        <tr class="tr_first">
+                                            <td>Phred分值</td>
+                                            <td>不正确的碱基识别</td>
+                                            <td>碱基正确识别率</td>
+                                            <td class="td_right_border">Qscore</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>10</td>
+                                            <td>1/10</td>
+                                            <td>90%</td>
+                                            <td class="td_right_border">Q10</td>
+                                        </tr>
+                                        <tr>
+                                            <td>20</td>
+                                            <td>1/100</td>
+                                            <td>99%</td>
+                                            <td class="td_right_border">Q20</td>
+                                        </tr>
+                                        <tr>
+                                            <td>30</td>
+                                            <td>1/1000</td>
+                                            <td>99.9%</td>
+                                            <td class="td_right_border">Q30</td>
+                                        </tr>
+                                        <tr class="tr_bottom_border">
+                                            <td>40</td>
+                                            <td>1/10000</td>
+                                            <td>99.99%</td>
+                                            <td class="td_right_border">Q40</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <p>测序错误率与碱基质量有关，受测序仪本身、测序试剂、样品等多个因素共同影响。对于Illumina高通量测序平台，测序错误率分布具有两个特点：
+                            <br/>
+                            <span class="data-step">(1) 测序错误率会随着测序的进行而升高，这是由于测序过程中荧光标记的不完全切割等因素会引起荧光信号衰减，因而导致错误率的升高。</span>
+                            <br/>
+                            <span class="data-step">(2) 每个read前几个碱基的位置也会有较高的测序错误率，这是由于边合成边测序过程初始，测序仪荧光感光元件对焦速度较慢，获取的荧光图像质量较低，导致碱基识别错误率较高。</span>
+                        </p>
+
+                        <p>
+                            测序错误率分布检查用于检测在测序长度范围内，有无异常的碱基位置存在高错误率，例如如果中间位置的碱基测序错误率显著高于其他位置，则可能存在异常碱基。一般情况下，每个碱基位置的测序错误率都应该低于1%。</p>
+
+                        <div class="analysis-process-img">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="carousel1" class="carousel slide" data-ride="carousel1"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#each sequenceFile}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    <img src="{{getImageUrl @root this}}.error_rate.png">
+                                                </div>
+                                                {{/each}}
+                                            </div>
+                                            <!-- Controls -->
+                                            <a class="left carousel-control" href="#carousel1" role="button"
+                                               data-slide="prev">
+                                                <span class="glyphicon glyphicon-chevron-left"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="right carousel-control" href="#carousel1" role="button"
+                                               data-slide="next">
+                                                <span class="glyphicon glyphicon-chevron-right"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+                                        <div class="clearfix">
+                                            <div id="thumbcarousel1" class="carousel slide thumbcarousel"
+                                                 data-interval="false">
+                                                <div class="carousel-inner">
+                                                    {{#imageGroup @root}}
+                                                    {{#each this}}
+                                                    <div class="item {{#if @first}}active{{/if}}">
+                                                        {{#each this}}
+                                                        <div data-target="#carousel1"
+                                                             data-slide-to="{{getImagePosition @root this}}"
+                                                             class="thumb" pararentId="#thumbcarousel1">
+                                                            <img class="{{#if @first}}imgClick{{/if}}"
+                                                                 src="{{getImageUrl @root this}}.error_rate.png">
+                                                        </div>
+                                                        {{/each}}
+                                                    </div>
+                                                    {{/each}}
+                                                    {{/imageGroup}}
+                                                </div>
+                                                <a class="left carousel-control" href="#thumbcarousel1" role="button"
+                                                   data-slide="prev" pararentId="#thumbcarousel1">
+                                                    <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                    <img alt="" src="src/img/left.png" class="img_left"/>
+                                                </a>
+                                                <a class="right carousel-control" href="#thumbcarousel1" role="button"
+                                                   data-slide="next" pararentId="#thumbcarousel1">
+                                                    <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                    <img alt="" src="src/img/right.png" class="img_right"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 imgTitle">图 测序错误率分布图</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row tabel-footer">
+                                <p>横坐标为reads上的碱基位置，图中展示了read1和read2的测序错误率分布情况。纵坐标为所有reads在该位置上的错误率平均值。</p>
+                            </div>
+                        </div>
+                        <h2>2.2 测序数据的平均质量值分布</h2>
+
+                        <p>测序数据的质量主要分布在Q20以上，这样才能保证后续高级分析的正常进行。根据测序技术的特点，测序片段末端的碱基质量一般会比前端的低。</p>
+
+                        <div class="analysis-process-img">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="carousel2" class="carousel slide" data-ride="carousel2"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#each sequenceFile}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    <img src="{{getImageUrl @root this}}.quality_score.png">
+                                                </div>
+                                                {{/each}}
+                                            </div>
+                                            <!-- Controls -->
+                                            <a class="left carousel-control" href="#carousel2" role="button"
+                                               data-slide="prev">
+                                                <span class="glyphicon glyphicon-chevron-left"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="right carousel-control" href="#carousel2" role="button"
+                                               data-slide="next">
+                                                <span class="glyphicon glyphicon-chevron-right"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+                                        <div class="clearfix">
+                                            <div id="thumbcarousel2" class="carousel slide thumbcarousel"
+                                                 data-interval="false">
+                                                <div class="carousel-inner">
+                                                    {{#imageGroup @root}}
+                                                    {{#each this}}
+                                                    <div class="item {{#if @first}}active{{/if}}">
+                                                        {{#each this}}
+                                                        <div data-target="#carousel2"
+                                                             data-slide-to="{{getImagePosition @root this}}"
+                                                             class="thumb" pararentId="#thumbcarousel2">
+                                                            <img class="{{#if @first}}imgClick{{/if}}"
+                                                                 src="{{getImageUrl @root this}}.quality_score.png">
+                                                        </div>
+                                                        {{/each}}
+                                                    </div>
+                                                    {{/each}}
+                                                    {{/imageGroup}}
+                                                </div>
+                                                <a class="left carousel-control" href="#thumbcarousel2" role="button"
+                                                   data-slide="prev" pararentId="#thumbcarousel2">
+                                                    <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                    <img alt="" src="src/img/left.png" class="img_left"/>
+                                                </a>
+                                                <a class="right carousel-control" href="#thumbcarousel2" role="button"
+                                                   data-slide="next" pararentId="#thumbcarousel2">
+                                                    <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                    <img alt="" src="src/img/right.png" class="img_right"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 imgTitle">图 数据的平均质量值分布</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row tabel-footer">
+                                <p>横坐标为reads上的碱基位置，纵坐标为所有reads在该位置上的测序质量值（Phred分值）的平均值。</p>
+                            </div>
+                        </div>
+                        <h2>2.3 测序数据质量情况汇总</h2>
+
+                        <p>根据Illumina的测序特点，使用双端测序的数据，我们要求Q20平均比例在90%以上，Q30平均比例在85%以上，平均Error rate在0.1%以下。</p>
+
+                        <div class="table-area">
+                            <div class="tabel-title"><span>表 数据产出质量情况一览表</span></div>
+                            <div class="tabel-content">
+                                <div class="table-responsive">
+                                    <table class="table tabelBaseSet" id="summaryQC">
+                                        {{#with table.summaryQC}}
+                                        <thead>
+                                        {{#getFirstFromArray this}}
+                                        <tr>
+                                            {{#getObjKeyList this}}
+                                            {{#each this}}
+                                            <td>{{this}}</td>
+                                            {{/each}}
+                                            {{/getObjKeyList}}
+                                        </tr>
+                                        {{/getFirstFromArray}}
+                                        </thead>
+                                        <tbody>
+                                        {{#each this}}
+                                        <tr>
+                                            {{#getObjValueList this}}
+                                            {{#each this}}
+                                            <td>{{this}}</td>
+                                            {{/each}}
+                                            {{/getObjValueList}}
+                                        </tr>
+                                        {{/each}}
+                                        </tbody>
+                                        {{/with}}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row tabel-footer">
+                                注：
+                                <p>(1) Sample name：样本名称。</p>
+
+                                <p>(2) Raw reads：统计原始序列双端read pair的总数目；根据FASTQ的格式，以四行为一个单位进行统计。</p>
+
+                                <p>(3) Raw data(G)：每个样本的数据量。</p>
+
+                                <p>(4) Raw depth(x): 每个样本原始测序深度。</p>
+
+                                <p>(5) Effective：过滤后用于后续的生物信息分析的Clean reads占Raw data的比例。</p>
+
+                                <p>(6) Error：所有碱基的平均错误率；单个碱基的错误率通过公式一计算得到。</p>
+
+                                <p>(7) Q20：计算 Phred 数值大于20的碱基占总体碱基的百分比。</p>
+
+                                <p>(8) Q30：计算 Phred 数值大于30的碱基占总体碱基的百分比。</p>
+
+                                <p>(9) GC content：计算碱基G和C的数量总和占总的碱基数量的百分比。</p>
+
+                                <p>(10) Clean reads：统计trim后序列双端read pair的总数目；根据FASTQ的格式，以四行为一个单位进行统计。</p>
+
+                                <p>(11) Clean data(G)：trim后每个样本的数据量。</p>
+
+                                <p>(12) Q20：计算trim后， Phred 数值大于20的碱基占总体碱基的百分比。</p>
+
+                                <p>(13) Q30：计算trim后， Phred 数值大于30的碱基占总体碱基的百分比。</p>
+
+                                <p>(14) GC content：计算trim后，碱基G和C的数量总和占总的碱基数量的百分比。</p>
+                            </div>
+                        </div>
+                        <h2><span id="depth-cover">3 测序深度、覆盖度统计</span></h2>
+
+                        <p> 有效测序数据通过 BWA (Li H et al.) 比对到参考基因组(UCSC hg19 (Kent W J et al.) )，得到最初的比对结果。然后，用SAMtools (Li
+                            H et
+                            al.)
+                            对比对结果进行排序；再用Picard标记重复reads (mark duplication)。
+                        </p>
+
+                        <p> 最后，我们利用重复标记后的比对结果进行覆盖度、深度等的统计。通常，人类样本的测序reads能达到95%以上的比对率；当一个位点的碱基覆盖深度(read
+                            depth)达到10X以上时，该位点处检测出的SNP比较可信。
+                        </p>
+
+                        <h2>3.1 测序深度、覆盖度分布</h2>
+
+                        <div class="analysis-process-img">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="carousel3" class="carousel slide" data-ride="carousel3"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#each sequenceFile}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    <img src="{{getImageUrl @root this}}.histPlot.png">
+                                                </div>
+                                                {{/each}}
+                                            </div>
+                                            <!-- Controls -->
+                                            <a class="left carousel-control" href="#carousel3" role="button"
+                                               data-slide="prev">
+                                                <span class="glyphicon glyphicon-chevron-left"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="right carousel-control" href="#carousel3" role="button"
+                                               data-slide="next">
+                                                <span class="glyphicon glyphicon-chevron-right"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+                                        <div class="clearfix">
+                                            <div id="thumbcarousel3" class="carousel slide thumbcarousel"
+                                                 data-interval="false">
+                                                <div class="carousel-inner">
+                                                    {{#imageGroup @root}}
+                                                    {{#each this}}
+                                                    <div class="item {{#if @first}}active{{/if}}">
+                                                        {{#each this}}
+                                                        <div data-target="#carousel3"
+                                                             data-slide-to="{{getImagePosition @root this}}"
+                                                             class="thumb" pararentId="#thumbcarousel3">
+                                                            <img class="{{#if @first}}imgClick{{/if}}"
+                                                                 src="{{getImageUrl @root this}}.histPlot.png">
+                                                        </div>
+                                                        {{/each}}
+                                                    </div>
+                                                    {{/each}}
+                                                    {{/imageGroup}}
+                                                </div>
+                                                <a class="left carousel-control" href="#thumbcarousel3" role="button"
+                                                   data-slide="prev" pararentId="#thumbcarousel3">
+                                                    <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                    <img alt="" src="src/img/left.png" class="img_left"/>
+                                                </a>
+                                                <a class="right carousel-control" href="#thumbcarousel3" role="button"
+                                                   data-slide="next" pararentId="#thumbcarousel3">
+                                                    <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                    <img alt="" src="src/img/right.png" class="img_right"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 imgTitle">图 不同测序深度的碱基比例</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row tabel-footer">
+                                <p>横坐标表示测序深度，纵坐标表示测序深度为多少X的碱基在所有碱基中的比例；图像一般在平均深度周围成正态分布。</p>
+                            </div>
+                        </div>
+                        <div class="analysis-process-img">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="carousel4" class="carousel slide" data-ride="carousel4"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#each sequenceFile}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    <img src="{{getImageUrl @root this}}.cumuPlot.png">
+                                                </div>
+                                                {{/each}}
+                                            </div>
+                                            <!-- Controls -->
+                                            <a class="left carousel-control" href="#carousel4" role="button"
+                                               data-slide="prev">
+                                                <span class="glyphicon glyphicon-chevron-left"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="right carousel-control" href="#carousel4" role="button"
+                                               data-slide="next">
+                                                <span class="glyphicon glyphicon-chevron-right"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+                                        <div class="clearfix">
+                                            <div id="thumbcarousel4" class="carousel slide thumbcarousel"
+                                                 data-interval="false">
+                                                <div class="carousel-inner">
+                                                    {{#imageGroup @root}}
+                                                    {{#each this}}
+                                                    <div class="item {{#if @first}}active{{/if}}">
+                                                        {{#each this}}
+                                                        <div data-target="#carousel4"
+                                                             data-slide-to="{{getImagePosition @root this}}"
+                                                             class="thumb" pararentId="#thumbcarousel4">
+                                                            <img class="{{#if @first}}imgClick{{/if}}"
+                                                                 src="{{getImageUrl @root this}}.cumuPlot.png">
+                                                        </div>
+                                                        {{/each}}
+                                                    </div>
+                                                    {{/each}}
+                                                    {{/imageGroup}}
+                                                </div>
+                                                <a class="left carousel-control" href="#thumbcarousel4" role="button"
+                                                   data-slide="prev" pararentId="#thumbcarousel4">
+                                                    <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                    <img alt="" src="src/img/left.png" class="img_left"/>
+                                                </a>
+                                                <a class="right carousel-control" href="#thumbcarousel4" role="button"
+                                                   data-slide="next" pararentId="#thumbcarousel4">
+                                                    <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                    <img alt="" src="src/img/right.png" class="img_right"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 imgTitle">图 不同测序深度的累积碱基比例</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row tabel-footer">
+                                <p>横坐标表示测序深度，纵坐标代表测序深度超过多少X的碱基在所有碱基中的比例，比如测序深度为10X对应的碱基比例为90%，表示有90%的碱基其测序深度大于10X。</p>
+                            </div>
+                        </div>
+                        <h2>3.2 覆盖度统计结果 </h2>
+
+                        <div class="table-area">
+                            <div class="tabel-title"><span>比对率和覆盖度统计：</span></div>
+                            <div class="tabel-content">
+                                <div class="table-responsive">
+                                    <table class="table tabelBaseSet" id="summaryInfo">
+                                        {{#with table.summaryInfo}}
+                                        <thead>
+                                        {{#getFirstFromArray this}}
+                                        <tr>
+                                            {{#getObjKeyList this}}
+                                            {{#each this}}
+                                            <td>{{this}}</td>
+                                            {{/each}}
+                                            {{/getObjKeyList}}
+                                        </tr>
+                                        {{/getFirstFromArray}}
+                                        </thead>
+                                        <tbody>
+                                        {{#each this}}
+                                        <tr>
+                                            {{#getObjValueList this}}
+                                            {{#each this}}
+                                            <td>{{this}}</td>
+                                            {{/each}}
+                                            {{/getObjValueList}}
+                                        </tr>
+                                        {{/each}}
+                                        </tbody>
+                                        {{/with}}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row tabel-footer">
+                                注：
+                                <p>(1) 目标区域的覆盖度，即目标区域中被reads覆盖的碱基比例（被覆盖的碱基长度占目标区域碱基总长的比例）</p>
+
+                                <p>(2) 目标区域的平均测序深度（比对到目标区域的总数据量/目标区域的总长度）</p>
+
+                                <p>(3) 比对到参考基因组中目标区域的数据量中有效的reads数比例</p>
+
+                                <p>(4) 全基因组中重复的reads数目（比例：全基因组中重复的reads数/全基因组总reads数）</p>
+
+                                <p>(5) 目标区域重复的reads数目（比例：目标区域重复的reads数/目标区域的reads数）</p>
+
+                                <p>(6) 去重前探针的捕获率：目标区域的碱基数/总碱基数</p>
+
+                                <p>(7) 去重后探针的捕获率：目标区域的碱基数/总碱基数</p>
+
+                                <p>(8) bam文件的总碱基数（Mb为单位）</p>
+
+                                <p>(9) bam文件中的总reads数目</p>
+
+                                <p>(10)比对到参考基因组的总reads数目</p>
+
+                                <p>(11) 比对到参考基因组中reads的比例</p>
+
+                                <p>(12) 比对到参考基因组中目标区域的数据量中mismatch的数据量比例</p>
+
+                                <p>(13) 比对到参考基因组的数据量中mismatch的数据量比例</p>
+
+                                <p>(14) 目标区域大小（以bp为单位）</p>
+
+                                <p>(15) 目标附近区域的大小（以bp为单位）；目标附近区域是指目标区域上下游200bp的区域（又称flanking region）</p>
+
+                                <p>(16)目标区域和flanking区域大小（以bp为单位）</p>
+
+                                <p>(17) 去重后，总的reads数</p>
+
+                                <p>(18) 去重后，比对到参考基因组上的总碱基数</p>
+
+                                <p>(19) reads的平均长度</p>
+
+                                <p>(20) 去重后，比对到参考基因组中目标区域的数据量</p>
+
+                                <p>(21) 去重后，比对到参考基因组中flanking区域的数据量</p>
+
+                                <p>(22) 去重后，比对到参考基因组中目标区域和flanking区域的数据量</p>
+
+                                <p>(23) 比对到参考基因组中目标区域和flanking区域数据量占比对到参考基因组上总数据量的比例</p>
+
+                                <p>(24) flanking区域的平均测序深度（比对到flanking区域的总数据量/flanking区域的总长度）</p>
+
+                                <p>(25) 目标区域中被reads覆盖的碱基数（以bp为单位）</p>
+
+                                <p>(26) flanking区域中被reads覆盖的碱基数（以bp为单位）</p>
+
+                                <p>(27) flanking区域的覆盖度，即flanking区域中被reads覆盖的碱基比例（被覆盖的碱基长度占flanking区域碱基总长的比例）</p>
+
+                                <p>(28) 目标区域中，覆盖深度不低于200X的碱基所占的比例</p>
+
+                                <p>(29) 目标区域中，覆盖深度不低于100X的碱基所占的比例</p>
+
+                                <p>(30) 目标区域中，覆盖深度不低于50X的碱基所占的比例</p>
+
+                                <p>(31) 目标区域中，覆盖深度不低于20X的碱基所占的比例</p>
+
+                                <p>(32) 目标区域中，覆盖深度不低于10X的碱基所占的比例</p>
+
+                                <p>(33) 目标区域中，覆盖深度不低于4X的碱基所占的比例</p>
+
+                                <p>(34) flanking区域中，覆盖深度不低于20X的碱基所占的比例</p>
+
+                                <p>(35) flanking区域中，覆盖深度不低于10X的碱基所占的比例</p>
+
+                                <p>(36) flanking区域中，覆盖深度不低于4X的碱基所占的比例</p>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>&nbsp;&nbsp;<span id="capture-efficiency">{{!bamSuffix?"1 ":"4 "}}捕获效率统计</span></h2>
+
+                    <div ng-show="bamSuffix">
+                        <p>插入片段分布图，该分布图能较好的反映随机打断的片段长度比例，当测序得到的插入片段比例峰值和实际打断长度范围较吻合，说明测序的片段长度没有问题。
+                        </p>
+
+                        <div class="analysis-process-img">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="carousel5" class="carousel slide" data-ride="carousel5"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#each sequenceFile}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    <img src="{{getImageUrl @root this}}_histogram.png">
+                                                </div>
+                                                {{/each}}
+                                            </div>
+                                            <!-- Controls -->
+                                            <a class="left carousel-control" href="#carousel5" role="button"
+                                               data-slide="prev">
+                                                <span class="glyphicon glyphicon-chevron-left"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="right carousel-control" href="#carousel5" role="button"
+                                               data-slide="next">
+                                                <span class="glyphicon glyphicon-chevron-right"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+                                        <div class="clearfix">
+                                            <div id="thumbcarousel5" class="carousel slide thumbcarousel"
+                                                 data-interval="false">
+                                                <div class="carousel-inner">
+                                                    {{#imageGroup @root}}
+                                                    {{#each this}}
+                                                    <div class="item {{#if @first}}active{{/if}}">
+                                                        {{#each this}}
+                                                        <div data-target="#carousel5"
+                                                             data-slide-to="{{getImagePosition @root this}}"
+                                                             class="thumb" pararentId="#thumbcarousel5">
+                                                            <img class="{{#if @first}}imgClick{{/if}}"
+                                                                 src="{{getImageUrl @root this}}_histogram.png">
+                                                        </div>
+                                                        {{/each}}
+                                                    </div>
+                                                    {{/each}}
+                                                    {{/imageGroup}}
+                                                </div>
+                                                <a class="left carousel-control" href="#thumbcarousel5" role="button"
+                                                   data-slide="prev" pararentId="#thumbcarousel5">
+                                                    <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                    <img alt="" src="src/img/left.png" class="img_left"/>
+                                                </a>
+                                                <a class="right carousel-control" href="#thumbcarousel5" role="button"
+                                                   data-slide="next" pararentId="#thumbcarousel5">
+                                                    <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                    <img alt="" src="src/img/right.png" class="img_right"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 imgTitle">图2.5 样本插入片段分布图</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p>目标捕获区域为测序区域，目标区域的测序深度均一化越好，后期的突变分析、CNV分析就越可靠，数据利用率就越高，因此目标区域深度分布图可以反映测序的均一化程度。
+                        </p>
+                    </div>
+
+                    <div class="analysis-process-img">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="carousel6" class="carousel slide" data-ride="carousel6"
+                                         data-interval="false">
+                                        <div class="carousel-inner">
+                                            {{#each sequenceFile}}
+                                            <div class="item {{#if @first}}active{{/if}}">
+                                                <img src="{{getImageUrl @root this}}.capture_depth.png">
+                                            </div>
+                                            {{/each}}
+                                        </div>
+                                        <!-- Controls -->
+                                        <a class="left carousel-control" href="#carousel6" role="button"
+                                           data-slide="prev">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#carousel6" role="button"
+                                           data-slide="next">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                    <div class="clearfix">
+                                        <div id="thumbcarousel6" class="carousel slide thumbcarousel"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#imageGroup @root}}
+                                                {{#each this}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    {{#each this}}
+                                                    <div data-target="#carousel6"
+                                                         data-slide-to="{{getImagePosition @root this}}"
+                                                         class="thumb" pararentId="#thumbcarousel6">
+                                                        <img class="{{#if @first}}imgClick{{/if}}"
+                                                             src="{{getImageUrl @root this}}.capture_depth.png">
+                                                    </div>
+                                                    {{/each}}
+                                                </div>
+                                                {{/each}}
+                                                {{/imageGroup}}
+                                            </div>
+                                            <a class="left carousel-control" href="#thumbcarousel6" role="button"
+                                               data-slide="prev" pararentId="#thumbcarousel6">
+                                                <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
+                                            </a>
+                                            <a class="right carousel-control" href="#thumbcarousel6" role="button"
+                                               data-slide="next" pararentId="#thumbcarousel6">
+                                                <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 imgTitle">图 测序深度分布图</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>捕获区域 coverage 分布图，统计每个目标捕获区域的 coverage，统计出 coverage 比例的分布图如下，100%覆盖的区域越多说明测序覆盖越好。
+                    </p>
+
+                    <div class="analysis-process-img">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="carousel7" class="carousel slide" data-ride="carousel7"
+                                         data-interval="false">
+                                        <div class="carousel-inner">
+                                            {{#each sequenceFile}}
+                                            <div class="item {{#if @first}}active{{/if}}">
+                                                <img src="{{getImageUrl @root this}}.capture_coverage.png">
+                                            </div>
+                                            {{/each}}
+                                        </div>
+                                        <!-- Controls -->
+                                        <a class="left carousel-control" href="#carousel7" role="button"
+                                           data-slide="prev">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#carousel7" role="button"
+                                           data-slide="next">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                    <div class="clearfix">
+                                        <div id="thumbcarousel7" class="carousel slide thumbcarousel"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#imageGroup @root}}
+                                                {{#each this}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    {{#each this}}
+                                                    <div data-target="#carousel7"
+                                                         data-slide-to="{{getImagePosition @root this}}"
+                                                         class="thumb" pararentId="#thumbcarousel7">
+                                                        <img class="{{#if @first}}imgClick{{/if}}"
+                                                             src="{{getImageUrl @root this}}.capture_coverage.png">
+                                                    </div>
+                                                    {{/each}}
+                                                </div>
+                                                {{/each}}
+                                                {{/imageGroup}}
+                                            </div>
+                                            <a class="left carousel-control" href="#thumbcarousel7" role="button"
+                                               data-slide="prev" pararentId="#thumbcarousel7">
+                                                <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
+                                            </a>
+                                            <a class="right carousel-control" href="#thumbcarousel7" role="button"
+                                               data-slide="next" pararentId="#thumbcarousel7">
+                                                <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 imgTitle">图 目标区域覆盖比例分布图</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            细节覆盖度方法:
+                            <p>1x: 只表示该位点被覆盖（也叫coverage值）</p>
+
+                            <p>4x: 以下覆盖度的位点无任何意义</p>
+
+                            <p>20x: 检测SNP位点，小片段插入缺失相对可靠</p>
+
+                            <p>50x: 检测SNP位点，小片段插入缺失相对可靠</p>
+
+                            <p>100x: 检测大片段插入重复相对可靠</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="check-result">
+                <div id="check-result-title">
+                    <h1>变异检测结果</h1>
+
+                    <h2>&nbsp;&nbsp;<span id="snp-check">1 SNP检测结果</span></h2>
+
+                    <h2>1.1 SNV统计结果</h2>
+
+                    <p> 通常，一个人全基因组内会有约 3.6M 个 SNP，绝大多数（大于 95%）的高频（群体中等位基因频率大于 5%）的 SNP 在 dbSNP (Sherry S T et al.)
+                        中有记录，高频的SNP一般都不是致病的主要突变位点。转换/颠换的比值(Ts:Tv)可以反映 SNP 数据集的准确性，全基因组内的比值约在 2.2 左右，编码区内的比值约在 3.2 左右。
+                    </p>
+
+                    <p>在比对结果的基础上，我们利用GATK软件识别SNP位点，并采用国际惯用的过滤标准对SNP位点进行过滤。对得到的SNP结果统计如下：
+                    </p>
+
+                    <div class="table-area">
+                        <div class="tabel-title"><span>表 基因组不同区域上SNV数目</span></div>
+                        <div class="tabel-content">
+                            <div class="table-responsive">
+                                <table class="table tabelBaseSet" id="summarySNPVariantStat">
+                                    {{#with table.summarySNPVariantStat}}
+                                    <thead>
+                                    {{#getFirstFromArray this}}
+                                    <tr>
+                                        {{#getObjKeyList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjKeyList}}
+                                    </tr>
+                                    {{/getFirstFromArray}}
+                                    </thead>
+                                    <tbody>
+                                    {{#each this}}
+                                    <tr>
+                                        {{#getObjValueList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjValueList}}
+                                    </tr>
+                                    {{/each}}
+                                    </tbody>
+                                    {{/with}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            注：
+                            <p>Sample：样本名称</p>
+
+                            <p> exonic：外显子区域</p>
+
+                            <p> 比对到参考基因组中目标区域的数据量中有效的reads数比例</p>
+
+                            <p> intronic：内含子区域</p>
+
+                            <p>UTR3：3’UTR区域</p>
+
+                            <p>UTR5：5’UTR区域</p>
+
+                            <p>intergenic：基因间区域</p>
+
+                            <p>ncRNA_exonic：非编码RNA外显子区域</p>
+
+                            <p>ncRNA_intronic：非编码RNA内含子区域</p>
+
+                            <p>upstream：转录起始位点上游1Kb区域</p>
+
+                            <p>downstream：转录终止位点下游1Kb区域</p>
+
+                            <p>splicing：splicing junction 10bp区域</p>
+
+                            <p>ncRNA_splicing：非编码RNA的splicing junction 10bp区域</p>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="analysis-process-img">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="carousel8" class="carousel slide" data-ride="carousel8"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#each sequenceFile}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    <img src="{{getImageUrl @root this}}_SNP_variant_statistics.png">
+                                                </div>
+                                                {{/each}}
+                                            </div>
+                                            <!-- Controls -->
+                                            <a class="left carousel-control" href="#carousel8" role="button"
+                                               data-slide="prev">
+                                                <span class="glyphicon glyphicon-chevron-left"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="right carousel-control" href="#carousel8" role="button"
+                                               data-slide="next">
+                                                <span class="glyphicon glyphicon-chevron-right"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+                                        <div class="clearfix">
+                                            <div id="thumbcarousel8" class="carousel slide thumbcarousel"
+                                                 data-interval="false">
+                                                <div class="carousel-inner">
+                                                    {{#imageGroup @root}}
+                                                    {{#each this}}
+                                                    <div class="item {{#if @first}}active{{/if}}">
+                                                        {{#each this}}
+                                                        <div data-target="#carousel8"
+                                                             data-slide-to="{{getImagePosition @root this}}"
+                                                             class="thumb" pararentId="#thumbcarousel8">
+                                                            <img class="{{#if @first}}imgClick{{/if}}"
+                                                                 src="{{getImageUrl @root this}}_SNP_variant_statistics.png">
+                                                        </div>
+                                                        {{/each}}
+                                                    </div>
+                                                    {{/each}}
+                                                    {{/imageGroup}}
+                                                </div>
+                                                <a class="left carousel-control" href="#thumbcarousel8" role="button"
+                                                   data-slide="prev" pararentId="#thumbcarousel8">
+                                                    <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                    <img alt="" src="src/img/left.png" class="img_left"/>
+                                                </a>
+                                                <a class="right carousel-control" href="#thumbcarousel8" role="button"
+                                                   data-slide="next" pararentId="#thumbcarousel8">
+                                                    <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                    <img alt="" src="src/img/right.png" class="img_right"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 imgTitle">图　基因组不同区域上SNV数目分布</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 tabel-footer">
+                            <p>downstream代表转录终止位点下游1Kb区域内的SNV数目；</p>
+
+                            <p> exonic代表外显子区域内的SNV数目；</p>
+
+                            <p> intergenic代表基因间区域内的SNV数目；</p>
+
+                            <p> intronic代表内含子区域内的SNV数目；</p>
+
+                            <p> ncRNA_exonic代表非编码RNA外显子区域内的SNV数目；</p>
+
+                            <p> ncRNA_intronic代表非编码RNA内含子区域内的SNV数目；</p>
+
+                            <p> ncRNA_splicing代表splicing junction 10bp区域内的SNV数目；</p>
+
+                            <p> splicing代表splicing junction 10bp区域内的SNV数目；</p>
+
+                            <p> upstream代表转录起始位点上游1Kb区域内的SNV数目；</p>
+
+                            <p> UTR3代表3’UTR区域内的SNV数目；</p>
+
+                            <p> UTR5代表5’UTR区域内的SNV数目。</p>
+                        </div>
+                    </div>
+                    <div class="table-area">
+                        <div class="tabel-title"><span>表 编码区上不同类型的SNV数目</span></div>
+                        <div class="tabel-content">
+                            <div class="table-responsive">
+                                <table class="table tabelBaseSet" id="summarySNPExonicStat">
+                                    {{#with table.summarySNPExonicStat}}
+                                    <thead>
+                                    {{#getFirstFromArray this}}
+                                    <tr>
+                                        {{#getObjKeyList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjKeyList}}
+                                    </tr>
+                                    {{/getFirstFromArray}}
+                                    </thead>
+                                    <tbody>
+                                    {{#each this}}
+                                    <tr>
+                                        {{#getObjValueList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjValueList}}
+                                    </tr>
+                                    {{/each}}
+                                    </tbody>
+                                    {{/with}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            <p>Sample：样本名称</p>
+
+                            <p>synonymous_SNV：同义突变，即变异位点编码的氨基酸不发生变化</p>
+
+                            <p>比对到参考基因组中目标区域的数据量中有效的reads数比例</p>
+
+                            <p>nonsynonymous_SNV：错义突变，即变异位点编码的氨基酸发生变化，属于非同义突变</p>
+
+                            <p>stopgain：因一个碱基发生替换，导致该碱基所在的密码子变为终止密码子</p>
+
+                            <p>stoploss：因一个碱基发生替换，导致该碱基所在的终止密码子变为非终止密码子</p>
+
+                            <p>unknown：由于注释用的基因结构注释数据库的错误而导致的未知功能位点</p>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="analysis-process-img">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="carousel9" class="carousel slide" data-ride="carousel9"
+                                                 data-interval="false">
+                                                <div class="carousel-inner">
+                                                    {{#each sequenceFile}}
+                                                    <div class="item {{#if @first}}active{{/if}}">
+                                                        <img src="{{getImageUrl @root this}}_SNP_exonic_statistics.png">
+                                                    </div>
+                                                    {{/each}}
+                                                </div>
+                                                <!-- Controls -->
+                                                <a class="left carousel-control" href="#carousel9" role="button"
+                                                   data-slide="prev">
+                                                    <span class="glyphicon glyphicon-chevron-left"
+                                                          aria-hidden="true"></span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                                <a class="right carousel-control" href="#carousel9" role="button"
+                                                   data-slide="next">
+                                                    <span class="glyphicon glyphicon-chevron-right"
+                                                          aria-hidden="true"></span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </div>
+                                            <div class="clearfix">
+                                                <div id="thumbcarousel9" class="carousel slide thumbcarousel"
+                                                     data-interval="false">
+                                                    <div class="carousel-inner">
+                                                        {{#imageGroup @root}}
+                                                        {{#each this}}
+                                                        <div class="item {{#if @first}}active{{/if}}">
+                                                            {{#each this}}
+                                                            <div data-target="#carousel9"
+                                                                 data-slide-to="{{getImagePosition @root this}}"
+                                                                 class="thumb" pararentId="#thumbcarousel9">
+                                                                <img class="{{#if @first}}imgClick{{/if}}"
+                                                                     src="{{getImageUrl @root this}}_SNP_exonic_statistics.png">
+                                                            </div>
+                                                            {{/each}}
+                                                        </div>
+                                                        {{/each}}
+                                                        {{/imageGroup}}
+                                                    </div>
+                                                    <a class="left carousel-control" href="#thumbcarousel9"
+                                                       role="button"
+                                                       data-slide="prev" pararentId="#thumbcarousel9">
+                                                        <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                        <img alt="" src="src/img/left.png" class="img_left"/>
+                                                    </a>
+                                                    <a class="right carousel-control" href="#thumbcarousel9"
+                                                       role="button"
+                                                       data-slide="next" pararentId="#thumbcarousel9">
+                                                        <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                        <img alt="" src="src/img/right.png" class="img_right"/>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 imgTitle">图　编码区上不同类型的SNV数目分布</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 tabel-footer">
+                                <p>nonsynonymous_SNV代表错义突变；</p>
+
+                                <p> stopgain代表导致产生新终止密码子的变异；</p>
+
+                                <p> stoploss代表导致终止密码子丢失的变异；</p>
+
+                                <p> synonymous_SNV代表同义突变；</p>
+
+                                <p> unknown代表由于注释用的基因结构注释数据库的错误导致的未知功能位点。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-area">
+                        <div class="tabel-title"><span>表 转换和颠换类型分布</span></div>
+                        <div class="tabel-content">
+                            <div class="table-responsive">
+                                <table class="table tabelBaseSet" id="summaryTstv">
+                                    {{#with table.summaryTstv}}
+                                    <thead>
+                                    {{#getFirstFromArray this}}
+                                    <tr>
+                                        {{#getObjKeyList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjKeyList}}
+                                    </tr>
+                                    {{/getFirstFromArray}}
+                                    </thead>
+                                    <tbody>
+                                    {{#each this}}
+                                    <tr>
+                                        {{#getObjValueList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjValueList}}
+                                    </tr>
+                                    {{/each}}
+                                    </tbody>
+                                    {{/with}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">注：
+                            <p>Sample：样本名称</p>
+
+                            <p>novel_ts：新的（未被dbSNP注释）同型碱基置换的数目</p>
+
+                            <p>novel_ts/tv：新的转换与颠换比值</p>
+
+                            <p>novel_tv：新的（未被dbSNP注释）异型碱基置换的数目</p>
+
+                            <p>ts：同型碱基置换的总数</p>
+
+                            <p>ts/tv：转换与颠换的比值</p>
+
+                            <p>tv：异型碱基置换的总数</p>
+                        </div>
+                    </div>
+                    <div class="analysis-process-img">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="carousel10" class="carousel slide" data-ride="carousel10"
+                                         data-interval="false">
+                                        <div class="carousel-inner">
+                                            {{#each sequenceFile}}
+                                            <div class="item {{#if @first}}active{{/if}}">
+                                                <img src="{{getImageUrl @root this}}_tstv.png">
+                                            </div>
+                                            {{/each}}
+                                        </div>
+                                        <!-- Controls -->
+                                        <a class="left carousel-control" href="#carousel10" role="button"
+                                           data-slide="prev">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#carousel10" role="button"
+                                           data-slide="next">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                    <div class="clearfix">
+                                        <div id="thumbcarousel10" class="carousel slide thumbcarousel"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#imageGroup @root}}
+                                                {{#each this}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    {{#each this}}
+                                                    <div data-target="#carousel10"
+                                                         data-slide-to="{{getImagePosition @root this}}"
+                                                         class="thumb" pararentId="#thumbcarousel10">
+                                                        <img class="{{#if @first}}imgClick{{/if}}"
+                                                             src="{{getImageUrl @root this}}_tstv.png">
+                                                    </div>
+                                                    {{/each}}
+                                                </div>
+                                                {{/each}}
+                                                {{/imageGroup}}
+                                            </div>
+                                            <a class="left carousel-control" href="#thumbcarousel10" role="button"
+                                               data-slide="prev" pararentId="#thumbcarousel10">
+                                                <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
+                                            </a>
+                                            <a class="right carousel-control" href="#thumbcarousel10" role="button"
+                                               data-slide="next" pararentId="#thumbcarousel10">
+                                                <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 imgTitle">图 碱基转换（颠换）情况</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            <p>
+                                第1个柱状图中，Tv代表异型碱基置换（颠换），其纵坐标代表Tv的SNV数目；Ts代表同型碱基置换（转换），其纵坐标代表Ts的SNV数目。Ts/Tv是转换/颠换的比值。
+                            </p>
+
+                            <p> 第2个柱状图中，Novel Tv和Novel Ts分别代表未被dbSNP注释的颠换SNV数目和转换SNV数目。Novel Ts/Tv为Novel Ts与Novel Tv的比值。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="table-area">
+                        <div class="tabel-title"><span>表 SNV及基因型分布 </span></div>
+                        <div class="tabel-content">
+                            <div class="table-responsive">
+                                <table class="table tabelBaseSet" id="summarySNPStat">
+                                    {{#with table.summarySNPStat}}
+                                    <thead>
+                                    {{#getFirstFromArray this}}
+                                    <tr>
+                                        {{#getObjKeyList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjKeyList}}
+                                    </tr>
+                                    {{/getFirstFromArray}}
+                                    </thead>
+                                    <tbody>
+                                    {{#each this}}
+                                    <tr>
+                                        {{#getObjValueList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjValueList}}
+                                    </tr>
+                                    {{/each}}
+                                    </tbody>
+                                    {{/with}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            注：
+                            <p>Sample：样本名称</p>
+
+                            <p>all：所有SNV数目</p>
+
+                            <p>genotype.Het：杂合基因型的SNV数目</p>
+
+                            <p>genotype.Hom：纯合基因型的SNV数目</p>
+
+                            <p>novel：未被dbSNP注释的新SNV</p>
+
+                            <p>novel_proportion：新SNV所占的比例</p>
+                        </div>
+                    </div>
+                    <div class="analysis-process-img">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="carousel11" class="carousel slide" data-ride="carousel11"
+                                         data-interval="false">
+                                        <div class="carousel-inner">
+                                            {{#each sequenceFile}}
+                                            <div class="item {{#if @first}}active{{/if}}">
+                                                <img src="{{getImageUrl @root this}}_SNP_statistics.png">
+                                            </div>
+                                            {{/each}}
+                                        </div>
+                                        <!-- Controls -->
+                                        <a class="left carousel-control" href="#carousel11" role="button"
+                                           data-slide="prev">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#carousel11" role="button"
+                                           data-slide="next">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                    <div class="clearfix">
+                                        <div id="thumbcarousel11" class="carousel slide thumbcarousel"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#imageGroup @root}}
+                                                {{#each this}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    {{#each this}}
+                                                    <div data-target="#carousel11"
+                                                         data-slide-to="{{getImagePosition @root this}}"
+                                                         class="thumb" pararentId="#thumbcarousel11">
+                                                        <img class="{{#if @first}}imgClick{{/if}}"
+                                                             src="{{getImageUrl @root this}}_SNP_statistics.png">
+                                                    </div>
+                                                    {{/each}}
+                                                </div>
+                                                {{/each}}
+                                                {{/imageGroup}}
+                                            </div>
+                                            <a class="left carousel-control" href="#thumbcarousel11" role="button"
+                                               data-slide="prev" pararentId="#thumbcarousel11">
+                                                <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
+                                            </a>
+                                            <a class="right carousel-control" href="#thumbcarousel11" role="button"
+                                               data-slide="next" pararentId="#thumbcarousel11">
+                                                <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 imgTitle">图 基因组和外显子区SNV的特征</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            <p>
+                                第1个柱状图中，Hom代表纯合，其纵坐标代表基因型为纯合的SNV数目；Het代表杂合，其纵坐标代表基因型为杂合的SNV数目。Het
+                                rate代表杂合基因型的SNV在所有SNV中的比例。
+                            </p>
+
+                            <p>
+                                第2个柱状图中，Novel代表未被dbSNP注释的SNV，In dbSNP代表dbSNP中有注释的SNV。dbSNP
+                                rate代表检测到的所有SNV中，dbSNP中有注释的SNV所占的比例。
+                            </p>
+                        </div>
+                    </div>
+                    <h2>1.2 SNV注释结果</h2>
+
+                    <p>利用ANNOVAR (Wang K et al.)
+                        软件对SNP进行注释，其中包括dbSNP数据库、千人基因组计划和其他已有的数据库的注释信息，注释内容涵盖变异的位置信息、类型、保守型预测等。具体的注释内容展示如表3.5。
+                    </p>
+
+                    <div class="table-area">
+                        <div class="tabel-title"><span>表 SNP注释结果展示 </span></div>
+                        <div class="tabel-content">
+                            <div class="table-responsive">
+                                <table class="table tabelBaseSet" id="SNPHeadTable">
+                                    {{#with table.SNPHeadTable}}
+                                    <thead>
+                                    {{#getFirstFromArray this}}
+                                    <tr>
+                                        {{#getObjKeyList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjKeyList}}
+                                    </tr>
+                                    {{/getFirstFromArray}}
+                                    </thead>
+                                    <tbody>
+                                    {{#each this}}
+                                    <tr>
+                                        {{#getObjValueList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjValueList}}
+                                    </tr>
+                                    {{/each}}
+                                    </tbody>
+                                    {{/with}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            注：CHROM：染色体
+                            <p>POS：变异位点在染色体上的绝对位置</p>
+
+                            <p>ID：dbSNP注释ID</p>
+
+                            <p>REF：参考基因组碱基型</p>
+
+                            <p>ALT：样本基因组碱基型</p>
+
+                            <p>QAUL：变异的质量值</p>
+
+                            <p>FILTER：过滤TAG，如果该位点满足所有过滤条件，则标记为PASS（过滤条件采用的是国际惯用的过滤标准） </p>
+
+                            <p>GeneName：基因名称注释，列出该变异相关的基因 </p>
+
+                            <p>
+                                Func：对变异位点所在的区域进行注释(exonic, splicing, UTR5, UTR3, intronic, ncRNA_exonic,
+                                ncRNA_intronic,
+                                ncRNA_splicing, upstream, downstream, intergenic)</p>
+
+                            <p>
+                                GeneDetail：描述UTR、splicing、ncRNA_splicing或intergenic区域的变异情况。当Func列的值为exonic、ncRNA_exonic、intronic、ncRNA_intronic、upstream、downstream、upstream;downstream时，该列为空；当Func列的值为intergenic时，该列格式为dist=1366;dist=22344，表示该变异位点距离两侧基因的距离</p>
+
+                            <p>
+                                ExonicFunc：外显子区的SNV or InDel变异类型（SNV的变异类型包括synonymous_SNV, nonsynonymous_SNV, stopgain,
+                                stopgloss和unknown；InDel的变异类型包括frameshift_insertion, frameshift_deletion, stopgain,
+                                stoploss,
+                                nonframeshift_insertion, nonframeshift_deletion和unknown） </p>
+
+                            <p>
+                                AAChange：氨基酸改变，只有当Func列为exonic或exonic;splicing时，该列才有结果。按照每个转录本进行注释（例如，AIM1L:NM_001039775:exon2:c.C2768T:p.P923L，其中，AIM1L表示该变异所在的基因名称，NM_001039775表示该变异所在的转录本ID，exon2表示该变异位于转录本的第二个外显子上，c.C2768T表示该变异引起cDNA在第2768位上由C突变为T，p.P923L表示该变异引起蛋白序列在第923位上的氨基酸由Pro变为Leu）</p>
+
+                            <p>
+                                esp6500si_all：国家心肺和血液研究所外显子组测序计划（NHLBI-ESP
+                                project，esp6500si_all数据库中包含SNP变异、InDel变异和Y染色体上的变异）的所有个体中，突变碱基的等位基因频率(alternative allele
+                                frequency)
+                            </p>
+
+                            <p>
+                                1000g2015aug_all：给出千人基因组计划数据（2015年8月公布的版本）的所有人群中，该变异位点上突变碱基的等位基因频率</p>
+
+                            <p>1000g2015aug_eas：给出千人基因组计划数据（2015年8月公布的版本）的东亚人群中，该变异位点上突变碱基的等位基因频率</p>
+
+                            <p>snp138：该变异在dbSNP（版本138）中的ID </p>
+
+                            <p>
+                                SIFT_score：SIFT分值(version
+                                2.6)，表示该变异对蛋白序列的影响，包含三个值，一是SIFT初始分值，二是转换后的值（1-SIFT），三是T或者D。当该变异同时影响多个蛋白序列时，对每条蛋白序列有一个SIFT值，取最小值。SIFT分值越小越“有害”，表明该SNP导致蛋白结构或功能改变的可能性大；D:
+                                Deleterious (sift
+                                &lt;=0.05); T: Tolerated (sift>0.05)</p>
+
+                            <p>
+                                Polyphen2_score：PolyPhen 2分值(version 2.6)，数值越大越“有害”，表明该SNP导致蛋白结构或功能改变的可能性大</p>
+
+                            <p>
+                                MutationTaster_score：MutationTaster分值(version
+                                2.6)，表示该变异对蛋白序列的影响，包含三个值，一是MutationTaster初始分值，二是转换后的值，三是A、D、N或者P。第二个值越大越“有害”，表明该SNP导致蛋白结构或功能改变的可能性大。"A"
+                                ("disease_causing_automatic"); "D" ("disease_causing"); "N" ("polymorphism"); "P"
+                                ("polymorphism_automatic")
+                            </p>
+
+                            <p>
+                                FATHMM_score：FATHMM分值(version2.6)，表示该变异对蛋白序列的影响。FATHMM分值越小越“有害”，表明该SNP导致蛋白结构或功能改变的可能性大；D:
+                                Damaging (fathmm
+                                &lt;=- 1.5); T: Tolerated (fathmm> -1.5)</p>
+
+                            <p>
+                                LRT_score：LRT分值(version 2.6)，表示该变异对蛋白序列的影响，包含三个值，一是LRT初始分值，二是转换后的值，三是D、N或者U (D:
+                                Deleterious; N:
+                                Neutral; U: Unknown)。第二个值越大越“有害”，表明该SNP导致蛋白结构或功能改变的可能性大
+                            </p>
+
+                            <p>
+                                CADD：CADD分值(version2.6),
+                                表示该变异对蛋白序列的影响，两种形式：初始分数或者转换后的分数。该值越大越“有害”，表明该SNP导致蛋白结构或功能改变的可能性大
+                            </p>
+
+                            <p>
+                                FORMAT：用“：”分隔了若干个字段：
+                            </p>
+
+                            <p>
+                                GT：该位点基因型(Genotype)。0代表Allele和REF相同，1、2、3等代表Allele和REF不同；纯合：0/0，1/1；杂合：0/1
+                            </p>
+
+                            <p>
+                                AD：为sample中每一种allele的reads覆盖度(Allele
+                                Depth),在diploid中则是用逗号分割的两个值，前者对应ref基因型，后者对应variant基因型
+                            </p>
+
+                            <p>
+                                DP：该位点覆盖的总reads数
+                            </p>
+
+                            <p>
+                                GQ：基因型的质量值(Genotype
+                                Quality)。Phred格式(Phred_scaled)的质量值，表示在该位点该基因型存在的可能性；该值越高，则Genotype的可能性越大 </p>
+
+                            <p>
+                                PL：标准化基因型似然值（逗号分隔的三个值，依次对应0/0、0/1、1/1三种基因型，值越小越好）
+                            </p>
+                        </div>
+                    </div>
+                    <h2>&nbsp;&nbsp;<span id="InDel-check">2 InDel检测结果</span></h2>
+
+                    <p>通常，一个人全基因组内会有约 350K 的 InDel（insertion and deletion，小于 50bp的插入缺失）。</p>
+
+                    <p>
+                        编码区或剪接位点处发生的插入缺失都可能会改变蛋白的翻译。移码变异，其插入或缺失的碱基串的长度为3的非整数倍，因此可能导致整个读框的改变；移码变异与非移码变异相比较，前者对基因功能的影响更大，同时受到更大的筛选压力。 </p>
+
+                    <p>
+                        在比对结果的基础上，我们利用最新版的GATK识别InDel，并采用国际惯用的过滤标准对InDel结果进行过滤。对得到的InDel结果统计如下：
+                    </p>
+
+                    <div class="table-area">
+                        <div class="tabel-title"><span>表3.6 基因组不同区域上InDel数目</span></div>
+                        <div class="tabel-content">
+                            <div class="table-responsive">
+                                <table class="table tabelBaseSet" id="summaryInDelVariantStat">
+                                    {{#with table.summaryInDelVariantStat}}
+                                    <thead>
+                                    {{#getFirstFromArray this}}
+                                    <tr>
+                                        {{#getObjKeyList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjKeyList}}
+                                    </tr>
+                                    {{/getFirstFromArray}}
+                                    </thead>
+                                    <tbody>
+                                    {{#each this}}
+                                    <tr>
+                                        {{#getObjValueList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjValueList}}
+                                    </tr>
+                                    {{/each}}
+                                    </tbody>
+                                    {{/with}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            注：Sample：样本名称
+                            <p>exonic：外显子区域</p>
+
+                            <p>intronic：内含子区域</p>
+
+                            <p>UTR3：3’UTR区域</p>
+
+                            <p>UTR5：5’UTR区域</p>
+
+                            <p>intergnic：基因间区域</p>
+
+                            <p>ncRNA_exonic：非编码RNA外显子区域</p>
+
+                            <p>ncRNA_intronic：非编码RNA内含子区域</p>
+
+                            <p>upstream：转录起始位点上游1Kb区域</p>
+
+                            <p>downstream：转录终止位点下游1Kb区域</p>
+
+                            <p>splicing：splicing junction 10bp区域</p>
+
+                            <p>ncRNA_splicing：非编码RNA的splicing junction 10bp区域</p>
+                        </div>
+                    </div>
+                    <div class="analysis-process-img">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="carousel12" class="carousel slide" data-ride="carousel12"
+                                         data-interval="false">
+                                        <div class="carousel-inner">
+                                            {{#each sequenceFile}}
+                                            <div class="item {{#if @first}}active{{/if}}">
+                                                <img src="{{getImageUrl @root this}}_InDel_variant_statistics.png">
+                                            </div>
+                                            {{/each}}
+                                        </div>
+                                        <!-- Controls -->
+                                        <a class="left carousel-control" href="#carousel12" role="button"
+                                           data-slide="prev">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#carousel12" role="button"
+                                           data-slide="next">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                    <div class="clearfix">
+                                        <div id="thumbcarousel12" class="carousel slide thumbcarousel"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#imageGroup @root}}
+                                                {{#each this}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    {{#each this}}
+                                                    <div data-target="#carousel12"
+                                                         data-slide-to="{{getImagePosition @root this}}"
+                                                         class="thumb" pararentId="#thumbcarousel12">
+                                                        <img class="{{#if @first}}imgClick{{/if}}"
+                                                             src="{{getImageUrl @root this}}_InDel_variant_statistics.png">
+                                                    </div>
+                                                    {{/each}}
+                                                </div>
+                                                {{/each}}
+                                                {{/imageGroup}}
+                                            </div>
+                                            <a class="left carousel-control" href="#thumbcarousel12" role="button"
+                                               data-slide="prev" pararentId="#thumbcarousel12">
+                                                <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
+                                            </a>
+                                            <a class="right carousel-control" href="#thumbcarousel12" role="button"
+                                               data-slide="next" pararentId="#thumbcarousel12">
+                                                <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 imgTitle">图 基因组不同区域上InDel数目</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            <p>downstream代表转录终止位点下游1Kb区域内的InDel数目；</p>
+
+                            <p> exonic代表外显子区域内的InDel数目；</p>
+
+                            <p>intergenic代表基因间区域内的InDel数目；</p>
+
+                            <p>intronic代表内含子区域内的InDel数目；</p>
+
+                            <p>ncRNA_exonic代表非编码RNA外显子区域内的InDel数目；</p>
+
+                            <p>ncRNA_intronic代表非编码RNA内含子区域内的InDel数目；</p>
+
+                            <p>ncRNA_splicing代表splicing junction 10bp区域内的InDel数目；</p>
+
+                            <p>splicing代表splicing junction 10bp区域内的InDel数目；</p>
+
+                            <p>upstream代表转录起始位点上游1Kb区域内的InDel数目；</p>
+
+                            <p>UTR3代表3’UTR区域内的InDel数目；</p>
+
+                            <p>UTR5代表5’UTR区域内的InDel数目。 </p>
+                        </div>
+                    </div>
+                    <div class="table-area">
+                        <div class="tabel-title"><span>表3.7 编码区上不同类型的InDel数目</span></div>
+                        <div class="tabel-content">
+                            <div class="table-responsive">
+                                <table class="table tabelBaseSet" id="summaryInDelExonicStat">
+                                    {{#with table.summaryInDelExonicStat}}
+                                    <thead>
+                                    {{#getFirstFromArray this}}
+                                    <tr>
+                                        {{#getObjKeyList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjKeyList}}
+                                    </tr>
+                                    {{/getFirstFromArray}}
+                                    </thead>
+                                    <tbody>
+                                    {{#each this}}
+                                    <tr>
+                                        {{#getObjValueList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjValueList}}
+                                    </tr>
+                                    {{/each}}
+                                    </tbody>
+                                    {{/with}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            注：Sample：样本名称
+                            <p>frameshift_deletion：移码缺失，即导致编码蛋白的读框发生改变的删除；该删除的长度不是3的整数倍</p>
+
+                            <p>frameshift_insertion：移码插入，即导致编码蛋白的读框发生改变的插入；该插入的长度不是3的整数倍</p>
+
+                            <p>nonframeshift_deletion：非移码缺失，即不改变编码蛋白的读框的删除；该删除的长度为3的整数倍</p>
+
+                            <p>nonframeshift_insertion：非移码插入，即不改变编码蛋白的读框的插入；该插入的长度为3的整数倍 </p>
+
+                            <p>stoploss：导致丢失终止密码子的InDel </p>
+
+                            <p>stopgain：导致获得终止密码子的InDel </p>
+
+                            <p>unknown：由于注释用的基因结构注释数据库的错误而导致的未知功能位点</p>
+                        </div>
+                    </div>
+                    <div class="analysis-process-img">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="carousel13" class="carousel slide" data-ride="carousel13"
+                                         data-interval="false">
+                                        <div class="carousel-inner">
+                                            {{#each sequenceFile}}
+                                            <div class="item {{#if @first}}active{{/if}}">
+                                                <img src="{{getImageUrl @root this}}_InDel_exonic_statistics.png">
+                                            </div>
+                                            {{/each}}
+                                        </div>
+                                        <!-- Controls -->
+                                        <a class="left carousel-control" href="#carousel13" role="button"
+                                           data-slide="prev">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#carousel13" role="button"
+                                           data-slide="next">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                    <div class="clearfix">
+                                        <div id="thumbcarousel13" class="carousel slide thumbcarousel"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#imageGroup @root}}
+                                                {{#each this}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    {{#each this}}
+                                                    <div data-target="#carousel13"
+                                                         data-slide-to="{{getImagePosition @root this}}"
+                                                         class="thumb" pararentId="#thumbcarousel13">
+                                                        <img class="{{#if @first}}imgClick{{/if}}"
+                                                             src="{{getImageUrl @root this}}_InDel_exonic_statistics.png">
+                                                    </div>
+                                                    {{/each}}
+                                                </div>
+                                                {{/each}}
+                                                {{/imageGroup}}
+                                            </div>
+                                            <a class="left carousel-control" href="#thumbcarousel13" role="button"
+                                               data-slide="prev" pararentId="#thumbcarousel13">
+                                                <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
+                                            </a>
+                                            <a class="right carousel-control" href="#thumbcarousel13" role="button"
+                                               data-slide="next" pararentId="#thumbcarousel13">
+                                                <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 imgTitle">图 编码区上不同类型的InDel数目分布</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            <p>frameshift_deletion代表移码缺失，即导致编码蛋白的读框发生改变的删除；该删除的长度不是3的整数倍。</p>
+
+                            <p>frameshift_insertion代表移码插入，即导致编码蛋白的读框发生改变的插入；该插入的长度不是3的整数倍。</p>
+
+                            <p>nonframeshift_deletion代表非移码缺失，即不改变编码蛋白的读框的删除；该删除的长度为3的整数倍。</p>
+
+                            <p>nonframeshift_insertion代表非移码插入，即不改变编码蛋白的读框的插入；该插入的长度为3的整数倍。</p>
+
+                            <p>stopgain代表导致获得终止密码子的InDel。stoploss代表导致丢失终止密码子的InDel。</p>
+
+                            <p>unknown代表由于注释用的基因结构注释数据库的错误导致的未知功能位点。</p>
+                        </div>
+                    </div>
+                    <div class="table-area">
+                        <div class="tabel-title"><span>表3.8 InDel及基因分型分布 </span></div>
+                        <div class="tabel-content">
+                            <div class="table-responsive">
+                                <table class="table tabelBaseSet" id="summaryInDelStat">
+                                    {{#with table.summaryInDelStat}}
+                                    <thead>
+                                    {{#getFirstFromArray this}}
+                                    <tr>
+                                        {{#getObjKeyList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjKeyList}}
+                                    </tr>
+                                    {{/getFirstFromArray}}
+                                    </thead>
+                                    <tbody>
+                                    {{#each this}}
+                                    <tr>
+                                        {{#getObjValueList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjValueList}}
+                                    </tr>
+                                    {{/each}}
+                                    </tbody>
+                                    {{/with}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            注：Sample：样本名称
+                            <p>all：所有InDel数目</p>
+
+                            <p>genotype.Het：杂合基因型的InDel数目</p>
+
+                            <p>genotype.Hom：纯合基因型的InDel数目</p>
+
+                            <p>novel：未被dbSNP注释的新InDel</p>
+
+                            <p>novel_proportion：新InDel所占的比例</p>
+                        </div>
+                    </div>
+                    <div class="analysis-process-img">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="carousel14" class="carousel slide" data-ride="carousel14"
+                                         data-interval="false">
+                                        <div class="carousel-inner">
+                                            {{#each sequenceFile}}
+                                            <div class="item {{#if @first}}active{{/if}}">
+                                                <img src="{{getImageUrl @root this}}_InDel_statistics.png">
+                                            </div>
+                                            {{/each}}
+                                        </div>
+                                        <!-- Controls -->
+                                        <a class="left carousel-control" href="#carousel14" role="button"
+                                           data-slide="prev">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="right carousel-control" href="#carousel14" role="button"
+                                           data-slide="next">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                    <div class="clearfix">
+                                        <div id="thumbcarousel14" class="carousel slide thumbcarousel"
+                                             data-interval="false">
+                                            <div class="carousel-inner">
+                                                {{#imageGroup @root}}
+                                                {{#each this}}
+                                                <div class="item {{#if @first}}active{{/if}}">
+                                                    {{#each this}}
+                                                    <div data-target="#carousel14"
+                                                         data-slide-to="{{getImagePosition @root this}}"
+                                                         class="thumb" pararentId="#thumbcarousel14">
+                                                        <img class="{{#if @first}}imgClick{{/if}}"
+                                                             src="{{getImageUrl @root this}}_InDel_statistics.png">
+                                                    </div>
+                                                    {{/each}}
+                                                </div>
+                                                {{/each}}
+                                                {{/imageGroup}}
+                                            </div>
+                                            <a class="left carousel-control" href="#thumbcarousel14" role="button"
+                                               data-slide="prev" pararentId="#thumbcarousel14">
+                                                <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
+                                            </a>
+                                            <a class="right carousel-control" href="#thumbcarousel14" role="button"
+                                               data-slide="next" pararentId="#thumbcarousel14">
+                                                <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 imgTitle">图 基因组和外显子区InDel的特征</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            <p>第1个柱状图中，Hom代表纯合，其纵坐标代表基因型为纯合的InDel数目；Het代表杂合，其纵坐标代表基因型为杂合的InDel数目。Het
+                                rate代表杂合基因型的InDel在所有InDel中的比例。
+                            </p>
+
+                            <p>第2个柱状图中，Novel代表未被dbSNP注释的InDel，In dbSNP代表dbSNP中有注释的InDel。dbSNP
+                                rate代表检测到的所有InDel中，dbSNP中有注释的InDel所占的比例。 </p>
+                        </div>
+                    </div>
+                    <h2>2.1 InDel注释结果</h2>
+
+                    <p>利用ANNOVAR (Wang K et al.)
+                        软件对InDel位点进行注释，其中包括dbSNP数据库、千人基因组计划和其他已有的数据库的注释信息，注释内容涵盖变异的位置信息、类型、保守型预测等。具体的注释内容展示如表3.9。
+                    </p>
+
+                    <div class="table-area">
+                        <div class="tabel-title"><span>表3.9 InDel注释结果展示 </span></div>
+                        <div class="tabel-content">
+                            <div class="table-responsive">
+                                <table class="table tabelBaseSet" id="InDelHeadTable">
+                                    {{#with table.InDelHeadTable}}
+                                    <thead>
+                                    {{#getFirstFromArray this}}
+                                    <tr>
+                                        {{#getObjKeyList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjKeyList}}
+                                    </tr>
+                                    {{/getFirstFromArray}}
+                                    </thead>
+                                    <tbody>
+                                    {{#each this}}
+                                    <tr>
+                                        {{#getObjValueList this}}
+                                        {{#each this}}
+                                        <td>{{this}}</td>
+                                        {{/each}}
+                                        {{/getObjValueList}}
+                                    </tr>
+                                    {{/each}}
+                                    </tbody>
+                                    {{/with}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row tabel-footer">
+                            注：CHROM：染色体
+                            <p>all：所有InDel数目</p>
+
+                            <p>POS：变异位点在染色体上的绝对位置</p>
+
+                            <p>ID：dbSNP注释ID</p>
+
+                            <p>REF：参考基因组碱基型</p>
+
+                            <p>ALT：样本基因组碱基型</p>
+
+                            <p>QAUL：变异的质量值</p>
+
+                            <p>FILTER：过滤TAG，如果该位点满足所有过滤条件，则标记为PASS（过滤条件采用的是国际惯用的过滤标准）</p>
+
+                            <p>GeneName：基因名称注释，列出该变异相关的基因 </p>
+
+                            <p>Func：对变异位点所在的区域进行注释(exonic, splicing, UTR5, UTR3, intronic, ncRNA_exonic, ncRNA_intronic,
+                                ncRNA_splicing, upstream, downstream, intergenic)</p>
+
+                            <p>Gene：列出该变异位点相关的转录本（只有功能符合Func列的转录本才列出）。如果Func为intergenic，此处列出两侧的基因名 </p>
+
+                            <p>
+                                GeneDetail：描述UTR、splicing、ncRNA_splicing或intergenic区域的变异情况。当Func列的值为exonic、ncRNA_exonic、intronic、ncRNA_intronic、upstream、downstream、upstream;downstream时，该列为空；当Func列的值为intergenic时，该列格式为dist=1366;dist=22344，表示该变异位点距离两侧基因的距离</p>
+
+                            <p>ExonicFunc：外显子区的SNV or InDel变异类型（SNV的变异类型包括synonymous_SNV, nonsynonymous_SNV, stopgain,
+                                stopgloss和unknown；InDel的变异类型包括frameshift_insertion, frameshift _deletion, stopgain,
+                                stoploss,
+                                nonframeshift_insertion, nonframeshift_deletion和unknown） </p>
+
+                            <p>
+                                AAChange：氨基酸改变，只有当Func列为exonic或exonic;splicing时，该列才有结果。按照每个转录本进行注释（例如，NADK:NM_001198995:exon10:c.1240_1241insAGG:p.G414delinsEG，其中，NADK表示该变异所在的基因名称，NM_001198995表示该变异所在的转录本ID，exon10表示该变异位于转录本的第10个外显子上，c.1240_1241insAGG表示该变异引起cDNA在第1240和1241位之间插入AGG，p.G414delinsEG表示该变异引起蛋白序列在第414位上的氨基酸由Gly变为Gly-Glu；FMN2:NM_020066:exon1:c.160_162del:p.54_54del，表示该变异引起cDNA的第160到162位发生删除，p.54_54del表示该变异引起蛋白序列在第54位上的氨基酸删除） </p>
+
+                            <p>esp6500si_all：国家心肺和血液研究所外显子组测序计划（NHLBI-ESP
+                                project，esp6500si_all数据库中包含SNP变异、InDel变异和Y染色体上的变异）的所有个体中，突变碱基的等位基因频率(alternative allele
+                                frequency)
+                            </p>
+
+                            <p>1000g2015aug_all：给出千人基因组计划数据（2015年8月公布的版本）的所有人群中，该变异位点上突变碱基的等位基因频率</p>
+
+                            <p>1000g2015aug_eas：给出千人基因组计划数据（2015年8月公布的版本）的东亚人群中，该变异位点上突变碱基的等位基因频率 </p>
+
+                            <p>snp138：该变异在dbSNP（版本138）中的ID</p>
+
+                            <p>SIFT_score：SIFT分值(version
+                                2.6)，表示该变异对蛋白序列的影响，包含三个值，一是SIFT初始分值，二是转换后的值（1-SIFT），三是T或者D。当该变异同时影响多个蛋白序列时，对每条蛋白序列有一个SIFT值，取最小值。SIFT分值越小越“有害”，表明该SNP导致蛋白结构或功能改变的可能性大；D:
+                                Deleterious (sift
+                                &lt;=0.05); T: Tolerated (sift>0.05)</p>
+
+                            <p>Polyphen2_score：PolyPhen 2分值(version2.6)，数值越大越“有害”，表明该SNP导致蛋白结构或功能改变的可能性大</p>
+
+                            <p>MutationTaster_score：MutationTaster分值(version
+                                2.6)，表示该变异对蛋白序列的影响，包含三个值，一是MutationTaster初始分值，二是转换后的值，三是A、D、N或者P。第二个值越大越“有害”，表明该SNP导致蛋白结构或功能改变的可能性大。"A"
+                                ("disease_causing_automatic"); "D" ("disease_causing"); "N" ("polymorphism"); "P"
+                                ("polymorphism_automatic") </p>
+
+                            <p>FATHMM_score：FATHMM分值(version2.6)，表示该变异对蛋白序列的影响。FATHMM分值越小越“有害”，表明该SNP导致蛋白结构或功能改变的可能性大；D:
+                                Damaging (fathmm
+                                &lt;=- 1.5); T: Tolerated (fathmm> -1.5)</p>
+
+                            <p>LRT_score：LRT分值(version 2.6)，表示该变异对蛋白序列的影响，包含三个值，一是LRT初始分值，二是转换后的值，三是D、N或者U (D:
+                                Deleterious; N:
+                                Neutral; U: Unknown)。第二个值越大越“有害”，表明该SNP导致蛋白结构或功能改变的可能性大</p>
+
+                            <p> FORMAT：用“：”分隔了若干个字段： </p>
+
+                            <p>GT：该位点基因型(Genotype)。0代表Allele和REF相同，1、2、3等代表Allele和REF不同；纯合：0/0，1/1；杂合：0/1</p>
+
+                            <p>AD：为sample中每一种allele的reads覆盖度(Allele
+                                Depth),在diploid中则是用逗号分割的两个值，前者对应ref基因型，后者对应variant基因型
+                            </p>
+
+                            <p>DP：该位点覆盖的总reads数</p>
+
+                            <p>GQ：基因型的质量值(Genotype
+                                Quality)。Phred格式(Phred_scaled)的质量值，表示在该位点该基因型存在的可能性；该值越高，则Genotype的可能性越大 </p>
+
+                            <p>PL：标准化基因型似然值（逗号分隔的三个值，依次对应0/0、0/1、1/1三种基因型，值越小越好） </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="reference">
+                <div id="reference-title">
+                    <h1><span>参考文献</span></h1>
+
+                    <p>Andrews S. FastQC: A quality control tool for high throughput sequence data[OL]. 2010.
+                        http://www.bioinformatics.bbsrc.ac.uk/projects/fastqc/ . (FastQC) </p>
+
+                    <p>Chen C, Khaleel S S, Huang H, et al. Software for pre-processing Illumina next-generation
+                        sequencing
+                        short read sequences[J]. Source code for biology and medicine, 2014, 9(8). (Sickle) </p>
+
+                    <p>Li H, Durbin R. Fast and accurate short read alignment with Burrows–Wheeler transform[J].
+                        Bioinformatics,
+                        2009, 25(14): 1754-1760. (BWA) </p>
+
+                    <p>Kent W J, Sugnet C W, Furey T S, et al. The human genome browser at UCSC[J]. Genome research,
+                        2002,
+                        12(6): 996-1006. (UCSC) </p>
+
+                    <p>Lam H Y K, Clark M J, Chen R, et al. Performance comparison of whole-genome sequencing
+                        platforms[J].
+                        Nature biotechnology, 2012, 30(1): 78-82. (Picard)</p>
+
+                    <p>Li H, Handsaker B, Wysoker A, et al. The sequence alignment/map format and SAMtools[J].
+                        Bioinformatics,
+                        2009, 25(16): 2078-2079. (SAMtools)</p>
+
+                    <p>Sherry S T, Ward M H, Kholodov M, et al. dbSNP: the NCBI database of genetic variation[J].
+                        Nucleic acids
+                        research, 2001, 29(1): 308-311. (dbSNP)</p>
+
+                    <p>McKenna A, Hanna M, Banks E, et al. The Genome Analysis Toolkit: a MapReduce framework for
+                        analyzing
+                        next-generation DNA sequencing data[J]. Genome research, 2010, 20(9): 1297-1303. (GATK) Wang K,
+                        Li M,
+                        Hakonarson H. ANNOVAR: functional annotation of genetic variants from high-throughput sequencing
+                        data[J]. Nucleic acids research, 2010, 38(16): e164-e164. (ANNOVAR) </p>
+
+                    <p>1000 Genomes Project Consortium. An integrated map of genetic variation from 1,092 human
+                        genomes[J].
+                        Nature, 2012, 491(7422): 56-65. (1000g)</p>
+                </div>
+            </div>
+            <div id="appendix">
+                <div id="appendix-title">
+                    <h1><span>附录</span></h1>
+
+                    <p>本次生物信息分析流程使用到的软件如下：</p>
+
+                    <div class="table-area">
+                        <div class="tabel-title"><span>分析软件列表</span></div>
+                        <div class="tabel-content">
+                            <div class="table-responsive">
+                                <table class="table tabelBaseSet">
+                                    <thead>
+                                    <tr>
+                                        <td>分析内容</td>
+                                        <td>软件</td>
+                                        <td>备注</td>
+                                        <td>版本</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td rowspan="2">质控</td>
+                                        <td>FastQC</td>
+                                        <td>数据质控</td>
+                                        <td>v0.11.3</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sickle</td>
+                                        <td>去除低质量数据</td>
+                                        <td>v1.33</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3" style="vertical-align: middle;">比对</td>
+                                        <td>BWA</td>
+                                        <td>测序结果与参考基因组进行比对，得到bam结果</td>
+                                        <td>v0.7.12</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SAMtools</td>
+                                        <td>对比对结果进行排序</td>
+                                        <td>v0.1.19</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Picard</td>
+                                        <td>合并同一样本bam结果并标记重复read</td>
+                                        <td>v1.119</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SNP/InDel检测</td>
+                                        <td>GATK</td>
+                                        <td>检测、过滤SNP及InDel</td>
+                                        <td>v3.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>变异功能注释</td>
+                                        <td>ANNOVAR</td>
+                                        <td>对检测到的变异进行结构和功能注释</td>
+                                        <td>Wed, 17 Jun 2015</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</script>
+
+</body>
+</html>
+
+<script>
+    $(function () {
+        var temp = Handlebars.compile($('#tpl').html());
+        var data = null;
+        $.ajaxSettings.async = false;
+        $.getJSON("./test.json", function (mydata) {
+            data = mydata;
+        })
+        Handlebars.registerHelper("getAttrValue", function (obj,attr,options) {
+            return obj[attr];
+        });
+
+        Handlebars.registerHelper("getImagePosition", function (rootData,item,options) {
+            var sequenceFile = rootData.sequenceFile;
+            for(var i=0;i<sequenceFile.length;i++){
+                if(sequenceFile[i] === item){
+                    return i;
+                }
+            }
+            return 0;
+        });
+
+        Handlebars.registerHelper("getImageUrl", function (rootData,filePrefix,options) {
+            var url = rootData.serverUrl + '/public/' + rootData.taskName + '/' + rootData.taskId + '/output/fig_table/' + filePrefix;
+            return url;
+        });
+
+        Handlebars.registerHelper("imageGroup", function (rootData, options) {
+
+            var sequenceFile = rootData.sequenceFile;
+            console.log('sequenceFile',sequenceFile);
+            var samplePrefixGroups = [];
+
+            var groupNum = parseInt(sequenceFile.length / 6) + 1;
+            for (var i = 0; i < groupNum; i++) {
+                samplePrefixGroups[i] = sequenceFile.slice(6 * i, 6 * i + 6);
+            }
+            //console.log("sequenceFile:", this);
+            //console.log("samplePrefixGroups:", samplePrefixGroups);
+            return options.fn(samplePrefixGroups);
+        });
+
+        Handlebars.registerHelper("getObjKeyList", function (obj, options) {
+            console.log("keylist",obj);
+            var keyList = [];
+            for(var keyItem in obj){
+                keyList.push(keyItem);
+            }
+            //console.log("key:", keyList);
+            return options.fn(keyList);
+        });
+
+        Handlebars.registerHelper("getObjValueList", function (obj, options) {
+            var valueList = [];
+            for(var keyItem in obj){
+                valueList.push(obj[keyItem]);
+            }
+            //console.log("key:", keyList);
+            return options.fn(valueList);
+        });
+
+        Handlebars.registerHelper("getFirstFromArray", function (obj, options) {
+            return options.fn(obj[0]);
+        });
+
+
+        var html = temp(data);
+        $('#show').html(html);
+    });
+
+</script>
+

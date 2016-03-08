@@ -102,8 +102,8 @@
         //options是个预编译函数
         //opntions.fn(param)是调用一次模板，其中param是上下文环境对象
         Handlebars.registerHelper("list",function(obj,options){
-            console.log(this);
-            console.log(obj);
+            console.log("this",this);
+            console.log("obj",obj);
             return options.fn(obj[this.name]);
         });
 

@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="src/css/index.css" />
+    <link rel="stylesheet" href="src/css/report.css" />
+    <link href="src/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="src/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+    <link href="src/css/index.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="src/css/bootstrap-table.min.css">
+    <script type="text/javascript" src="src/js/angular.min.js"></script>
+    <script type="text/javascript" src="src/js/angular-route.min.js"></script>
+    <script type="text/javascript" src="src/js/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="src/js/jquery.min.js"></script>
+    <script type="text/javascript" src="src/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="src/js/angular-scroll.min.js"></script>
+    <script src="src/js/bootstrap-table.min.js"></script>
+    <script src="src/js/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="src/js/xlsx.min.js"></script>
+    <title>微旋基因RNA-Seq生物信息分析报告</title>
+</head>
+
+<body>
+    <div class="container-fluid report-header">
+        <img src="src/img/fold.png" />
+        <img alt="微旋基因图标" src="src/img/logo_detailReport.png" class="logo" />
+    </div>
+    <!--内容-->
+    <div id="content">
+        <div id="biuld-lib-process">
+            <div id="biuld-lib-process-title">
+                <h1>一 建库测序流程</h1>
+                <div class="divContentCenter"><img src="src/img/sequencing_process.png">
+                </div>
+                <h2><span id="sample-check">1 TOTAL RNA样品检测</span></h2>
+                <p>
+                    RNA样品的检测内容主要包括对RNA完整性和RNA纯度的评估，从而综合判断RNA的质量，具体采用以下方法进行操作：
+                    <br>
+                    <span class="data-step">（1）琼脂糖凝胶电泳鉴定RNA完整性，分析RNA降解程度及是否有污染（28s/18s比率）。</span>
+                    <br>
+                    <span class="data-step">（2）Nanodrop测量吸光值检测RNA纯度（OD260/280比率）</span>
+                    <br>
+                    <span class="data-step">（3）Qubit对RNA浓度进行精确定量</span>
+                    <br>
+                    <span class="data-step">（4）Agilent2100精确检测RNA的完整性</span>
+                </p>
+                <h2><span id="lib-build">2 文库构建</span></h2>
+                <p>
+                    样品检测合格之后，利用mRNA末端含有PolyA的原理，用带有Oligo（dT）的磁珠对RNA样品进行富集，提取mRNA。随后加入fragmentation buffer将mRNA打断成为短片段，并以短片段mRNA为模板，用六碱基随机引物合成一链cDNA，然后加入缓冲液、dNTPs和DNA polymerase I合成二链cDNA，随后利用AMPure XP beads纯化双链cDNA。纯化的双链cDNA再进行末端修复、加PolyA尾巴并连接测序接头，然后用AMPure XP beads进行片段大小选择,最后进行PCR富集得到最终的cDNA文库。
+                </p>
+                <div class="divContentCenter"><img src="src/img/library_building.png" width="358" height="486">
+                </div>
+                <h2><span id="lib-check">3 库检</span></h2>
+                <p>
+                    文库构建完成后，用Qubit2.0对文库进行初步定量，稀释文库到1ng/μl，随后使用Agilent2100对文库的insert size进行检测，当insert size符合预期后，使用qPCR对文库的浓度进行准确定量（文库有效浓度>2nM），从而保证文库质量。
+                </p>
+                <h2><span id="computer-sequencing">4 上机测序</span></h2>
+                <p>
+                    库检合格后，将不同文库按照有效浓度及目标下机数据量的需求pooling后进行HiSeq测序。
+                </p>
+            </div>
+        </div>
+        <div id="analysis-process">
+            <div id="analysis-process-title">
+                <h1>二 生物信息分析流程</h1>
+                <div class="divContentCenter"><img src="src/img/RNA_analysis_process.png">
+                </div>
+            </div>
+        </div>
+        <div id="analysis-result">
+            <div id="analysis-result-title">
+                <h1>三 展示结果及说明</h1>
+                <h2><span id="originalData">1 原始序列数据</span></h2>
+                <p> 高通量测序得到的原始序列数据称为Raw Data或者Raw Reads，其结果以fastq文件格式的形式存储。fastq是一种以ASCII编码，能够存储序列及其对应质量信息的文本格式，目前是高通量测序的标准格式。
+                </p>
+                <p>
+                    fastq格式的序列信息一般含有四行，第一行由“@”开始，后面跟随序列的描述信息；第二行为序列的碱基内容；第三行由“+”开始，后面也可以跟随序列的描述信息或空缺；第四行是第二行序列的质量评估，字符数与第二行序列的碱基数相等。
+                </p>
+                <p>
+                    illumina测序结果示例如下：
+                </p>
+                <p>
+                    @EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG
+                </p>
+                <p>
+                    GCTCTTTGCCCTTCTCGTCGAAAATTGTCTCCTCATTCGAAACTTCTCTGT
+                </p>
+                <p>+</p>
+                <p>
+                    @@CFFFDEHHHHFIJJJ@FHGIIIEHIIJBHHHIJJEGIIJJIGHIGHCCF
+                </p>
+                <p>
+                    其中，对测序标识符的详细解读如下：
+                </p>
+                <div class="table-area">
+                    <div class="tabel-content">
+                        <div class="table-responsive">
+                            <table class="table tabelBaseSet">
+                                <thead>
+                                    <tr>
+                                        <td>EAS139</td>
+                                        <td>Unique instrument name</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>136</td>
+                                        <td>Run ID</td>
+                                    </tr>
+                                    <tr>
+                                        <td>FC706VJ</td>
+                                        <td>Flowcell ID</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Flowcell lane</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2104</td>
+                                        <td>Tile number within the flowcell lane</td>
+                                    </tr>
+                                    <tr>
+                                        <td>15343</td>
+                                        <td>‘x’-coordinate of the cluster within the title</td>
+                                    </tr>
+                                    <tr>
+                                        <td>197393</td>
+                                        <td>‘y’-coordinate of the cluster within the title</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Member of a pair, 1 or 2 (paired-end or mate-pair reads only)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Y</td>
+                                        <td>Y if the read fails filter(read is bad), N otherwise</td>
+                                    </tr>
+                                    <tr>
+                                        <td>18</td>
+                                        <td>0 when none of the control bits are on, otherwise it is an even number</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ATCACG</td>
+                                        <td>Index sequence</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <h2><span id="quality-assessment">2 测序数据质量评估</span></h2>
+                <h2>2.1 测序错误率分布检查</h2>
+                <p>测序错误率与碱基质量有关，受测序仪本身、测序试剂、样品等多个因素共同影响。对于RNA-seq技术，测序错误率分布具有两个特点: （1）测序错误率会随着测序序列长度的增加而升高，这是由于测序过程中化学试剂的消耗导致的，并且为illumina高通量测序平台都具有的特征；（2）前6个碱基的位置会发生较高的测序错误率，而这个长度正好等于在RNA-seq建库过程中反转录所需要的随机引物的长度，所以前6个碱基测序错误率较高的原因为随机引物和RNA模版的不完全结合。
+                </p>
+                <div class="analysis-process-img">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="carousel1" class="carousel slide" data-ride="carousel1" data-interval="false">
+                                    <div class="carousel-inner">
+                                        {{#each .}} {{#each qcerrorrate}}
+                                        <div class="item {{#if @first}}active{{/if}}">
+                                            <img src="{{ this }}">
+                                        </div>
+                                        {{/each}} {{/each}}
+                                    </div>
+                                    <!-- Controls -->
+                                    <a class="left carousel-control" href="#carousel1" role="button" data-slide="prev" onclick="return false;">
+                                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="right carousel-control" href="#carousel1" role="button" data-slide="next" onclick="return false;">
+                                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+                                <div class="clearfix">
+                                    <div id="thumbcarousel1" class="carousel slide thumbcarousel" data-interval="false">
+                                        <div class="carousel-inner">
+                                            <!-- ngRepeat: prefixGroup in samplePrefixGroups -->
+                                            <div class="item active">
+                                                {{#each .}} {{#each qcerrorrate}}
+                                                <div data-target="#carousel1" data-slide-to="{{@index}}" class="thumb" pararentId="#thumbcarousel1">
+                                                    <img src="{{ this }}" {{#if @first}}class="imgClick" {{/if}}>
+                                                </div>
+                                                {{/each}} {{/each}}
+                                            </div>
+                                            <!-- end ngRepeat: prefixGroup in samplePrefixGroups -->
+                                        </div>
+                                        <a class="left carousel-control" href="#thumbcarousel1" role="button" data-slide="prev" pararentid="#thumbcarousel1" onclick="return false;">
+                                            <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                            <img alt="" src="src/img/left.png" class="img_left">
+                                        </a>
+                                        <a class="right carousel-control" href="#thumbcarousel1" role="button" data-slide="next" pararentid="#thumbcarousel1" onclick="return false;">
+                                            <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                            <img alt="" src="src/img/right.png" class="img_right">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 imgTitle">图2-1-1 测序错误率分布图</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="row tabel-footer">
+                        <p>横坐标为reads的碱基位置，纵坐标为单碱基错误率</p>
+                    </div>
+                </div>
+                <h2>2.2 测序数据质量情况汇总</h2>
+                <p>测序样品数据质量评估情况详见下表：</p>
+                <div class="table-area">
+                    <div class="tabel-title"><span>表2-2-1 测序样品数据质量评估表</span></div>
+                    <div class="tabel-content">
+                        <div class="table-responsive">
+                            <table class="table tabelBaseSet">
+                                {{#each .}} {{#with qcsummary}} {{#each this}} {{#if @first}}
+                                <thead>
+                                    <tr>
+                                        <td>{{Samplename}}</td>
+                                        <td>{{Rawreads}}</td>
+                                        <td>{{RawdataG}}</td>
+                                        <td>{{Error}}</td>
+                                        <td>{{Q20}}</td>
+                                        <td>{{Q30}}</td>
+                                        <td>{{GC}}</td>
+                                        <td>{{Cleanreads}}</td>
+                                        <td>{{CleandataG}}</td>
+                                        <td>{{Trimmed_Q20}}</td>
+                                        <td>{{Trimmed_Q30}}</td>
+                                        <td>{{Trimmed_GC}}</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{else}}
+                                    <tr>
+                                        <td>{{Samplename}}</td>
+                                        <td>{{Rawreads}}</td>
+                                        <td>{{RawdataG}}</td>
+                                        <td>{{Error}}</td>
+                                        <td>{{Q20}}</td>
+                                        <td>{{Q30}}</td>
+                                        <td>{{GC}}</td>
+                                        <td>{{Cleanreads}}</td>
+                                        <td>{{CleandataG}}</td>
+                                        <td>{{Trimmed_Q20}}</td>
+                                        <td>{{Trimmed_Q30}}</td>
+                                        <td>{{Trimmed_GC}}</td>
+                                    </tr>
+                                    {{/if}} {{/each}} {{/with}} {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="row tabel-footer">
+                        说明：
+                        <p>（1）Raw reads：单个测序的测序序列个数</p>
+                        <p>（2）Raw data：测序文件大小</p>
+                        <p>（3）Erro：错误率</p>
+                        <p>（4）Q20、Q30：分别计算Phred数值大于20、30的碱基占总体碱基的百分比</p>
+                        <p>（5）GC(%)：碱基G、C数量总和占总的碱基数量的百分比</p>
+                        <p>（6）Clean reads：过滤后的测序序列个数，后续生物信息分析都基于此</p>
+                        <p>（7）Clean data：过滤后的测序文件大小</p>
+                        <p>（8）Effective：Trim后，占原始数据的百分比</p>
+                        <p>（9）Trimmed_Q20、Trimmed_Q30：Trim后， Phred 数值大于20、30的碱基占总体碱基的百分比</p>
+                        <p>（10）Trimmed_GC：Trim后，碱基G、C数量总和占总的碱基数量的百分比</p>
+                    </div>
+                </div>
+                <h2><span id="depth-cover">3 参考序列比对分析</span></h2>
+                <p>
+                    采用TopHat软件对过滤后的测序序列进行基因组的定位比对分析，下图为TopHat算法的基本原理。其主要分为三个部分：
+                    <br>
+                    <span class="data-step">（1）将测序序列比对到转录组（可选）</span>
+                    <br>
+                    <span class="data-step">（2）将测序序列比对到基因组</span>
+                    <br>
+                    <span class="data-step">（3）将测序序列做剪切比对</span>
+                </p>
+                <p> 通过三个不同方面的比对步骤，从而保证较高的正确率。如果参考基因组选择合适，且相关实验不存在污染，测序序列定位的百分比一般会高于70%，其中具有多个定位的测序序列占总体比例通常不会超过10%
+                </p>
+                <div class="divContentCenter"><img src="src/img/3-1-1.png" width="550">
+                </div>
+                <h2>3.1 Reads与参考基因组比对情况统计</h2>
+                <div class="table-area">
+                    <div class="tabel-title"><span>表 3-1-1 Reads与参考基因组比对情况一览表</span></div>
+                    <div class="tabel-content">
+                        <div class="table-responsive">
+                            <table class="table tabelBaseSet">
+                                {{#each .}} {{#with mappingsummary}} {{#each this}} {{#if @first}}
+                                <thead>
+                                    <tr>
+                                        <td>{{Samplename}}</td>
+                                        <td>{{wild}}</td>
+                                        <td>{{trako}}</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{else}}
+                                    <tr>
+                                        <td>{{Samplename}}</td>
+                                        <td>{{wild}}</td>
+                                        <td>{{trako}}</td>
+                                    </tr>
+                                    {{/if}} {{/each}} {{/with}} {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="row tabel-footer">
+                        说明：
+                        <p>（1）Total reads：过滤后测序序列的数量总数</p>
+                        <p>（2）Total mapped：能定位到基因组上的测序序列总数</p>
+                        <p>（3）Multiple mapped：在参考序列上有多个比对位置的测序序列总数</p>
+                        <p>（4）Uniquely mapped：在参考序列上只有唯一比对位置的测序序列总数</p>
+                        <p>（5）Read-1,Read-2：双端测序序列，其中两端分别能定位到基因组上的数量</p>
+                        <p>（6）Reads map to “+”, Reads map to “-”：测序序列比对到基因组正链和负链的总数</p>
+                        <p>（7）Non-splice reads：整段比对到外显子的测序序列总数</p>
+                        <p>（8）Splice reads：剪切后的测序序列比对到外显子上的总数</p>
+                    </div>
+                </div>
+                <h2>3.2 Reads在参考基因组不同区域的分布情况</h2>
+                <p>
+                    对比对到基因组上的reads的分布情况进行统计。其中，定位区域包括cds（编码区）、intron（内含子）、unannotated（未注释区）三个部分。
+                </p>
+                <p>
+                    在基因组注释较为完全的物种中，比对到cds区域的reads数占绝大多数，比对到intron区域的reads主要来源于pre-mRNA的残留及可变剪切过程中可能发生的内含子滞留事件，而比对到unannotated区域的reads则是由于基因组注释的不完全。
+                </p>
+                <div class="analysis-process-img">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="carousel2" class="carousel slide" data-ride="carousel1" data-interval="false">
+                                    <div class="carousel-inner">
+                                        {{#each .}} {{#each regionstat}}
+                                        <div class="item {{#if @first}}active{{/if}}">
+                                            <img src="{{ this }}">
+                                        </div>
+                                        {{/each}} {{/each}}
+                                    </div>
+                                    <!-- Controls -->
+                                    <a class="left carousel-control" href="#carousel1" role="button" data-slide="prev" onclick="return false;">
+                                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="right carousel-control" href="#carousel1" role="button" data-slide="next" onclick="return false;">
+                                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+                                <div class="clearfix">
+                                    <div id="thumbcarousel2" class="carousel slide thumbcarousel" data-interval="false">
+                                        <div class="carousel-inner">
+                                            <!-- ngRepeat: prefixGroup in samplePrefixGroups -->
+                                            <div class="item active">
+                                                {{#each .}} {{#each regionstat}}
+                                                <div data-target="#carousel2" data-slide-to="{{@index}}" class="thumb" pararentId="#thumbcarousel2">
+                                                    <img src="{{ this }}" {{#if @first}}class="imgClick" {{/if}}>
+                                                </div>
+                                                {{/each}} {{/each}}
+                                            </div>
+                                            <!-- end ngRepeat: prefixGroup in samplePrefixGroups -->
+                                        </div>
+                                        <a class="left carousel-control" href="#thumbcarousel2" role="button" data-slide="prev" pararentid="#thumbcarousel2" onclick="return false;">
+                                            <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                            <img alt="" src="src/img/left.png" class="img_left">
+                                        </a>
+                                        <a class="right carousel-control" href="#thumbcarousel2" role="button" data-slide="next" pararentid="#thumbcarousel2" onclick="return false;">
+                                            <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                            <img alt="" src="src/img/right.png" class="img_right">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 imgTitle">图3-2-1 reads在基因组不同区域的分布情况</div>
+                        </div>
+                    </div>
+                </div>
+                <h2><span id="variable-shear-analysis">4 可变剪切分析</span></h2>
+                <p>用ASprofile(Florea et al., 2013)软件对Cufflinks (Trapnell et al.,2010)预测出的基因模对每个样品的可变剪切事件分别进行分类和表达量统计。分析流程及ASprofile中的可变剪切事件分类如下图所示：
+                </p>
+                <div class="divContentCenter">
+                    <img src="src/img/4-1-1.png" height="400">
+                </div>
+                <div class="container-fluid">
+                    <div class="row tabel-footer">
+                        12类可变剪切事件定义如下:
+                        <p>(1) TSS: Alternative 5' first exon (transcription start site) 第一个外显子可变剪切
+                        </p>
+                        <p>(2) TTS: Alternative 3' last exon (transcription terminal site)　最后一个外显子可变剪切
+                        </p>
+                        <p>(3) SKIP: Skipped exon (SKIP_ON,SKIP_OFF pair)　单外显子跳跃
+                        </p>
+                        <p>(4) XSKIP: Approximate SKIP (XSKIP_ON,XSKIP_OFF pair)　单外显子跳跃（模糊边界）
+                        </p>
+                        <p>(5) MSKIP: Multi-exon SKIP (MSKIP_ON,MSKIP_OFF pair)　多外显子跳跃
+                        </p>
+                        <p>(6) XMSKIP: Approximate MSKIP (XMSKIP_ON,XMSKIP_OFF pair)　多外显子跳跃（模糊边界）
+                        </p>
+                        <p>(7) IR: Intron retention (IR_ON, IR_OFF pair)　单内含子滞留
+                        </p>
+                        <p>(8) XIR: Approximate IR (XIR_ON, XIR_OFF pair)　单内含子滞留（模糊边界）
+                        </p>
+                        <p>(9) MIR: Multi-IR (MIR_ON, MIR_OFF pair)　多内含子滞留
+                        </p>
+                        <p>(10) XMIR: Approximate MIR (XMIR_ON, XMIR_OFF pair)　多内含子滞留（模糊边界）
+                        </p>
+                        <p>(11) AE: Alternative exon ends (5', 3', or both)　可变 5'或3'端剪切
+                        </p>
+                        <p>(12) XAE: Approximate AE　可变 5'或3'端剪切（模糊边界）</p>
+                    </div>
+                </div>
+                <h2>4.1 可变剪切事件分类与数量统计</h2>
+                <div>
+                    <div class="divContentCenter">
+                        {{#each .}} {{#each asstat}}
+                        <img src="{{ this }}" height="400"> {{/each}} {{/each}}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 imgTitle">图4-1-1　AS分类和数量统计</div>
+                    </div>
+                </div>
+            </div>
+            <p>纵轴为可变剪切事件的分类缩写，横轴为该种事件下可变剪切的数量</p>
+            <h2>4.2 可变剪切事件结构与表达量统计</h2>
+            <div class="table-area">
+                <div class="tabel-title"><span>表 4-2-1 AS结构和表达量统计</span></div>
+                <div class="tabel-content">
+                    <div class="table-responsive">
+                        <table class="table tabelBaseSet">
+                            {{#each .}} {{#with asresult}} {{#each this}} {{#if @first}}
+                            <thead>
+                                <tr>
+                                    <td>{{event_id}}</td>
+                                    <td>{{event_type}}</td>
+                                    <td>{{gene_id}}</td>
+                                    <td>{{chrom}}</td>
+                                    <td>{{event_start}}</td>
+                                    <td>{{event_end}}</td>
+                                    <td>{{event_pattern}}</td>
+                                    <td>{{strand}}</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{else}}
+                                <tr>
+                                    <td>{{event_id}}</td>
+                                    <td>{{event_type}}</td>
+                                    <td>{{gene_id}}</td>
+                                    <td>{{chrom}}</td>
+                                    <td>{{event_start}}</td>
+                                    <td>{{event_end}}</td>
+                                    <td>{{event_pattern}}</td>
+                                    <td>{{strand}}</td>
+                                </tr>
+                                {{/if}} {{/each}} {{/with}} {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row tabel-footer">
+                    AS结构和表达量统计结果说明如下所示:
+                    <p>(1) event id: AS事件编号
+                    </p>
+                    <p>(2) event type: AS事件类型 (TSS, TTS, SKIP_{ON,OFF}, XSKIP_{ON,OFF}, MSKIP_{ON,OFF}, XMSKIP_{ON,OFF}, IR_{ON ,OFF}, XIR_{ON,OFF}, AE, XAE)
+                    </p>
+                    <p>(3) gene id: cufflink组装结果中的基因编号
+                    </p>
+                    <p>(4) chrom: 染色体编号
+                    </p>
+                    <p>(5) event start: AS事件起始位置
+                    </p>
+                    <p>(6) event end: AS事件结束位置
+                    </p>
+                    <p>(7) event signature: AS事件特征 (for TSS, TTS - inside boundary of alternative marginal exon; for *SKIP_ON,the coordinates of the skipped exon(s); for *SKIP_OFF, the coordinates of the enclosing introns; for *IR_ON, the end coordinates of the long, intron-containing exon; for *IR_OFF, the listing of coordinates of all the exons along the path containing the retained intron; for *AE, the coordinates of the exon variant)</p>
+                    <p>(8) strand: 基因正负链信息</p>
+                </div>
+            </div>
+            <h2><span id="gene-expression-analysis">5 基因表达水平分析</span></h2>
+            <h2>5.1 基因表达水平分析</h2>
+            <p>
+                转录组的数据能够展示基因表达水平的高低情况，转录本丰度越高则基因的表达水平越高，这可以直接在测序得到的reads数中反映出来。Reads数除了与基因的真实表达水平成正比之外，还与基因长度和测序深度成正相关，为了让不同实验间基因的表达水平具有可比性，测序数据需要进行归一化处理，由此引入了RPKM值的概念。
+            </p>
+            <p>
+                RPKM值指将比对到基因的reads数除以比对到基因组的所有reads数（以百万为单位）以及RNA的长度（以KB为单位）。通过进行RPKM值的处理可以消除测序深度和基因长度对reads计数的影响，这是目前最常用的基因表达水平估算方法。
+            </p>
+            <div class="table-area">
+                <div class="tabel-title"><span>表 5-1-1 不同表达水平区间的基因数量统计表</span></div>
+                <div class="tabel-content">
+                    <div class="table-responsive">
+                        <table class="table tabelBaseSet">
+                            {{#each .}} {{#with quantitystat}} {{#each this}} {{#if @first}}
+                            <thead>
+                                <tr>
+                                    <td>{{RPKMInterval}}</td>
+                                    <td>{{trako}}</td>
+                                    <td>{{wild}}</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{else}}
+                                <tr>
+                                    <td>{{RPKMInterval}}</td>
+                                    <td>{{trako}}</td>
+                                    <td>{{wild}}</td>
+                                </tr>
+                                {{/if}} {{/each}} {{/with}} {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <h2>6 <span id="RNA-seq-assessment">RNA-seq整体质量评估</span></h2>
+            <h2>6.1 RNA-seq相关性检查</h2>
+            <p>
+                样品间基因表达水平相关性的检查是评估实验可靠性和样本选择是否合理的重要指标，通过相关性的检查可以验证所涉及的生物学实验操作是否可重复以及后续数据分析是否可靠。样品之间的相关系数R2越接近1，则样品间表达模式的相似程度越高。Encode计划建议皮尔逊相关系数R2大于0.92（理想取样和实验条件下），具体项目操作中，要求R2至少大于0.8，否则需要对样品做出合适解释或重新进行实验。
+            </p>
+            <div class="analysis-process-img">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel5" class="carousel slide" data-ride="carousel5" data-interval="false">
+                                <div class="carousel-inner">
+                                    {{#each .}} {{#each correlation}}
+                                    <div class="item {{#if @first}}active{{/if}}">
+                                        <img src="{{ this }}">
+                                    </div>
+                                    {{/each}} {{/each}}
+                                </div>
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#carousel5" role="button" data-slide="prev" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel5" role="button" data-slide="next" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <div class="clearfix">
+                                <div id="thumbcarousel5" class="carousel slide thumbcarousel" data-interval="false">
+                                    <div class="carousel-inner">
+                                        <!-- ngRepeat: prefixGroup in samplePrefixGroups -->
+                                        <div class="item active">
+                                            {{#each .}} {{#each correlation}}
+                                            <div data-target="#carousel5" data-slide-to="{{@index}}" class="thumb" pararentId="#thumbcarousel5">
+                                                <img src="{{ this }}" {{#if @first}}class="imgClick" {{/if}}>
+                                            </div>
+                                            {{/each}} {{/each}}
+                                        </div>
+                                        <!-- end ngRepeat: prefixGroup in samplePrefixGroups -->
+                                    </div>
+                                    <a class="left carousel-control" href="#thumbcarousel5" role="button" data-slide="prev" pararentid="#thumbcarousel5" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                        <img alt="" src="src/img/left.png" class="img_left">
+                                    </a>
+                                    <a class="right carousel-control" href="#thumbcarousel5" role="button" data-slide="next" pararentid="#thumbcarousel5" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                        <img alt="" src="src/img/right.png" class="img_right">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 imgTitle">图 6-1-1 RNA-seq相关性检查</div>
+                    </div>
+                </div>
+            </div>
+            <p>R2：pearson相关系数的平方；热图：样品间相关系数热图</p>
+            <h2><span id="differences-expression-analysis">7 差异表达分析</span></h2>
+            <h2>7.1 基因表达水平对比</h2>
+            <p>通过用箱线图比较所有实验组别基因RPKM值的分布，可以观察不同实验条件对基因表达水平的影响。对于同一实验条件下的重复样品，最终的RPKM值为所有重复数据的平均值。</p>
+            <div class="analysis-process-img">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel6" class="carousel slide" data-ride="carousel6" data-interval="false">
+                                <div class="carousel-inner">
+                                    {{#each .}} {{#each expressioncompare}}
+                                    <div class="item {{#if @first}}active{{/if}}">
+                                        <img src="{{ this }}">
+                                    </div>
+                                    {{/each}} {{/each}}
+                                </div>
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#carousel6" role="button" data-slide="prev" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel6" role="button" data-slide="next" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <div class="clearfix">
+                                <div id="thumbcarousel6" class="carousel slide thumbcarousel" data-interval="false">
+                                    <div class="carousel-inner">
+                                        <!-- ngRepeat: prefixGroup in samplePrefixGroups -->
+                                        <div class="item active">
+                                            {{#each .}} {{#each expressioncompare}}
+                                            <div data-target="#carousel6" data-slide-to="{{@index}}" class="thumb" pararentId="#thumbcarousel6">
+                                                <img src="{{ this }}" {{#if @first}}class="imgClick" {{/if}}>
+                                            </div>
+                                            {{/each}} {{/each}}
+                                        </div>
+                                        <!-- end ngRepeat: prefixGroup in samplePrefixGroups -->
+                                    </div>
+                                    <a class="left carousel-control" href="#thumbcarousel6" role="button" data-slide="prev" pararentid="#thumbcarousel5" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                        <img alt="" src="src/img/left.png" class="img_left">
+                                    </a>
+                                    <a class="right carousel-control" href="#thumbcarousel6" role="button" data-slide="next" pararentid="#thumbcarousel5" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                        <img alt="" src="src/img/right.png" class="img_right">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 imgTitle">图 7-1-1 RPKM箱线图
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p>RPKM分布图，横坐标为log10(RPKM+1)，纵坐标为基因的密度</p>
+            <p>RPKM箱线图，横坐标为样品名称，纵坐标为log10(RPKM+1)，箱线图包括6个数据节点，数据从大到小分别为上边缘、上四分位、中位数、下四分位、下边缘和异常值；
+            </p>
+            <p>RPKM小提琴图</p>
+            <h2>7.2 差异表达基因列表</h2>
+            <p>采用DESeq/DEGSeq工具包对基因表达文件的raw count数据进行分析，可以得到差异表达基因列表。DESeq/DEGSeq的方法是基于负二项分布模型，其中若第i个基因在第j个样本中的raw count值为Kij，则有：
+            </p>
+
+            <div class="divContentCenter">
+                <img src="src/img/deformula.png">
+            </div>
+            <p>
+            在进行统计分析后，会得到p值和q值（校正后p值），一般取q值小于0.05为差异基因，本次分析中差异表达基因列表如下：
+            </p>
+            <div class="table-area">
+                <div class="tabel-title"><span>表 7-2-1 不同表达水平区间的基因数量统计表</span></div>
+                <div class="tabel-content">
+                    <div class="table-responsive">
+                        <table class="table tabelBaseSet">
+                            {{#each .}} {{#with differentialexpression}} {{#each this}} {{#if @first}}
+                            <thead>
+                                <tr>
+                                    <td>{{Gene_id}}</td>
+                                    <td>{{readcount_trako}}</td>
+                                    <td>{{readcount_wild}}</td>
+                                    <td>{{pvalue}}</td>
+                                    <td>{{log2Fold_change}}</td>
+                                    <td>{{qvalue}}</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{else}}
+                                <tr>
+                                    <td>{{Gene_id}}</td>
+                                    <td>{{readcount_trako}}</td>
+                                    <td>{{readcount_wild}}</td>
+                                    <td>{{pvalue}}</td>
+                                    <td>{{log2Fold_change}}</td>
+                                    <td>{{qvalue}}</td>
+                                </tr>
+                                {{/if}} {{/each}} {{/with}} {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row tabel-footer">
+                    <br> 差异基因表格说明:
+                    <p>（1）Gene ID：Entrez数据库基因编号/基因Symbol</p>
+                    <p>（2）Sample1、Sample2：校正后样品的count值</p>
+                    <p>（3）log2FoldChange：log2(Sample1/Sample2)</p>
+                    <p>（4）pval：P值，统计学差异显著性检测指标</p>
+                    <p>（5）qval：Q值，校正后P值，值越小代表基因表达差异越显著</p>
+                </div>
+            </div>
+            <h2>7.3 差异表达基因筛选</h2>
+            <p>
+                通过对不同样品基因表达的相关性分析可以观察差异基因的整体分布情况。同时还可以通过火山图，从差异倍数和显著水平两个方面对差异基因进行评估，从而完成对差异基因的筛选。对于没有生物学重复的实验，阈值一般设定为：|log2(FoldChange)|>1且qvalue&lt;0.005，对于有生物学重复的实验，由于已经进行了生物学变异的消除，所以对差异基因的筛选标准一般为：qvalue&lt;0.05</p>
+            <div class="analysis-process-img">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel7" class="carousel slide" data-ride="carousel7" data-interval="false">
+                                <div class="carousel-inner">
+                                    {{#each .}} {{#each volcano}}
+                                    <div class="item {{#if @first}}active{{/if}}">
+                                        <img src="{{ this }}">
+                                    </div>
+                                    {{/each}} {{/each}}
+                                </div>
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#carousel7" role="button" data-slide="prev" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel7" role="button" data-slide="next" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <div class="clearfix">
+                                <div id="thumbcarousel7" class="carousel slide thumbcarousel" data-interval="false">
+                                    <div class="carousel-inner">
+                                        <!-- ngRepeat: prefixGroup in samplePrefixGroups -->
+                                        <div class="item active">
+                                            {{#each .}} {{#each volcano}}
+                                            <div data-target="#carousel7" data-slide-to="{{@index}}" class="thumb" pararentId="#thumbcarousel7">
+                                                <img src="{{ this }}" {{#if @first}}class="imgClick" {{/if}}>
+                                            </div>
+                                            {{/each}} {{/each}}
+                                        </div>
+                                        <!-- end ngRepeat: prefixGroup in samplePrefixGroups -->
+                                    </div>
+                                    <a class="left carousel-control" href="#thumbcarousel7" role="button" data-slide="prev" pararentid="#thumbcarousel7" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                        <img alt="" src="src/img/left.png" class="img_left">
+                                    </a>
+                                    <a class="right carousel-control" href="#thumbcarousel7" role="button" data-slide="next" pararentid="#thumbcarousel7" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                        <img alt="" src="src/img/right.png" class="img_right">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 imgTitle">图7-3-1 实验组与对照组基因表达水平对数分布散点图
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>7.4 差异基因聚类分析</h2>
+            <p>对差异基因进行聚类分析，可以将表达模式相同或相似的基因聚集在一起，根据同类基因极有可能具有相似功能的理论依据，可以帮助识别未知基因的功能或已知基因的未知功能。</p>
+            <p>一般以不同实验条件下的差异基因的RPKM值作为表达水平进行层次聚类分析，结果以热图的形式进行展示，不同颜色代表表达水平的相对高低程度。可以根据聚类的结果，针对具有相似表达模式的基因进行进一步的功能分析。</p>
+            <div class="analysis-process-img">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel8" class="carousel slide" data-ride="carousel8" data-interval="false">
+                                <div class="carousel-inner">
+                                    {{#each .}} {{#each heatcluster}}
+                                    <div class="item {{#if @first}}active{{/if}}">
+                                        <img src="{{ this }}">
+                                    </div>
+                                    {{/each}} {{/each}}
+                                </div>
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#carousel8" role="button" data-slide="prev" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel8" role="button" data-slide="next" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <div class="clearfix">
+                                <div id="thumbcarousel8" class="carousel slide thumbcarousel" data-interval="false">
+                                    <div class="carousel-inner">
+                                        <!-- ngRepeat: prefixGroup in samplePrefixGroups -->
+                                        <div class="item active">
+                                            {{#each .}} {{#each heatcluster}}
+                                            <div data-target="#carousel8" data-slide-to="{{@index}}" class="thumb" pararentId="#thumbcarousel8">
+                                                <img src="{{ this }}" {{#if @first}}class="imgClick" {{/if}}>
+                                            </div>
+                                            {{/each}} {{/each}}
+                                        </div>
+                                        <!-- end ngRepeat: prefixGroup in samplePrefixGroups -->
+                                    </div>
+                                    <a class="left carousel-control" href="#thumbcarousel8" role="button" data-slide="prev" pararentid="#thumbcarousel8" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                        <img alt="" src="src/img/left.png" class="img_left">
+                                    </a>
+                                    <a class="right carousel-control" href="#thumbcarousel8" role="button" data-slide="next" pararentid="#thumbcarousel8" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                        <img alt="" src="src/img/right.png" class="img_right">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 imgTitle">图 7-4-1 差异基因RPKM值聚类热图，红色代表高表达基因，蓝色代表低表达基因
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2><span id="GO-analysis">8 差异基因GO富集分析</span></h2>
+            <p>基因本体论（Gene Ontology，简称GO），是基因本体联合会（Gene Ontology Consortium）所建立的数据库，能够对不同物种的基因和蛋白质功能进行限定和描述。其包括三大类：
+                <br>
+                <span class="data-step">（1）细胞组分（Cellular Component）：细胞中的位置，指基因产物位于何种细胞器或基因产物组中，如核糖体、蛋白酶体等；</span>
+                <br>
+                <span class="data-step">（2）分子功能（Molecular Function）：描述在个体分子生物学上的活性，如催化或结合活性等；</span>
+                <br>
+                <span class="data-step">（3）生物学过程（Biological Process）：由分子功能有序组成的具有多个步骤的过程，如细胞生长和维持、信号转导等。</span>
+            </p>
+            <p>基因或蛋白质可以通过ID或序列注释的方法找到与之对应的GO编号，根据实验目的筛选了差异基因后，可以通过富集分析了解差异基因在GO中的分布情况以获取实验样本在基因功能上的差异。</p>
+            <p>目前常用的富集分析方法有超几何分布或Fisher精确检验，统计分析结果会得到p-value及FDR（错误发现率），一般FDR小于0.05表示差异基因在该类别中富集很显著。</p>
+            <h2>8.1 差异基因GO富集列表</h2>
+            <p>下表为差异基因GO富集列表，结果展现了在细胞组分、分子功能和生物过程三个类别中差异基因富集显著的部分GO term。</p>
+            <div class="table-area">
+                <div class="tabel-title"><span>表 8-1-1 差异基因GO富集列表</span></div>
+                <div class="tabel-content">
+                    <div class="table-responsive">
+                        <table class="table tabelBaseSet">
+                            {{#each .}} {{#with goenrichment}} {{#each this}} {{#if @first}}
+                            <thead>
+                                <tr>
+                                    <td>{{term_id}}</td>
+                                    <td>{{term_description}}</td>
+                                    <td>{{proteins}}</td>
+                                    <td>{{hits}}</td>
+                                    <td>{{pvalue}}</td>
+                                    <td>{{pvalue_fdr}}</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{else}}
+                                <tr>
+                                    <td>{{term_id}}</td>
+                                    <td>{{term_description}}</td>
+                                    <td>{{proteins}}</td>
+                                    <td>{{hits}}</td>
+                                    <td>{{pvalue}}</td>
+                                    <td>{{pvalue_fdr}}</td>
+                                </tr>
+                                {{/if}} {{/each}} {{/with}} {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row tabel-footer">
+                    表格说明:
+                    <p>（1）Term_id：Gene Ontology数据库中唯一的编号信息
+                    </p>
+                    <p>（2）Term_description：GO功能的描述信息
+                    </p>
+                    <p>（3）Proteins：GO term中含有的基因/蛋白质数目</p>
+                    <p>（4）Hits：本项目中，与该GO term相关的差异基因的数目</p>
+                    <p>（5）P value：富集分析统计学显著水平</p>
+                    <p>（6）pvalue_fdr：错误发现率</p>
+                </div>
+            </div>
+            <h2>8.2 差异基因GO富集柱状图</h2>
+            <p>差异基因GO富集柱状图，直观的反映了在细胞组分、分子功能和生物过程三个类别中富集显著的GO term中差异基因个数的分布情况。下图展示了富集最显著的30个GO term。</p>
+            <div class="analysis-process-img">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel9" class="carousel slide" data-ride="carousel9" data-interval="false">
+                                <div class="carousel-inner">
+                                    {{#each .}} {{#each gobar}}
+                                    <div class="item {{#if @first}}active{{/if}}">
+                                        <img src="{{ this }}">
+                                    </div>
+                                    {{/each}} {{/each}}
+                                </div>
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#carousel9" role="button" data-slide="prev" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel9" role="button" data-slide="next" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <div class="clearfix">
+                                <div id="thumbcarousel9" class="carousel slide thumbcarousel" data-interval="false">
+                                    <div class="carousel-inner">
+                                        <!-- ngRepeat: prefixGroup in samplePrefixGroups -->
+                                        <div class="item active">
+                                            {{#each .}} {{#each gobar}}
+                                            <div data-target="#carousel9" data-slide-to="{{@index}}" class="thumb" pararentId="#thumbcarousel9">
+                                                <img src="{{ this }}" {{#if @first}}class="imgClick" {{/if}}>
+                                            </div>
+                                            {{/each}} {{/each}}
+                                        </div>
+                                        <!-- end ngRepeat: prefixGroup in samplePrefixGroups -->
+                                    </div>
+                                    <a class="left carousel-control" href="#thumbcarousel9" role="button" data-slide="prev" pararentid="#thumbcarousel9" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                        <img alt="" src="src/img/left.png" class="img_left">
+                                    </a>
+                                    <a class="right carousel-control" href="#thumbcarousel9" role="button" data-slide="next" pararentid="#thumbcarousel9" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                        <img alt="" src="src/img/right.png" class="img_right">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 imgTitle">图8-2-1 差异基因GO富集柱状图
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>8.3 差异基因GO富集DAG图</h2>
+            <p>有向无环图（Directed Acyclic Graph，DAG）是GO富集分析结果的常用图形化展示方式。图中，分支代表了包含关系，从上到下所定义的功能范围越来越小，而颜色的深浅则代表了富集的显著程度，颜色越深表示富集越显著。
+            </p>
+            <div class="analysis-process-img">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel10" class="carousel slide" data-ride="carousel10" data-interval="false">
+                                <div class="carousel-inner">
+                                    {{#each .}} {{#each godag}}
+                                    <div class="item {{#if @first}}active{{/if}}">
+                                        <img src="{{ this }}">
+                                    </div>
+                                    {{/each}} {{/each}}
+                                </div>
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#carousel10" role="button" data-slide="prev" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel10" role="button" data-slide="next" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <div class="clearfix">
+                                <div id="thumbcarousel10" class="carousel slide thumbcarousel" data-interval="false">
+                                    <div class="carousel-inner">
+                                        <!-- ngRepeat: prefixGroup in samplePrefixGroups -->
+                                        <div class="item active">
+                                            {{#each .}} {{#each godag}}
+                                            <div data-target="#carousel10" data-slide-to="{{@index}}" class="thumb" pararentId="#thumbcarousel10">
+                                                <img src="{{ this }}" {{#if @first}}class="imgClick" {{/if}}>
+                                            </div>
+                                            {{/each}} {{/each}}
+                                        </div>
+                                        <!-- end ngRepeat: prefixGroup in samplePrefixGroups -->
+                                    </div>
+                                    <a class="left carousel-control" href="#thumbcarousel10" role="button" data-slide="prev" pararentid="#thumbcarousel10" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                        <img alt="" src="src/img/left.png" class="img_left">
+                                    </a>
+                                    <a class="right carousel-control" href="#thumbcarousel10" role="button" data-slide="next" pararentid="#thumbcarousel10" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                        <img alt="" src="src/img/right.png" class="img_right">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 imgTitle">图8-3-1 差异基因GO富集柱状图
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2><span id="KEGG-analysis">9 差异基因KEGG富集分析</span></h2>
+            <p>KEGG是一个整合了基因组、化学和系统功能信息的数据库。能够把从已经完整测序的基因组中得到的基因目录与更高级别的细胞、 物种和生态系统水平的系统功能关联起来。其中，KEGG pathway数据库是一个手工绘制的生物通路的集合，包含新陈代谢、遗传信息加工、环境信息加工、细胞过程、生物体系统、 人类疾病和药物开发等多方面的分子间相互作用和反应网络。对差异基因进行KEGG富集分析，是以KEGG数据库中的pathway为单位，应用超几何分布或Fisher精确检验算法， 找出与整个基因组背景相比，在差异表达基因中显著性富集的pathway。统计分析结果会得到p value和FDR（错误发现率），一般FDR小于0.05则富集显著。</p>
+            <h2>9.1 差异基因KEGG富集列表</h2>
+            <p>下表为差异基因KEGG富集列表，表格展现了FDR&lt;0.05的部分结果。</p>
+            <div class="table-area">
+                <div class="tabel-title"><span>表 9-1-1 差异基因GO富集列表</span></div>
+                <div class="tabel-content">
+                    <div class="table-responsive">
+                        <table class="table tabelBaseSet">
+                            {{#each .}} {{#with keggenrichment}} {{#each this}} {{#if @first}}
+                            <thead>
+                                <tr>
+                                    <td>{{term_id}}</td>
+                                    <td>{{term_description}}</td>
+                                    <td>{{proteins}}</td>
+                                    <td>{{hits}}</td>
+                                    <td>{{pvalue}}</td>
+                                    <td>{{pvalue_fdr}}</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{else}}
+                                <tr>
+                                    <td>{{term_id}}</td>
+                                    <td>{{term_description}}</td>
+                                    <td>{{proteins}}</td>
+                                    <td>{{hits}}</td>
+                                    <td>{{pvalue}}</td>
+                                    <td>{{pvalue_fdr}}</td>
+                                </tr>
+                                {{/if}} {{/each}} {{/with}} {{/each}}
+                                </thead>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row tabel-footer">
+                    表格内容说明：
+                    <p>（1）Term_id：KEGG pathway数据库中的编号
+                    </p>
+                    <p>（2）Term_description：KEGG pathway的名称</p>
+                    <p>（3）Proteins：pathway中所含有的基因/蛋白质数量</p>
+                    <p>（4）Hits：与该pathway相关的差异基因数目</p>
+                    <p>（5）P value：富集分析统计学显著水平</p>
+                    <p>（6）FDR：错误发现率</p>
+                </div>
+            </div>
+            <h2>9.2 差异基因KEGG富集散点图</h2>
+            <p>散点图是KEGG富集分析结果的图形化展示方式，在该图中，KEGG富集的程度可以通过Rich factor、FDR和富集到该通路上的基因个数来衡量。其中Rich factor指该pathway中富集到的差异基因个数与注释基因个数的比值，Rich factor越大，表示富集越显著。下图展示了富集最显著的10条pathway条目。</p>
+            <div class="analysis-process-img">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel11" class="carousel slide" data-ride="carousel11" data-interval="false">
+                                <div class="carousel-inner">
+                                    {{#each .}} {{#each keggbar}}
+                                    <div class="item {{#if @first}}active{{/if}}">
+                                        <img src="{{ this }}">
+                                    </div>
+                                    {{/each}} {{/each}}
+                                </div>
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#carousel11" role="button" data-slide="prev" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel11" role="button" data-slide="next" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <div class="clearfix">
+                                <div id="thumbcarousel11" class="carousel slide thumbcarousel" data-interval="false">
+                                    <div class="carousel-inner">
+                                        <!-- ngRepeat: prefixGroup in samplePrefixGroups -->
+                                        <div class="item active">
+                                            {{#each .}} {{#each keggbar}}
+                                            <div data-target="#carousel11" data-slide-to="{{@index}}" class="thumb" pararentId="#thumbcarousel11">
+                                                <img src="{{ this }}" {{#if @first}}class="imgClick" {{/if}}>
+                                            </div>
+                                            {{/each}} {{/each}}
+                                        </div>
+                                        <!-- end ngRepeat: prefixGroup in samplePrefixGroups -->
+                                    </div>
+                                    <a class="left carousel-control" href="#thumbcarousel11" role="button" data-slide="prev" pararentid="#thumbcarousel11" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                        <img alt="" src="src/img/left.png" class="img_left">
+                                    </a>
+                                    <a class="right carousel-control" href="#thumbcarousel11" role="button" data-slide="next" pararentid="#thumbcarousel11" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                        <img alt="" src="src/img/right.png" class="img_right">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 imgTitle">图9-2-1 差异基因GO富集柱状图
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>9.3 差异mRNA KEGG富集通路图</h2>
+            <p>将差异转录本富集出的通路图展示出来，该通路图中，包含上调转录本的KO节点标红色，包含下调转录本的KO节点标绿色，包含上调的标红色。</p>
+            <div class="analysis-process-img">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel12" class="carousel slide" data-ride="carousel12" data-interval="false">
+                                <div class="carousel-inner">
+                                    {{#each .}} {{#each keggpathway}}
+                                    <div class="item {{#if @first}}active{{/if}}">
+                                        <img src="{{ this }}">
+                                    </div>
+                                    {{/each}} {{/each}}
+                                </div>
+                                <!-- Controls -->
+                                <a class="left carousel-control" href="#carousel12" role="button" data-slide="prev" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel12" role="button" data-slide="next" onclick="return false;">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <div class="clearfix">
+                                <div id="thumbcarousel12" class="carousel slide thumbcarousel" data-interval="false">
+                                    <div class="carousel-inner">
+                                        <!-- ngRepeat: prefixGroup in samplePrefixGroups -->
+                                        <div class="item active">
+                                            {{#each .}} {{#each keggpathway}}
+                                            <div data-target="#carousel12" data-slide-to="{{@index}}" class="thumb" pararentId="#thumbcarousel12">
+                                                <img src="{{ this }}" {{#if @first}}class="imgClick" {{/if}}>
+                                            </div>
+                                            {{/each}} {{/each}}
+                                        </div>
+                                        <!-- end ngRepeat: prefixGroup in samplePrefixGroups -->
+                                    </div>
+                                    <a class="left carousel-control" href="#thumbcarousel12" role="button" data-slide="prev" pararentid="#thumbcarousel12" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
+                                        <img alt="" src="src/img/left.png" class="img_left">
+                                    </a>
+                                    <a class="right carousel-control" href="#thumbcarousel12" role="button" data-slide="next" pararentid="#thumbcarousel12" onclick="return false;">
+                                        <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
+                                        <img alt="" src="src/img/right.png" class="img_right">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 imgTitle">图9-3-1 mRNA KEGG富集通路图</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="reference">
+            <div id="reference-title">
+                <h1><span>四 参考文献</span></h1>
+                <p>[1] Wang Z, Gerstein M, Snyder M. RNA-Seq: a revolutionary tool for transcriptomics[J]. Nature Reviews Genetics, 2009, 10(1): 57-63.</p>
+                <p>[2] Trapnell C, Pachter L, Salzberg S L. TopHat: discovering splice junctions with RNA-Seq[J]. Bioinformatics, 2009, 25(9): 1105-1111.</p>
+                <p>[3] Trapnell C, Roberts A, Goff L, et al. Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks[J]. Nature protocols, 2012, 7(3): 562-578.</p>
+                <p>[4] Andrews S. FastQC: A quality control tool for high throughput sequence data[J]. Reference Source, 2010.
+                </p>
+                <p>[5]Wagner G P, Kin K, Lynch V J. Measurement of mRNA abundance using RNA-seq data: RPKM measure is inconsistent among samples[J]. Theory in Biosciences, 2012, 131(4): 281-285.</p>
+                <p>[6] Love M I, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2[J]. Genome Biol, 2014, 15(12): 550.</p>
+                <p>[7] Robinson M D, Oshlack A. A scaling normalization method for differential expression analysis of RNA-seq data[J]. Genome Biol, 2010, 11(3): R25.</p>
+                <p>[8] Anders S, Huber W. Differential expression analysis for sequence count data[J]. Genome biol, 2010, 11(10): R106.</p>
+                <p>[9] Ashburner M, Ball C A, Blake J A, et al. Gene Ontology: tool for the unification of biology[J]. Nature genetics, 2000, 25(1): 25-29.</p>
+                <p>[10] Young M D, Wakefield M J, Smyth G K, et al. goseq: Gene Ontology testing for RNA-seq datasets[J]. 2012.
+                </p>
+                <p>[11] Kanehisa M, Araki M, Goto S, et al. KEGG for linking genomes to life and the environment[J]. Nucleic acids research, 2008, 36(suppl 1): D480-D484.</p>
+                <p>[12] Kanehisa M, Goto S, Furumichi M, et al. KEGG for representation and analysis of molecular networks involving diseases and drugs[J]. Nucleic acids research, 2010, 38(suppl 1): D355-D360.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+    $(function() {
+        $(function() {
+            initImgSlides();
+            navEvent();
+        });
+
+        function initImgSlides() {
+            var thumbs = $(".item .thumb");
+            //console.log(thumbs.length);
+            for (var i = 0; i < thumbs.length; i++) {
+                var thumb = thumbs.eq(i);
+                thumb.click(function() {
+                    var parentId = $(this).attr("pararentId");
+                    var liveLittleImgs = $(parentId).find(".active .thumb img");
+                    console.log(parentId + ",item count" + liveLittleImgs.length);
+                    var currentClickImg = $(this).children("img").eq(0);
+                    clickLittleImg(currentClickImg, liveLittleImgs);
+                });
+            }
+
+            //点击小图片，设置透明度
+            function clickLittleImg(currentClickImg, liveLittleImgs) {
+                if (!currentClickImg.hasClass("imgClick")) {
+                    clearImgClickColor(liveLittleImgs);
+                    currentClickImg.addClass("imgClick");
+                }
+            }
+
+            function clearImgClickColor(liveLittleImgs) {
+                for (var i = 0; i < liveLittleImgs.length; i++) {
+                    var imgItem = liveLittleImgs.eq(i);
+                    if (imgItem.hasClass("imgClick")) {
+                        imgItem.removeClass("imgClick");
+                    }
+                }
+            }
+
+            var a_big_rights = $("a.right.carousel-control span.sr-only");
+            for (var i = 0; i < a_big_rights.length; i++) {
+                var a_big_right = a_big_rights.eq(i).parent().eq(0);
+                a_big_right.click(function() {
+                    var carousel = $(this).parent();
+                    var thumbcarousel = carousel.next('div.clearfix').eq(0);
+                    var a_little_right = thumbcarousel.find('a.right.carousel-control');
+                    var allLittleThumb = thumbcarousel.find(".thumb");
+                    var items = carousel.find('.carousel-inner .item');
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items.eq(i);
+                        if (item.hasClass('active')) {
+                            if (items.length <= 6) {
+                                var nextItemIndex = i + 1;
+                                if (nextItemIndex > items.length - 1) {
+                                    nextItemIndex = 0;
+                                }
+                                allLittleThumb.eq(nextItemIndex).trigger("click");
+                            } else {
+                                if ((i + 1) % 6 == 0 || (i + 1) == items.length) {
+                                    a_little_right.trigger("click");
+                                } else {
+                                    var nextItemIndex = i + 1;
+                                    if (nextItemIndex < items.length) {
+                                        allLittleThumb.eq(nextItemIndex).trigger("click");
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                })
+            }
+
+            var a_big_lefts = $("a.left.carousel-control span.sr-only");
+            for (var i = 0; i < a_big_lefts.length; i++) {
+                var a_big_left = a_big_lefts.eq(i).parent();
+                a_big_left.click(function() {
+                    var carousel = $(this).parent();
+                    var thumbcarousel = carousel.next('div.clearfix').eq(0);
+                    var a_little_left = thumbcarousel.find('a.left.carousel-control');
+                    var allLittleThumb = thumbcarousel.find(".thumb");
+                    var items = carousel.find('.carousel-inner .item');
+                    console.log("items.length:" + items.length);
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items.eq(i);
+                        if (item.hasClass('active')) {
+
+                            if (items.length <= 6) {
+                                var preItemIndex = i - 1;
+                                if (preItemIndex < 0) {
+                                    preItemIndex = items.length - 1;
+                                }
+                                allLittleThumb.eq(preItemIndex).trigger("click");
+                            } else {
+                                console.log('left....i..' + i);
+                                if ((i) % 6 == 0) {
+                                    a_little_left.trigger("click");
+                                } else {
+                                    var preItemIndex = i - 1;
+                                    allLittleThumb.eq(preItemIndex).trigger("click");
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                })
+            }
+
+
+            var indexArr = {};
+            var a_rights = $(".thumbcarousel a.right.carousel-control");
+            for (var i = 0; i < a_rights.length; i++) {
+                //初始化索引
+                var parentId = a_rights.eq(i).attr("pararentId");
+                indexArr[parentId] = 1;
+            }
+            for (var i = 0; i < a_rights.length; i++) {
+                var a_right = a_rights.eq(i);
+                a_right.click(function(e) {
+                    if (e.hasOwnProperty('originalEvent')) {
+                        //Probably a real click.
+                        switchNextGrouplittleImg($(this), true);
+                    } else {
+                        //Probably a fake click.
+                        switchNextGrouplittleImg($(this), false);
+                    }
+                });
+            }
+
+            //切换到下一组小图片
+            function switchNextGrouplittleImg(little_right, isRealClick) {
+                var parentId = little_right.attr("pararentId");
+                var littleDivIndex = indexArr[parentId];
+                var littleImgDivs = $(parentId).find(".carousel-inner .item");
+                var littleDivMax = littleImgDivs.length;
+                if (littleDivMax < 2) {
+                    return;
+                }
+
+                if (littleDivIndex < littleDivMax) {
+                    littleDivIndex++;
+                } else {
+                    littleDivIndex = 1;
+                }
+                var currentLittleDiv = littleImgDivs.eq(littleDivIndex - 1);
+                var itemDiv = currentLittleDiv.children(".thumb").first();
+                var liveLittleImgs = $(parentId).find(".active .thumb img");
+                clearImgClickColor(liveLittleImgs);
+                setChoiceLittleImgDiv(itemDiv, isRealClick);
+                indexArr[parentId] = littleDivIndex;
+            }
+
+            var a_lefts = $(".thumbcarousel a.left.carousel-control");
+            for (var i = 0; i < a_lefts.length; i++) {
+                var a_left = a_lefts.eq(i);
+                a_left.click(function(e) {
+                    if (e.hasOwnProperty('originalEvent')) {
+                        //Probably a real click.
+                        switchPreviousLittleImg($(this), true);
+                    } else {
+                        //Probably a fake click.
+                        switchPreviousLittleImg($(this), false);
+                    }
+
+                });
+            }
+
+            //切换到上一组小图片
+            function switchPreviousLittleImg(a_left, isRealClick) {
+                var parentId = a_left.attr("pararentId");
+                var littleDivIndex = indexArr[parentId];
+                //alert("start:"+littleDivIndex);
+                var littleImgDivs = $(parentId).find(".carousel-inner .item");
+                var littleDivMax = littleImgDivs.length;
+                if (littleDivMax < 2) {
+                    return;
+                }
+                littleDivIndex--;
+                if (littleDivIndex < 1) {
+                    littleDivIndex = littleDivMax;
+                }
+                var currentLittleDiv = littleImgDivs.eq(littleDivIndex - 1);
+                var itemDiv = currentLittleDiv.children(".thumb").last();
+                //var liveLittleImgs = $(parentId).find(".active .thumb img");
+                var liveLittleImgs = $(parentId).find(".thumb img");
+                clearImgClickColor(liveLittleImgs);
+                setChoiceLittleImgDiv(itemDiv, isRealClick);
+                indexArr[parentId] = littleDivIndex;
+                //alert("end:"+indexArr[parentId]);
+            }
+
+            //设置选中小图片
+            function setChoiceLittleImgDiv(littleImgDiv, isRealClick) {
+                var indexData = littleImgDiv.attr("data-slide-to");
+                console.log('indexData:' + indexData);
+                var littleImgItem = littleImgDiv.children("img").eq(0);
+                if (!littleImgItem.hasClass("imgClick")) {
+                    littleImgItem.addClass("imgClick");
+                }
+
+                var targetId = littleImgDiv.attr("data-target");
+                var maxImgDivs = $(targetId).find(".carousel-inner .item");
+
+                var a_big_img_index = 0;
+                for (var i = 0; i < maxImgDivs.length; i++) {
+                    var maxImgDiv = maxImgDivs.eq(i);
+                    if (maxImgDiv.hasClass("active")) {
+                        maxImgDiv.removeClass("active");
+                        a_big_img_index = i;
+                    }
+                }
+
+                if (isRealClick) {
+                    //小图标点击事件
+                    maxImgDivs.eq(indexData).addClass("active");
+                } else {
+                    //大图标点击事件
+                    maxImgDivs.eq(a_big_img_index).addClass("active");
+                }
+            }
+        }
+
+        function navEvent() {
+
+            var aItems = $(".dropdown-menu a");
+            for (var i = 0; i < aItems.length; i++) {
+                var aItem = aItems.eq(i);
+                //下拉菜单item点击
+                aItem.click(function(e) {
+                    var li = $(this).parent().parent().parent(".dropdown");
+                    var children = li.children(".dropdown-toggle").eq(0);
+                    clearColor();
+                    children.addClass("active");
+                })
+            }
+
+            var navs = $("li.dropdown > a");
+
+            function clearColor() {
+                for (var i = 0; i < navs.length; i++) {
+                    var a = navs.eq(i);
+                    a.parent().removeClass("open");
+                    a.removeClass("a-hover");
+                    a.removeClass("active");
+                }
+            }
+
+            var lis = $("li.dropdown");
+
+            for (var i = 0; i < lis.length; i++) {
+                var li = lis.eq(i);
+                //mouse enter,no bubbling
+                li.mouseenter(function(e) {
+                    if ($(this).hasClass("active")) {
+                        $(this).removeClass("active");
+                    }
+                    var a = $(this).children("a").eq(0);
+                    if (a.hasClass("active")) {
+                        a.removeClass("active");
+                        a.addClass('isMouseover');
+                    }
+                    if ($(this).children().size() > 1) {
+                        //有下拉菜单
+                        a.addClass("a-hover");
+                        $(this).addClass("open");
+                    }
+                    a.click(function(e) {
+                        clearColor();
+                        $(this).addClass("active");
+                    })
+
+                    $(this).find("li").each(function() {
+                        $(this).removeClass("active");
+                    });
+
+
+                })
+
+                //mouse leave,no bubbling
+                li.mouseleave(function(e) {
+                    var a = $(this).children("a").eq(0);
+                    if ($(this).hasClass("open")) {
+                        $(this).removeClass("open");
+                        a.removeClass("a-hover");
+                    }
+                    if (a.hasClass("isMouseover")) {
+                        a.addClass("active");
+                        a.removeClass('isMouseover');
+                    }
+                });
+            }
+
+            $(".navbar-nav a").each(function() {
+                $(this).removeClass('active');
+            });
+
+            $('body').scrollspy({
+                target: '#menu-nav'
+            });
+        }
+
+    });
+    </script>
+</body>
+
+</html>
