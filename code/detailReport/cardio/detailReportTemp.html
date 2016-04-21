@@ -3,45 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <!--<link rel="stylesheet" href="css/index.css"/>-->
-    <link href="css/detailReport.css" rel="stylesheet" type="text/css">
-    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="css/bootstrap-table.min.css">
+    <link href="src/css/detailReport.css" rel="stylesheet" type="text/css">
+    <link href="src/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="src/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+    <link href="src/css/bootstrap-table.min.css" rel="stylesheet">
 
-    <script type="text/javascript" src="js/angular.min.js"></script>
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/angular-scroll.min.js"></script>
-    <script src="js/bootstrap-table.min.js"></script>
-    <script src="js/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="src/js/jquery.min.js"></script>
+    <script type="text/javascript" src="src/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="src/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="src/js/bootstrap-table-zh-CN.min.js"></script>
 
-    <script type="text/javascript" src="js/handlebars.js"></script>
-    <script type="text/javascript" src="js/report.js"></script>
+    <script type="text/javascript" src="src/js/report.js"></script>
     <title>微旋基因cardio生物信息分析报告</title>
 </head>
 <body>
 
 <div id="reportContainer">
     <div class="container-fluid report-header">
-        <img src="img/fold.png"/>
-        <img alt="微旋基因图标" src="img/logo_detailReport.png" class="logo"/>
+        <img src="src/img/fold.png"/>
+        <img alt="微旋基因图标" src="src/img/logo_detailReport.png" class="logo"/>
     </div>
     <!--标题图片-->
     <div id="topImg" class="container ng-scope">
-        <img src="img/report-banner.gif"/>
+        <img src="src/img/report-banner.gif"/>
     </div>
     <!--内容-->
     <div id="content">
         <div id="analysis-process-title">
             <h1><span>生物信息分析流程</span></h1>
 
-            <div class="divContentCenter"><img src="img/analysis_process.png" width="258" height="486"></div>
+            <div class="divContentCenter"><img src="src/img/analysis_process.png" width="258" height="486"></div>
         </div>
         <div id="analysis-result">
             <div id="analysis-result-title">
                 <h1><span>分析结果</span></h1>
 
-                <div ng-show="bamSuffix">
+                {{#showViewBySuffix @root}}
+                {{else}}
+                <div>
                     <h2><span id="originalData">1 原始序列数据</span></h2>
 
                     <p> 高通量测序（如Illumina测序平台）测序得到的原始图像数据文件经碱基识别(Base Calling)分析转化为原始测序序列，我们称之为Raw Data或Raw
@@ -193,7 +192,7 @@
                                         <div class="carousel-inner">
                                             {{#each sequenceFile}}
                                             <div class="item {{#if @first}}active{{/if}}">
-                                                <img src="{{getImageUrl @root this}}.error_rate.png">
+                                                <img src="{{getImageUrl @root this '.error_rate.png'}}">
                                             </div>
                                             {{/each}}
                                         </div>
@@ -223,7 +222,7 @@
                                                          data-slide-to="{{getImagePosition @root this}}"
                                                          class="thumb" pararentId="#thumbcarousel1">
                                                         <img class="{{#if @first}}imgClick{{/if}}"
-                                                             src="{{getImageUrl @root this}}.error_rate.png">
+                                                             src="{{getImageUrl @root this '.error_rate.png'}}">
                                                     </div>
                                                     {{/each}}
                                                 </div>
@@ -233,12 +232,12 @@
                                             <a class="left carousel-control" href="#thumbcarousel1" role="button"
                                                data-slide="prev" pararentId="#thumbcarousel1">
                                                 <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                                <img alt="" src="img/left.png" class="img_left"/>
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
                                             </a>
                                             <a class="right carousel-control" href="#thumbcarousel1" role="button"
                                                data-slide="next" pararentId="#thumbcarousel1">
                                                 <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                                <img alt="" src="img/right.png" class="img_right"/>
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
                                             </a>
                                         </div>
                                     </div>
@@ -267,7 +266,7 @@
                                         <div class="carousel-inner">
                                             {{#each sequenceFile}}
                                             <div class="item {{#if @first}}active{{/if}}">
-                                                <img src="{{getImageUrl @root this}}.quality_score.png">
+                                                <img src="{{getImageUrl @root this '.quality_score.png'}}">
                                             </div>
                                             {{/each}}
                                         </div>
@@ -297,7 +296,7 @@
                                                          data-slide-to="{{getImagePosition @root this}}"
                                                          class="thumb" pararentId="#thumbcarousel2">
                                                         <img class="{{#if @first}}imgClick{{/if}}"
-                                                             src="{{getImageUrl @root this}}.quality_score.png">
+                                                             src="{{getImageUrl @root this '.quality_score.png'}}">
                                                     </div>
                                                     {{/each}}
                                                 </div>
@@ -307,12 +306,12 @@
                                             <a class="left carousel-control" href="#thumbcarousel2" role="button"
                                                data-slide="prev" pararentId="#thumbcarousel2">
                                                 <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                                <img alt="" src="img/left.png" class="img_left"/>
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
                                             </a>
                                             <a class="right carousel-control" href="#thumbcarousel2" role="button"
                                                data-slide="next" pararentId="#thumbcarousel2">
                                                 <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                                <img alt="" src="img/right.png" class="img_right"/>
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
                                             </a>
                                         </div>
                                     </div>
@@ -420,7 +419,7 @@
                                         <div class="carousel-inner">
                                             {{#each sequenceFile}}
                                             <div class="item {{#if @first}}active{{/if}}">
-                                                <img src="{{getImageUrl @root this}}.histPlot.png">
+                                                <img src="{{getImageUrl @root this '.histPlot.png'}}">
                                             </div>
                                             {{/each}}
                                         </div>
@@ -450,7 +449,7 @@
                                                          data-slide-to="{{getImagePosition @root this}}"
                                                          class="thumb" pararentId="#thumbcarousel3">
                                                         <img class="{{#if @first}}imgClick{{/if}}"
-                                                             src="{{getImageUrl @root this}}.histPlot.png">
+                                                             src="{{getImageUrl @root this '.histPlot.png'}}">
                                                     </div>
                                                     {{/each}}
                                                 </div>
@@ -460,12 +459,12 @@
                                             <a class="left carousel-control" href="#thumbcarousel3" role="button"
                                                data-slide="prev" pararentId="#thumbcarousel3">
                                                 <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                                <img alt="" src="img/left.png" class="img_left"/>
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
                                             </a>
                                             <a class="right carousel-control" href="#thumbcarousel3" role="button"
                                                data-slide="next" pararentId="#thumbcarousel3">
                                                 <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                                <img alt="" src="img/right.png" class="img_right"/>
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
                                             </a>
                                         </div>
                                     </div>
@@ -490,7 +489,7 @@
                                         <div class="carousel-inner">
                                             {{#each sequenceFile}}
                                             <div class="item {{#if @first}}active{{/if}}">
-                                                <img src="{{getImageUrl @root this}}.cumuPlot.png">
+                                                <img src="{{getImageUrl @root this '.cumuPlot.png'}}">
                                             </div>
                                             {{/each}}
                                         </div>
@@ -530,12 +529,12 @@
                                             <a class="left carousel-control" href="#thumbcarousel4" role="button"
                                                data-slide="prev" pararentId="#thumbcarousel4">
                                                 <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                                <img alt="" src="img/left.png" class="img_left"/>
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
                                             </a>
                                             <a class="right carousel-control" href="#thumbcarousel4" role="button"
                                                data-slide="next" pararentId="#thumbcarousel4">
                                                 <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                                <img alt="" src="img/right.png" class="img_right"/>
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
                                             </a>
                                         </div>
                                     </div>
@@ -663,9 +662,20 @@
                         </div>
                     </div>
                 </div>
-                <h2>&nbsp;&nbsp;<span id="capture-efficiency">{{!bamSuffix?"1 ":"4 "}}捕获效率统计</span></h2>
+                {{/showViewBySuffix}}
 
-                <div ng-show="bamSuffix">
+                <h2>&nbsp;&nbsp;<span id="capture-efficiency">
+                     {{#showViewBySuffix @root}}
+                        1
+                    {{else}}
+                        4
+                    {{/showViewBySuffix}}
+                    捕获效率统计
+                </span></h2>
+
+                {{#showViewBySuffix @root}}
+                {{else}}
+                <div>
                     <p>插入片段分布图，该分布图能较好的反映随机打断的片段长度比例，当测序得到的插入片段比例峰值和实际打断长度范围较吻合，说明测序的片段长度没有问题。
                     </p>
 
@@ -678,7 +688,7 @@
                                         <div class="carousel-inner">
                                             {{#each sequenceFile}}
                                             <div class="item {{#if @first}}active{{/if}}">
-                                                <img src="{{getImageUrl @root this}}_histogram.png">
+                                                <img src="{{getImageUrl @root this '_histogram.png'}}">
                                             </div>
                                             {{/each}}
                                         </div>
@@ -708,7 +718,7 @@
                                                          data-slide-to="{{getImagePosition @root this}}"
                                                          class="thumb" pararentId="#thumbcarousel5">
                                                         <img class="{{#if @first}}imgClick{{/if}}"
-                                                             src="{{getImageUrl @root this}}_histogram.png">
+                                                             src="{{getImageUrl @root this '_histogram.png'}}">
                                                     </div>
                                                     {{/each}}
                                                 </div>
@@ -718,12 +728,12 @@
                                             <a class="left carousel-control" href="#thumbcarousel5" role="button"
                                                data-slide="prev" pararentId="#thumbcarousel5">
                                                 <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                                <img alt="" src="img/left.png" class="img_left"/>
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
                                             </a>
                                             <a class="right carousel-control" href="#thumbcarousel5" role="button"
                                                data-slide="next" pararentId="#thumbcarousel5">
                                                 <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                                <img alt="" src="img/right.png" class="img_right"/>
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
                                             </a>
                                         </div>
                                     </div>
@@ -737,6 +747,8 @@
                     <p>目标捕获区域为测序区域，目标区域的测序深度均一化越好，后期的突变分析、CNV分析就越可靠，数据利用率就越高，因此目标区域深度分布图可以反映测序的均一化程度。
                     </p>
                 </div>
+                {{/showViewBySuffix}}
+
 
                 <div class="analysis-process-img">
                     <div class="container-fluid">
@@ -747,7 +759,7 @@
                                     <div class="carousel-inner">
                                         {{#each sequenceFile}}
                                         <div class="item {{#if @first}}active{{/if}}">
-                                            <img src="{{getImageUrl @root this}}.capture_depth.png">
+                                            <img src="{{getImageUrl @root this '.capture_depth.png'}}">
                                         </div>
                                         {{/each}}
                                     </div>
@@ -775,7 +787,7 @@
                                                      data-slide-to="{{getImagePosition @root this}}"
                                                      class="thumb" pararentId="#thumbcarousel6">
                                                     <img class="{{#if @first}}imgClick{{/if}}"
-                                                         src="{{getImageUrl @root this}}.capture_depth.png">
+                                                         src="{{getImageUrl @root this '.capture_depth.png'}}">
                                                 </div>
                                                 {{/each}}
                                             </div>
@@ -785,12 +797,12 @@
                                         <a class="left carousel-control" href="#thumbcarousel6" role="button"
                                            data-slide="prev" pararentId="#thumbcarousel6">
                                             <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                            <img alt="" src="img/left.png" class="img_left"/>
+                                            <img alt="" src="src/img/left.png" class="img_left"/>
                                         </a>
                                         <a class="right carousel-control" href="#thumbcarousel6" role="button"
                                            data-slide="next" pararentId="#thumbcarousel6">
                                             <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                            <img alt="" src="img/right.png" class="img_right"/>
+                                            <img alt="" src="src/img/right.png" class="img_right"/>
                                         </a>
                                     </div>
                                 </div>
@@ -813,7 +825,7 @@
                                     <div class="carousel-inner">
                                         {{#each sequenceFile}}
                                         <div class="item {{#if @first}}active{{/if}}">
-                                            <img src="{{getImageUrl @root this}}.capture_coverage.png">
+                                            <img src="{{getImageUrl @root this '.capture_coverage.png'}}">
                                         </div>
                                         {{/each}}
                                     </div>
@@ -841,7 +853,7 @@
                                                      data-slide-to="{{getImagePosition @root this}}"
                                                      class="thumb" pararentId="#thumbcarousel7">
                                                     <img class="{{#if @first}}imgClick{{/if}}"
-                                                         src="{{getImageUrl @root this}}.capture_coverage.png">
+                                                         src="{{getImageUrl @root this '.capture_coverage.png'}}">
                                                 </div>
                                                 {{/each}}
                                             </div>
@@ -851,12 +863,12 @@
                                         <a class="left carousel-control" href="#thumbcarousel7" role="button"
                                            data-slide="prev" pararentId="#thumbcarousel7">
                                             <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                            <img alt="" src="img/left.png" class="img_left"/>
+                                            <img alt="" src="src/img/left.png" class="img_left"/>
                                         </a>
                                         <a class="right carousel-control" href="#thumbcarousel7" role="button"
                                            data-slide="next" pararentId="#thumbcarousel7">
                                             <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                            <img alt="" src="img/right.png" class="img_right"/>
+                                            <img alt="" src="src/img/right.png" class="img_right"/>
                                         </a>
                                     </div>
                                 </div>
@@ -971,7 +983,7 @@
                                         <div class="carousel-inner">
                                             {{#each sequenceFile}}
                                             <div class="item {{#if @first}}active{{/if}}">
-                                                <img src="{{getImageUrl @root this}}_SNP_variant_statistics.png">
+                                                <img src="{{getImageUrl @root this '_SNP_variant_statistics.png'}}">
                                             </div>
                                             {{/each}}
                                         </div>
@@ -1001,7 +1013,7 @@
                                                          data-slide-to="{{getImagePosition @root this}}"
                                                          class="thumb" pararentId="#thumbcarousel8">
                                                         <img class="{{#if @first}}imgClick{{/if}}"
-                                                             src="{{getImageUrl @root this}}_SNP_variant_statistics.png">
+                                                             src="{{getImageUrl @root this '_SNP_variant_statistics.png'}}">
                                                     </div>
                                                     {{/each}}
                                                 </div>
@@ -1011,12 +1023,12 @@
                                             <a class="left carousel-control" href="#thumbcarousel8" role="button"
                                                data-slide="prev" pararentId="#thumbcarousel8">
                                                 <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                                <img alt="" src="img/left.png" class="img_left"/>
+                                                <img alt="" src="src/img/left.png" class="img_left"/>
                                             </a>
                                             <a class="right carousel-control" href="#thumbcarousel8" role="button"
                                                data-slide="next" pararentId="#thumbcarousel8">
                                                 <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                                <img alt="" src="img/right.png" class="img_right"/>
+                                                <img alt="" src="src/img/right.png" class="img_right"/>
                                             </a>
                                         </div>
                                     </div>
@@ -1112,7 +1124,7 @@
                                             <div class="carousel-inner">
                                                 {{#each sequenceFile}}
                                                 <div class="item {{#if @first}}active{{/if}}">
-                                                    <img src="{{getImageUrl @root this}}_SNP_exonic_statistics.png">
+                                                    <img src="{{getImageUrl @root this '_SNP_exonic_statistics.png'}}">
                                                 </div>
                                                 {{/each}}
                                             </div>
@@ -1142,7 +1154,7 @@
                                                              data-slide-to="{{getImagePosition @root this}}"
                                                              class="thumb" pararentId="#thumbcarousel9">
                                                             <img class="{{#if @first}}imgClick{{/if}}"
-                                                                 src="{{getImageUrl @root this}}_SNP_exonic_statistics.png">
+                                                                 src="{{getImageUrl @root this '_SNP_exonic_statistics.png'}}">
                                                         </div>
                                                         {{/each}}
                                                     </div>
@@ -1153,13 +1165,13 @@
                                                    role="button"
                                                    data-slide="prev" pararentId="#thumbcarousel9">
                                                     <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                                    <img alt="" src="img/left.png" class="img_left"/>
+                                                    <img alt="" src="src/img/left.png" class="img_left"/>
                                                 </a>
                                                 <a class="right carousel-control" href="#thumbcarousel9"
                                                    role="button"
                                                    data-slide="next" pararentId="#thumbcarousel9">
                                                     <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                                    <img alt="" src="img/right.png" class="img_right"/>
+                                                    <img alt="" src="src/img/right.png" class="img_right"/>
                                                 </a>
                                             </div>
                                         </div>
@@ -1242,7 +1254,7 @@
                                     <div class="carousel-inner">
                                         {{#each sequenceFile}}
                                         <div class="item {{#if @first}}active{{/if}}">
-                                            <img src="{{getImageUrl @root this}}_tstv.png">
+                                            <img src="{{getImageUrl @root this '_tstv.png'}}">
                                         </div>
                                         {{/each}}
                                     </div>
@@ -1270,7 +1282,7 @@
                                                      data-slide-to="{{getImagePosition @root this}}"
                                                      class="thumb" pararentId="#thumbcarousel10">
                                                     <img class="{{#if @first}}imgClick{{/if}}"
-                                                         src="{{getImageUrl @root this}}_tstv.png">
+                                                         src="{{getImageUrl @root this '_tstv.png'}}">
                                                 </div>
                                                 {{/each}}
                                             </div>
@@ -1280,12 +1292,12 @@
                                         <a class="left carousel-control" href="#thumbcarousel10" role="button"
                                            data-slide="prev" pararentId="#thumbcarousel10">
                                             <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                            <img alt="" src="img/left.png" class="img_left"/>
+                                            <img alt="" src="src/img/left.png" class="img_left"/>
                                         </a>
                                         <a class="right carousel-control" href="#thumbcarousel10" role="button"
                                            data-slide="next" pararentId="#thumbcarousel10">
                                             <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                            <img alt="" src="img/right.png" class="img_right"/>
+                                            <img alt="" src="src/img/right.png" class="img_right"/>
                                         </a>
                                     </div>
                                 </div>
@@ -1364,7 +1376,7 @@
                                     <div class="carousel-inner">
                                         {{#each sequenceFile}}
                                         <div class="item {{#if @first}}active{{/if}}">
-                                            <img src="{{getImageUrl @root this}}_SNP_statistics.png">
+                                            <img src="{{getImageUrl @root this '_SNP_statistics.png'}}">
                                         </div>
                                         {{/each}}
                                     </div>
@@ -1392,7 +1404,7 @@
                                                      data-slide-to="{{getImagePosition @root this}}"
                                                      class="thumb" pararentId="#thumbcarousel11">
                                                     <img class="{{#if @first}}imgClick{{/if}}"
-                                                         src="{{getImageUrl @root this}}_SNP_statistics.png">
+                                                         src="{{getImageUrl @root this '_SNP_statistics.png'}}">
                                                 </div>
                                                 {{/each}}
                                             </div>
@@ -1402,12 +1414,12 @@
                                         <a class="left carousel-control" href="#thumbcarousel11" role="button"
                                            data-slide="prev" pararentId="#thumbcarousel11">
                                             <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                            <img alt="" src="img/left.png" class="img_left"/>
+                                            <img alt="" src="src/img/left.png" class="img_left"/>
                                         </a>
                                         <a class="right carousel-control" href="#thumbcarousel11" role="button"
                                            data-slide="next" pararentId="#thumbcarousel11">
                                             <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                            <img alt="" src="img/right.png" class="img_right"/>
+                                            <img alt="" src="src/img/right.png" class="img_right"/>
                                         </a>
                                     </div>
                                 </div>
@@ -1654,7 +1666,7 @@
                                     <div class="carousel-inner">
                                         {{#each sequenceFile}}
                                         <div class="item {{#if @first}}active{{/if}}">
-                                            <img src="{{getImageUrl @root this}}_InDel_variant_statistics.png">
+                                            <img src="{{getImageUrl @root this '_InDel_variant_statistics.png'}}">
                                         </div>
                                         {{/each}}
                                     </div>
@@ -1682,7 +1694,7 @@
                                                      data-slide-to="{{getImagePosition @root this}}"
                                                      class="thumb" pararentId="#thumbcarousel12">
                                                     <img class="{{#if @first}}imgClick{{/if}}"
-                                                         src="{{getImageUrl @root this}}_InDel_variant_statistics.png">
+                                                         src="{{getImageUrl @root this '_InDel_variant_statistics.png'}}">
                                                 </div>
                                                 {{/each}}
                                             </div>
@@ -1692,12 +1704,12 @@
                                         <a class="left carousel-control" href="#thumbcarousel12" role="button"
                                            data-slide="prev" pararentId="#thumbcarousel12">
                                             <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                            <img alt="" src="img/left.png" class="img_left"/>
+                                            <img alt="" src="src/img/left.png" class="img_left"/>
                                         </a>
                                         <a class="right carousel-control" href="#thumbcarousel12" role="button"
                                            data-slide="next" pararentId="#thumbcarousel12">
                                             <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                            <img alt="" src="img/right.png" class="img_right"/>
+                                            <img alt="" src="src/img/right.png" class="img_right"/>
                                         </a>
                                     </div>
                                 </div>
@@ -1793,7 +1805,7 @@
                                     <div class="carousel-inner">
                                         {{#each sequenceFile}}
                                         <div class="item {{#if @first}}active{{/if}}">
-                                            <img src="{{getImageUrl @root this}}_InDel_exonic_statistics.png">
+                                            <img src="{{getImageUrl @root this '_InDel_exonic_statistics.png'}}">
                                         </div>
                                         {{/each}}
                                     </div>
@@ -1821,7 +1833,7 @@
                                                      data-slide-to="{{getImagePosition @root this}}"
                                                      class="thumb" pararentId="#thumbcarousel13">
                                                     <img class="{{#if @first}}imgClick{{/if}}"
-                                                         src="{{getImageUrl @root this}}_InDel_exonic_statistics.png">
+                                                         src="{{getImageUrl @root this '_InDel_exonic_statistics.png'}}">
                                                 </div>
                                                 {{/each}}
                                             </div>
@@ -1831,12 +1843,12 @@
                                         <a class="left carousel-control" href="#thumbcarousel13" role="button"
                                            data-slide="prev" pararentId="#thumbcarousel13">
                                             <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                            <img alt="" src="img/left.png" class="img_left"/>
+                                            <img alt="" src="src/img/left.png" class="img_left"/>
                                         </a>
                                         <a class="right carousel-control" href="#thumbcarousel13" role="button"
                                            data-slide="next" pararentId="#thumbcarousel13">
                                             <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                            <img alt="" src="img/right.png" class="img_right"/>
+                                            <img alt="" src="src/img/right.png" class="img_right"/>
                                         </a>
                                     </div>
                                 </div>
@@ -1918,7 +1930,7 @@
                                     <div class="carousel-inner">
                                         {{#each sequenceFile}}
                                         <div class="item {{#if @first}}active{{/if}}">
-                                            <img src="{{getImageUrl @root this}}_InDel_statistics.png">
+                                            <img src="{{getImageUrl @root this '_InDel_statistics.png'}}">
                                         </div>
                                         {{/each}}
                                     </div>
@@ -1946,7 +1958,7 @@
                                                      data-slide-to="{{getImagePosition @root this}}"
                                                      class="thumb" pararentId="#thumbcarousel14">
                                                     <img class="{{#if @first}}imgClick{{/if}}"
-                                                         src="{{getImageUrl @root this}}_InDel_statistics.png">
+                                                         src="{{getImageUrl @root this '_InDel_statistics.png'}}">
                                                 </div>
                                                 {{/each}}
                                             </div>
@@ -1956,12 +1968,12 @@
                                         <a class="left carousel-control" href="#thumbcarousel14" role="button"
                                            data-slide="prev" pararentId="#thumbcarousel14">
                                             <!--<span class="glyphicon glyphicon-chevron-left"></span>-->
-                                            <img alt="" src="img/left.png" class="img_left"/>
+                                            <img alt="" src="src/img/left.png" class="img_left"/>
                                         </a>
                                         <a class="right carousel-control" href="#thumbcarousel14" role="button"
                                            data-slide="next" pararentId="#thumbcarousel14">
                                             <!--<span class="glyphicon glyphicon-chevron-right"></span> -->
-                                            <img alt="" src="img/right.png" class="img_right"/>
+                                            <img alt="" src="src/img/right.png" class="img_right"/>
                                         </a>
                                     </div>
                                 </div>
